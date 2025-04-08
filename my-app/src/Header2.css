@@ -1,0 +1,141 @@
+header {
+    height: 108px;
+    width: 100%;
+    position: relative;
+    background: white;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 100%;
+}
+
+/* Стили для навигации */
+.header .header-refs {
+    display: flex;
+    gap: 2.5vw; /* Адаптивный промежуток */
+    margin-left: 4vw;
+}
+
+.header .header-refs .header-refs-ref {
+    min-width: 158px;
+    height: 51px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.header .header-refs .header-refs-ref a {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: black;
+    text-decoration: none;
+    font-size: 1.1vw; /* Адаптивный размер шрифта */
+    white-space: nowrap;
+}
+
+/* Стили для функциональных элементов */
+.header .header-funcs {
+    display: flex;
+    gap: 2vw;
+    margin-right: 4vw;
+}
+
+.header .header-funcs .header-funcs-func {
+    font-size: 1.1vw;
+    min-width: 60px;
+}
+
+/* Стили для кнопки */
+.header .header_button {
+    height: 51px;
+    min-width: 158px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.header .header_button button {
+    font-size: 1.1vw;
+    border: 2px solid #000;
+}
+
+/* Адаптация для 1080p */
+@media (min-width: 1920px) {
+    .header {
+        padding: 0 80px;
+    }
+    
+    .header .header-refs .header-refs-ref a {
+        font-size: 18px;
+    }
+    
+    .header .header-funcs .header-funcs-func {
+        font-size: 18px;
+    }
+    
+    .header .header_button button {
+        font-size: 18px;
+    }
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    header {
+        height: auto;
+        padding: 15px 0;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 20px;
+    }
+    
+    .header .header-refs {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-left: 0;
+        gap: 15px;
+    }
+    
+    .header .header-refs .header-refs-ref {
+        min-width: 120px;
+        height: 40px;
+    }
+    
+    .header .header-refs .header-refs-ref a {
+        font-size: 14px;
+    }
+    
+    .header .header-funcs {
+        margin-right: 0;
+        gap: 15px;
+    }
+    
+    .header .header_button {
+        height: 40px;
+        min-width: 120px;
+    }
+    
+    .header .header_button button {
+        font-size: 14px;
+    }
+}
+
+/* Ховер-эффекты */
+.header .header-refs-ref:hover {
+    transform: translateY(-2px);
+}
+
+.header .header_button:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transform: scale(1.05);
+}

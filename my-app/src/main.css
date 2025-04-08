@@ -1,0 +1,11 @@
+main{
+    background-image: url('./imgs/gradient-0-1.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+@media (min-width: 1280px) {
+    main {
+        padding: 110px 0px 80px;
+    }
+}
