@@ -4,7 +4,8 @@ import Logo from "../src/imgs/logotype-big.png"
 import eyeLogo from '../src/imgs/menu_eye.png'
 import searchLogo from "../src/imgs/fi-rr-search.png"
 
-const Header = () => {
+
+const Header = ({ onLoginClick }) => {
   return (
     <header className="header">
       <div className="header-logo">
@@ -22,7 +23,7 @@ const Header = () => {
         <div className='header-funcs-func'><div className='header-funcs-func-block'><p>ru</p></div></div>
         <div className='header-funcs-func'><div className='header-funcs-func-block'><img src={searchLogo}/></div></div>
       </div>
-      <div className='header_button'><button>вход</button></div>
+      <div className='header_button'><button onClick={onLoginClick}>вход</button></div>
     </header>
   );
 };

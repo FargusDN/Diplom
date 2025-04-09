@@ -1,11 +1,43 @@
+body{
+    position: relative;
+}
 main{
     background-image: url('./imgs/gradient-0-1.webp');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 @media (min-width: 1280px) {
     main {
         padding: 110px 0px 80px;
     }
 }
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background: white;
+    border-radius: 8px;
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  /* Блокировка скролла */
+  body.modal-open {
+    overflow: hidden;
+  }

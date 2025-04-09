@@ -3,6 +3,7 @@ header{
     width: 100%;
     position: fixed;
     margin-bottom: 2rem;
+    z-index: 2;
 }
 .header{
     display: flex;
@@ -64,6 +65,7 @@ header{
     align-items: center;
     justify-content: center;
     border-radius: 10px;
+    background: linear-gradient(135deg, #275efe 0%, #05f 100%);
 }
 .header .header_button button{
     height: 100%;
@@ -84,6 +86,59 @@ header{
 .header .header_button:hover {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+
+.header .header_button {
+    position: relative; /* Добавляем для позиционирования псевдоэлемента */
+    overflow: hidden; /* Скрываем выступающие части градиента */
+    padding: 2px; /* Отступ для рамки */
+    background: linear-gradient(135deg, #275efe 0%, #05f 100%); /* Градиент для рамки */
+}
+
+.header .header_button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white; /* Цвет фона кнопки */
+    border-radius: 8px; /* На 2px меньше, чем у родителя */
+    margin: 2px; /* Компенсируем толщину рамки */
+}
+
+.header .header_button button {
+    position: relative; /* Для z-index */
+    z-index: 1; /* Поднимаем текст над псевдоэлементами */
+    border: none;
+    background: transparent; /* Убираем белый фон */
+    transition: all 0.3s ease;
+}
+
+/* Анимация градиента при наведении */
+.header .header_button:hover {
+    background: linear-gradient(135deg, #f09d03 0%, #e7b306 100%);
+    box-shadow: 0 4px 20px rgba(39, 94, 254, 0.3);
+}
+
+/* Обновим существующие стили */
+.header .header_button {
+    height: 51px;
+    width: 158px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    transition: all 0.3s ease;
 }
 
 
