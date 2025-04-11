@@ -6,6 +6,8 @@ import './main.css'
 import Login from './login';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import StudentProfile from './StudentProfile';
 
 function App() {
   
@@ -21,17 +23,24 @@ function App() {
     }
   }, [isLoginVisible]);
   return (
-    <div className="App">
-      <Header onLoginClick={handleLoginOpen}/>
-      <main>
-        <NewsSlider />
-        {isLoginVisible && (
-          <div className="modal-overlay" onClick={handleLoginClose}>
-            <Login onClose={handleLoginClose} />
+    <Router>
+      <Routes>
+        <Route path="/" element={
+          <div className="App">
+            <Header onLoginClick={() => setLoginVisible(true)} />
+            <main>
+              <NewsSlider />
+              {isLoginVisible && (
+                <div className="modal-overlay" onClick={() => setLoginVisible(false)}>
+                  <Login onClose={() => setLoginVisible(false)} />
+                </div>
+              )}
+            </main>
           </div>
-        )}
-      </main>
-    </div>
+        }/>
+        <Route path="/profile" element={<StudentProfile />} />
+      </Routes>
+    </Router>
   );
 }
 

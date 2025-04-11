@@ -140,6 +140,35 @@ header{
     border-radius: 10px;
     transition: all 0.3s ease;
 }
-
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: transparent;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .header.scrolled {
+    background: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 50px;
+  }
+  
+  /* Для плавного перехода логотипа */
+  .header-logo img {
+    transition: filter 0.3s ease;
+  }
+  
+  
+  /* Для плавного появления фона */
+.header {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+  
+  .header.scrolled {
+    backdrop-filter: none;
+  }
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
