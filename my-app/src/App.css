@@ -27,7 +27,11 @@
 .App-link {
   color: #61dafb;
 }
-
+.App {
+  margin-top: 108px; /* Высота шапки */
+  padding: 20px;
+  min-height: calc(100vh - 108px); /* Для заполнения экрана */
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

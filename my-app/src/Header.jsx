@@ -31,7 +31,7 @@ const Header = ({ onLoginClick, user }) => {
         <img src={Logo} alt="Логотип ЯГТУ" className="header-logo"/>  
       </div>
       <div className='header-refs'>
-        <div className='header-refs-ref'><a href="/">Поступающему</a></div>
+        <div className='header-refs-ref'><Link to="/AdmissionsPage">Поступающему</Link></div>
         <div className='header-refs-ref'><a href="/">Студенту</a></div>
         <div className='header-refs-ref'><a href="/about">Университет</a></div>
         <div className='header-refs-ref'><a href="/education">Партнерам</a></div>

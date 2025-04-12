@@ -8,6 +8,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import StudentProfile from './StudentProfile';
+import UserProfile from './UserProfile';
+import AdmissionsPage from './AdmissionsPage';
 
 function App() {
   
@@ -38,7 +40,8 @@ function App() {
             </main>
           </div>
         }/>
-        <Route path="/profile" element={<StudentProfile />} />
+        <Route path="/profile" element={<UserProfile/>} />
+        <Route path="/AdmissionsPage" element={<AdmissionsPage/>} />
       </Routes>
     </Router>
   );

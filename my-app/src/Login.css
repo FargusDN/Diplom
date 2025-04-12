@@ -267,7 +267,7 @@ text-transform: uppercase;
     margin: 0;
 }
 /* Анимация появления модального окна */
-.modal-content {
+.login_modal-content {
     animation: modalAppear 0.3s ease-out;
     border-radius: 10px;
     border: 1px solid black;
@@ -295,7 +295,7 @@ text-transform: uppercase;
 .LoginForm_form_button_submit {
     transition: all 0.2s ease;
 }
-.modal-content {
+.login_modal-content {
     /* ... существующие стили ... */
     border: none;
     box-shadow: 
@@ -306,7 +306,7 @@ text-transform: uppercase;
 }
 
 /* Декоративная градиентная рамка */
-.modal-content::before {
+.login_modal-content::before {
     content: '';
     position: absolute;
     top: 0;
@@ -328,7 +328,7 @@ text-transform: uppercase;
 }
 
 /* Анимация при наведении на форму */
-.modal-content:hover {
+.login_modal-content:hover {
     box-shadow: 
         0 15px 40px rgba(39, 94, 254, 0.2),
         0 0 0 1px rgba(39, 94, 254, 0.15);

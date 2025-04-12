@@ -11,7 +11,7 @@ const Login = ({ onClose }) =>{
         // Обработка логина
       };
     return(
-        <div className="modal-content" onClick={handleFormClick}>
+        <div className="login_modal-content" onClick={handleFormClick}>
             <button 
                 className="close-button" 
                 onClick={onClose}
