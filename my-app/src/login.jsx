@@ -19,7 +19,7 @@ const Login = ({ onClose }) =>{
             >
                 &times;
             </button>
-        <form className='LoginForm_form' onSubmit={handleSubmit}>
+        <form method='POST' className='LoginForm_form' onSubmit={handleSubmit}>
         <div className='LoginForm_form_Name'><p>Авторизация</p></div>
                 <div className='LoginForm_form_fields'>
                     <div className='LoginForm_form_fields_field'><input type='email' placeholder='Логин'/></div>

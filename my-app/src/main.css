@@ -37,7 +37,4 @@ main{
     width: 100%;
   }
   
-  /* Блокировка скролла */
-  body.modal-open {
-    overflow: hidden;
-  }
+  

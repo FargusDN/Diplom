@@ -10,6 +10,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import StudentProfile from './StudentProfile';
 import UserProfile from './UserProfile';
 import AdmissionsPage from './AdmissionsPage';
+import Footer from './Footer';
+import MTC from './MTC'
 
 function App() {
   
@@ -38,10 +40,12 @@ function App() {
                 </div>
               )}
             </main>
+            <Footer/>
           </div>
         }/>
         <Route path="/profile" element={<UserProfile/>} />
         <Route path="/AdmissionsPage" element={<AdmissionsPage/>} />
+        <Route path='/MilitaryCenter' element={<MTC/>}/>
       </Routes>
     </Router>
   );

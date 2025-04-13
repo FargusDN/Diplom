@@ -2,6 +2,7 @@
 import React from "react";
 import './Modal.css';
 import { useState } from "react";
+import { Link } from "react-router-dom";
 // Modal.js
 const Modal = ({ isOpen, onClose, title, data }) => {
   if (!isOpen) return null;
@@ -27,9 +28,10 @@ const Modal = ({ isOpen, onClose, title, data }) => {
             </div>
           </div>
             </div>
-            <a href={data.scheduleLink} className="schedule-button">
+            <Link className="schedule-button" to="/MilitaryCenter">Посмотреть расписание нарядов</Link>
+            {/* <a href={data.scheduleLink} className="schedule-button">
               Посмотреть расписание нарядов
-            </a>
+            </a> */}
           </>
         );
       

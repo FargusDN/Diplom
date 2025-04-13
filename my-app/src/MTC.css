@@ -1,0 +1,268 @@
+/* MilitaryCenter.css */
+.military-container {
+    background: #f5f5f5;
+    min-height: 100vh;
+  }
+  
+  .military-header {
+    background: #2d3a4b;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .military-logo {
+    height: 80px;
+    filter: grayscale(100%) contrast(120%);
+  }
+  
+  .header-titles h1 {
+    color: #e0e0e0;
+    margin: 0;
+    font-family: 'Roboto Condensed', sans-serif;
+    letter-spacing: 1px;
+  }
+  
+  .schedule-header {
+    background: #ffffff;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .date-block {
+    color: #4a4a4a;
+    margin-top: 1rem;
+  }
+  
+  .status-block {
+    background: #fff3cd;
+    padding: 1rem;
+    margin: 1rem;
+    border-left: 4px solid #ffc107;
+  }
+  
+  .events-section {
+    background: white;
+    margin: 1rem;
+    padding: 1.5rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  .event-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .event-title {
+    color: #2d3a4b;
+    font-weight: 500;
+    flex: 2;
+  }
+  
+  .event-time {
+    color: #6c757d;
+    flex: 1;
+    text-align: right;
+  }
+  
+  .conference-notice {
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    font-style: italic;
+  }
+  /* MilitarySchedule.css */
+.military-schedule-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  
+  .schedule-table {
+    margin-bottom: 30px;
+    overflow-x: auto;
+  }
+  
+  .schedule-table h3 {
+    color: #2d3a4b;
+    margin-bottom: 15px;
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f8f9fa;
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  th {
+    background-color: #2d3a4b;
+    color: white;
+    font-weight: 500;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f1f1f1;
+  }
+  
+  .duty-officer-card {
+    background: #fff3cd;
+    padding: 20px;
+    border-radius: 6px;
+    border-left: 4px solid #ffc107;
+  }
+  
+  .duty-officer-card h3 {
+    color: #856404;
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+  
+  .officer-info {
+    font-size: 1rem;
+  }
+  
+  .officer-name {
+    color: #2d3a4b;
+    margin: 8px 0;
+    font-weight: 500;
+  }
+  
+  .officer-phone {
+    color: #6c757d;
+    margin: 0;
+  }
+  
+  .no-officer {
+    color: #dc3545;
+    margin: 0;
+    font-style: italic;
+  }
+  
+  @media (max-width: 768px) {
+    table {
+      font-size: 0.9rem;
+    }
+    
+    th, td {
+      padding: 10px;
+    }
+  }
+  /* MilitarySchedule.css */
+.military-schedule-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .schedule-block {
+    flex: 2;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  
+  .duty-block {
+    flex: 1;
+    min-width: 280px;
+  }
+  
+  .schedule-table-wrapper {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: #f8f9fa;
+  }
+  
+  th {
+    background: #2d3a4b;
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 500;
+  }
+  
+  td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  tr:nth-child(even) {
+    background: #f1f1f1;
+  }
+  
+  .duty-officer-card {
+    background: #fff3cd;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-left: 4px solid #ffc107;
+  }
+  
+  .duty-officer-card h3 {
+    color: #856404;
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+    font-size: 1.1rem;
+  }
+  
+  .officer-info {
+    font-size: 0.95rem;
+  }
+  
+  .officer-rank {
+    color: #6c757d;
+    margin: 0 0 4px 0;
+    font-size: 0.9em;
+  }
+  
+  .officer-name {
+    color: #2d3a4b;
+    margin: 0 0 8px 0;
+    font-weight: 500;
+    font-size: 1.1em;
+  }
+  
+  .officer-phone {
+    color: #155724;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  .no-officer {
+    color: #dc3545;
+    margin: 0;
+    font-style: italic;
+  }
+  
+  @media (max-width: 768px) {
+    .military-schedule-container {
+      flex-direction: column;
+    }
+    
+    .duty-block {
+      min-width: auto;
+    }
+    
+    table {
+      font-size: 0.9rem;
+    }
+  }

@@ -1,56 +1,80 @@
 import React from 'react';
 import './Header.css';
-import Logo from "../src/imgs/logotype-big.png"
-import eyeLogo from '../src/imgs/menu_eye.png'
-import searchLogo from "../src/imgs/fi-rr-search.png"
-import ProfileDropdown from './ProfileDropdown';
+import Logo from "../src/imgs/logotype-big.png";
+import burgerIcon from '../src/imgs/burger-icon2.svg'; // Добавьте иконку бургера
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import ProfileDropdown from './ProfileDropdown';
 
-
-const Header = ({ onLoginClick, user }) => {
+const Header = ({ LogoHeader, onLoginClick, user }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   return (
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
-      <div className='header-refs'>
-  {/* ... другие ссылки ... */}
-  <div className='header-refs-ref'>
-    <Link to="/profile">Личный кабинет (тест)</Link>
-  </div>
-</div>
       <div className="header-logo">
-        <img src={Logo} alt="Логотип ЯГТУ" className="header-logo"/>  
+      {LogoHeader ? (
+         <img src={LogoHeader} alt="ЯГТУ" />
+        ) : (
+          <img src={Logo} alt="ЯГТУ" />
+        )}
+        
       </div>
-      <div className='header-refs'>
-        <div className='header-refs-ref'><Link to="/AdmissionsPage">Поступающему</Link></div>
-        <div className='header-refs-ref'><a href="/">Студенту</a></div>
-        <div className='header-refs-ref'><a href="/about">Университет</a></div>
-        <div className='header-refs-ref'><a href="/education">Партнерам</a></div>
-        <div className='header-refs-ref'><a href="/contacts">Контакты</a></div>
-      </div>
-      <div className='header-funcs'>
-        <div className='header-funcs-func'><div className='header-funcs-func-block'><img src={eyeLogo}/></div></div>
-        <div className='header-funcs-func'><div className='header-funcs-func-block'><p>ru</p></div></div>
-        <div className='header-funcs-func'><div className='header-funcs-func-block'><img src={searchLogo}/></div></div>
-      </div>
-      {user ? (
+
+      {/* Основной контент для десктопов */}
+      <div className="desktop-content">
+        <nav className="header-nav">
+          <Link to="/admissions">Поступающему</Link>
+          <Link to="/students">Студенту</Link>
+          <Link to="/university">Университет</Link>
+          <Link to="/partners">Партнерам</Link>
+          <Link to="/contacts">Контакты</Link>
+        </nav>
+        {user ? (
           <div className="profile-container">
             <ProfileDropdown />
           </div>
         ) : (
-          <div className='header_button'>
-            <button onClick={onLoginClick}>вход</button>
-          </div>
+          <button className="login-btn" onClick={onLoginClick}>
+            ВХОД
+          </button>
         )}
+        
+      </div>
+
+      {/* Мобильное меню */}
+      <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}>
+      {user ? (
+         <button className="login-btn" onClick={onLoginClick}>
+         ВЫХОД
+       </button>
+        ) : (
+          <button className="login-btn" onClick={onLoginClick}>
+            ВХОД
+          </button>
+        )}
+        
+        <nav className="mobile-nav">
+          <Link to="/admissions">Поступающему</Link>
+          <Link to="/students">Студенту</Link>
+          <Link to="/university">Университет</Link>
+          <Link to="/partners">Партнерам</Link>
+          <Link to="/contacts">Контакты</Link>
+        </nav>
+      </div>
+
+      <button 
+        className={`burger-btn ${isMenuOpen ? 'open' : ''}`} 
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        <img src={burgerIcon} alt="Меню" />
+      </button>
     </header>
   );
 };

@@ -1,41 +1,46 @@
-// NewsSlider.jsx
-import React, { useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
+
+import React, { useState, useEffect } from 'react';
 import './NewsSlider.css';
 
-const NewsSlider = () => {
-  const newsItems = [
-    {
-      id: 1,
-      title: 'Новая образовательная программа',
-      date: '10.04.2025',
-      preview: 'Описание новости...'
-    },
-    // Добавьте остальные новости
-  ];
+const NewsSlider = ({ newsItems }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % newsItems.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [newsItems.length]);
+
+  if (!newsItems.length) return <div className="no-news">Новостей нет</div>;
 
   return (
-    <section className="news-section">
-      <h2>Новости и события</h2>
-      <Swiper
-        spaceBetween={30}
-        slidesPerView={3}
-        autoplay={{ delay: 20000 }}
-        modules={[Autoplay]}
-      >
-        {newsItems.map((news) => (
-          <SwiperSlide key={news.id}>
-            <div className="news-card">
-              <div className="news-date">{news.date}</div>
-              <h3>{news.title}</h3>
-              <p>{news.preview}</p>
+    <div className="news-slider">
+      <div className="slider-track" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+        {newsItems.map((item, index) => (
+          <div 
+            key={index}
+            className={`slide ${index === activeIndex ? 'active' : ''}`}
+          >
+            <div className="slide-content">
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+              <span className="news-date">{item.date}</span>
             </div>
-          </SwiperSlide>
+          </div>
         ))}
-      </Swiper>
-    </section>
+      </div>
+      
+      <div className="slider-controls">
+        {newsItems.map((_, index) => (
+          <button
+            key={index}
+            className={`dot ${index === activeIndex ? 'active' : ''}`}
+            onClick={() => setActiveIndex(index)}
+          />
+        ))}
+      </div>
+    </div>
   );
 };
 

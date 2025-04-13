@@ -21,7 +21,11 @@ const UserProfile = () => {
     direction: '09.03.02 - Информационные системы и технологии',
     profile: 'Информационные системы и технологии'
   };
-
+  if (activeCard) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
   
   const infoCards = [
     {
