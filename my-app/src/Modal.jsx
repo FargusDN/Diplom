@@ -9,6 +9,18 @@ const Modal = ({ isOpen, onClose, title, data }) => {
 
   const renderContent = () => {
     switch(data?.type) {
+      case 'portfolio':
+        return (
+          <>
+            <div className="mil_shedule">
+            <h3>Последние достижения:</h3>
+            <div className="content-block">
+            
+          </div>
+            </div>
+            <Link className="schedule-button" to="/portfolio">Войти в портфолио</Link>
+          </>
+        );
       case 'military':
         return (
           <>
@@ -28,10 +40,7 @@ const Modal = ({ isOpen, onClose, title, data }) => {
             </div>
           </div>
             </div>
-            <Link className="schedule-button" to="/MilitaryCenter">Посмотреть расписание нарядов</Link>
-            {/* <a href={data.scheduleLink} className="schedule-button">
-              Посмотреть расписание нарядов
-            </a> */}
+            <Link className="schedule-button" to="/MilitaryCenter">Войти в ВУЦ</Link>
           </>
         );
       

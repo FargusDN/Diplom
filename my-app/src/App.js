@@ -12,6 +12,7 @@ import UserProfile from './UserProfile';
 import AdmissionsPage from './AdmissionsPage';
 import Footer from './Footer';
 import MTC from './MTC'
+import Portfolio from './Portfolio';
 
 function App() {
   
@@ -33,7 +34,7 @@ function App() {
           <div className="App">
             <Header onLoginClick={() => setLoginVisible(true)} />
             <main>
-              <NewsSlider />
+              {/* <NewsSlider /> */}
               {isLoginVisible && (
                 <div className="modal-overlay" onClick={() => setLoginVisible(false)}>
                   <Login onClose={() => setLoginVisible(false)} />
@@ -46,6 +47,7 @@ function App() {
         <Route path="/profile" element={<UserProfile/>} />
         <Route path="/AdmissionsPage" element={<AdmissionsPage/>} />
         <Route path='/MilitaryCenter' element={<MTC/>}/>
+        <Route path='/portfolio' element={<Portfolio/>}/>
       </Routes>
     </Router>
   );
