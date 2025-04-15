@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ProfileDropdown.css';
 import UserLogo from './imgs/userLogo.jpg'
+import { Link } from 'react-router-dom';
 
 const ProfileDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +28,7 @@ const ProfileDropdown = () => {
       />
       {isOpen && (
         <div className="dropdown-menu">
+         <button className='logout-btn'><Link  to="/profile">Личный кабинет</Link></button>
           <button className="logout-btn" onClick={() => {/* логика выхода */}}>
             Выйти
           </button>

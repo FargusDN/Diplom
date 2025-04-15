@@ -39,9 +39,9 @@ const ModalAch = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="modal-header">
-          <h3>{title}</h3>
+          <h1>{title}</h1>
           <button 
-            className="modal-close-btn"
+            className="close-btn"
             onClick={onClose}
             aria-label="Закрыть"
           >

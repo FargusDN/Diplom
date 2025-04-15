@@ -3,7 +3,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 108px;
     background: white;
   border-radius: 12px;
   padding: 25px;
@@ -200,7 +199,6 @@ table {
 .portfolio_body {
   flex: 1;
   max-width: 1200px;
-  margin: 108px auto;
   padding: 30px;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
@@ -277,5 +275,131 @@ table {
 
   table {
     font-size: 0.8rem;
+  }
+}
+.tab-btn{
+  min-width: 190px;
+}
+.achievement-form {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 25px;
+}
+
+.form-title {
+  color: #2d3a4b;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+}
+
+.required-star {
+  color: #e74c3c;
+  margin-left: 3px;
+}
+
+.form-grid {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-row label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #4a5568;
+}
+
+.form-input {
+  padding: 12px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+}
+
+.file-upload .file-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-input {
+  position: absolute;
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+}
+
+.file-name {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #718096;
+}
+
+.browse-btn {
+  background: #edf2f7;
+  color: #2d3a4b;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.browse-btn:hover {
+  background: #e2e8f0;
+}
+
+.submit-btn {
+  background: #4299e1;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #3182ce;
+}
+
+@media (max-width: 480px) {
+  .achievement-form {
+    padding: 15px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .file-input-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .browse-btn {
+    width: 100%;
   }
 }

@@ -13,6 +13,7 @@ import AdmissionsPage from './AdmissionsPage';
 import Footer from './Footer';
 import MTC from './MTC'
 import Portfolio from './Portfolio';
+import Schedule from './Shedule';
 
 function App() {
   
@@ -47,7 +48,7 @@ function App() {
         <Route path="/profile" element={<UserProfile/>} />
         <Route path="/AdmissionsPage" element={<AdmissionsPage/>} />
         <Route path='/MilitaryCenter' element={<MTC/>}/>
-        <Route path='/portfolio' element={<Portfolio/>}/>
+        <Route path='/shedule' element={<Schedule/>}/>
       </Routes>
     </Router>
   );

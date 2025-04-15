@@ -55,7 +55,7 @@ const UserProfile = () => {
     },
     {
       id: 'shedule',
-      title: 'Расписание на сегодня',
+      title: 'Расписание',
       summary: [ '8:30-10:00', 'Базы данных', 'А-305' ],
       content: {
         type: 'shedule',

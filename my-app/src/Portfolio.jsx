@@ -97,10 +97,8 @@ const Portfolio = () => {
 
   return (
     <div className="portfolio-container">
-      <Header/>
       
       <div className='portfolio_body'>
-      <h1>Портфолио достижений</h1>
       <div className="tabs-container">
       
       {tabs.map(tab => (
@@ -165,7 +163,6 @@ const Portfolio = () => {
         />
       )}
 
-      <Footer/>
     </div>
   );
 };
@@ -191,35 +188,67 @@ const AddAchievementModal = ({ onClose, onSubmit }) => {
 
   return (
     <ModalAch isOpen onClose={onClose} title="Добавить достижение" width="700px">
-      <h2>Добавить достижение</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Название"
-          required
-          onChange={(e) => setFormData({...formData, title: e.target.value})}
-        />
-        <input
-          type="text"
-          placeholder="Тип/Место"
-          onChange={(e) => setFormData({...formData, type: e.target.value})}
-        />
-        <input
-          type="text"
-          placeholder="Мероприятие"
-          onChange={(e) => setFormData({...formData, event: e.target.value})}
-        />
-        <input
-          type="date"
-          required
-          onChange={(e) => setFormData({...formData, date: e.target.value})}
-        />
+      <form onSubmit={handleSubmit} className="achievement-form">
+      <div className="form-grid">
+    <div className="form-row">
+      <label>Название <span className="required-star">*</span></label>
+      <input
+        type="text"
+        className="form-input"
+        placeholder="Введите название"
+        required
+        onChange={(e) => setFormData({...formData, title: e.target.value})}
+      />
+    </div>
+
+    <div className="form-row">
+      <label>Тип/Место</label>
+      <input
+        type="text"
+        className="form-input"
+        placeholder="Укажите тип или место"
+        onChange={(e) => setFormData({...formData, type: e.target.value})}
+      />
+    </div>
+
+    <div className="form-row">
+      <label>Мероприятие</label>
+      <input
+        type="text"
+        className="form-input"
+        placeholder="Укажите мероприятие"
+        onChange={(e) => setFormData({...formData, event: e.target.value})}
+      />
+    </div>
+
+    <div className="form-row">
+      <label>Дата <span className="required-star">*</span></label>
+      <input
+        type="date"
+        className="form-input date-input"
+        required
+        onChange={(e) => setFormData({...formData, date: e.target.value})}
+      />
+    </div>
+
+    <div className="form-row file-upload">
+      <label>Прикрепить файл</label>
+      <div className="file-input-wrapper">
         <input
           type="file"
+          className="file-input"
           accept="image/*"
           onChange={(e) => setFormData({...formData, image: e.target.files[0]})}
         />
-        <button type="submit">Сохранить</button>
+        <span className="file-name">
+          {formData.image ? formData.image.name : "Файл не выбран"}
+        </span>
+        <button type="button" className="browse-btn">Выбрать файл</button>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" className="submit-btn">Сохранить</button>
       </form>
     </ModalAch>
   );
