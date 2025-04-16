@@ -14,6 +14,7 @@ import Footer from './Footer';
 import MTC from './MTC'
 import Portfolio from './Portfolio';
 import Schedule from './Shedule';
+import AdminPanel from './AdminPanel';
 
 function App() {
   
@@ -49,6 +50,7 @@ function App() {
         <Route path="/AdmissionsPage" element={<AdmissionsPage/>} />
         <Route path='/MilitaryCenter' element={<MTC/>}/>
         <Route path='/shedule' element={<Schedule/>}/>
+        <Route path='/admin' element={<AdminPanel/>}/>
       </Routes>
     </Router>
   );
