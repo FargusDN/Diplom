@@ -11,7 +11,7 @@ const Login = ({ onClose }) =>{
         // Обработка логина
       };
     return(
-        <div className="login_modal-content" onClick={handleFormClick}>
+           <div className="login_modal-content" onClick={handleFormClick}>
             <button 
                 className="close-button" 
                 onClick={onClose}
@@ -36,7 +36,8 @@ const Login = ({ onClose }) =>{
             <button className='LoginForm_form_button_submit' type='submit'>Вход</button>
         </div>
         </form>
-      </div>
+      </div>       
+        
     );
 };
 export default Login;

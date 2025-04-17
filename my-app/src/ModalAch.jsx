@@ -30,7 +30,7 @@ const ModalAch = ({
 
   return (
     <div 
-      className="modal-overlay"
+      className="modal-overlay_ach"
       onClick={closeOnOverlayClick ? onClose : null}
     >
       <div 

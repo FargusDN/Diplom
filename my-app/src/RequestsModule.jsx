@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import './RequestsModule.css';
 
-const RequestsModule = ({ requests, onUpdateRequest }) => {
+const RequestsModule = ({ requests, onUpdateRequest, onModalToggle, onClose }) => {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [editedRequest, setEditedRequest] = useState(null);
 
   const handleRequestClick = (request) => {
     setSelectedRequest(request);
     setEditedRequest({ ...request });
+    onModalToggle(true);
   };
 
   const handleStatusChange = (e) => {
@@ -18,8 +19,15 @@ const RequestsModule = ({ requests, onUpdateRequest }) => {
   };
 
   const saveChanges = () => {
-    onUpdateRequest(editedRequest);
+    if (typeof onUpdateRequest === 'function') {
+      onUpdateRequest(editedRequest);
+    }
+    handleClose(); 
+  };
+  const handleClose = () => {
     setSelectedRequest(null);
+    onModalToggle(false);
+    onClose(); // Уведомляем о закрытии модалки
   };
 
   return (
@@ -46,13 +54,13 @@ const RequestsModule = ({ requests, onUpdateRequest }) => {
       </div>
 
       {selectedRequest && (
-        <div className="modal-overlay_r" onClick={() => setSelectedRequest(null)}>
+        <div className="modal-overlay_r" onClick={handleClose}>
           <div className="request-modal_r" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header_r">
               <h2>Детали заявки #{selectedRequest.id}</h2>
               <button 
                 className="close-btn_r"
-                onClick={() => setSelectedRequest(null)}
+                onClick={handleClose}
               >
                 &times;
               </button>

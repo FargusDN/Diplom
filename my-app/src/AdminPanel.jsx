@@ -4,8 +4,11 @@ import RequestsModule from './RequestsModule';
 import AddUserModal from './AddUserModal';
 
 const AdminPanel = () => {
+  const handleRequestModalClose = () => {
+    setIsRequestModalOpen(false);
+  };
  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-
+ const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
   const handleAddUser = (newUser) => {
     // Логика добавления пользователя
     console.log('Добавлен пользователь:', newUser);
@@ -99,11 +102,11 @@ const AdminPanel = () => {
       <div className="admin-layout">
         {/* Блок заявок справа сверху */}
         <div className="requests-column">
-          <RequestsModule requests={requests} onUpdateRequest={handleUpdateRequest} />
+          <RequestsModule requests={requests} onUpdateRequest={handleUpdateRequest} onModalToggle={setIsRequestModalOpen} onClose={handleRequestModalClose}/>
         </div>
         <div className="users-column">
         <h2>Пользователи</h2>
-        <button  className="add-user-btn" onClick={() => setIsAddModalOpen(true)}>Добавить пользователя</button>
+        <button  className="add-user-btn" onClick={() => setIsAddModalOpen(true)} disabled={isRequestModalOpen}>Добавить пользователя</button>
         <AddUserModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
@@ -140,8 +143,8 @@ const AdminPanel = () => {
       {/* Модальное окно редактирования */}
       {selectedUser && (
         <div className="edit-modal">
-          <div className="modal-content">
-            <div className="modal-header">
+          <div className="modal-content_admin">
+            <div className="modal-header_admin">
               <h2>Редактирование пользователя</h2>
               <button 
                 className="close-btn"

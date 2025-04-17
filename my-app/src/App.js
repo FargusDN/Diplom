@@ -1,13 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import Header from './Header';
 import NewsSlider from './NewsSlider';
-import './main.css'
 import Login from './login';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import StudentProfile from './StudentProfile';
 import UserProfile from './UserProfile';
 import AdmissionsPage from './AdmissionsPage';
 import Footer from './Footer';
@@ -38,7 +35,7 @@ function App() {
             <main>
               {/* <NewsSlider /> */}
               {isLoginVisible && (
-                <div className="modal-overlay" onClick={() => setLoginVisible(false)}>
+                <div className="modal-overlay_login" onClick={() => setLoginVisible(false)}>
                   <Login onClose={() => setLoginVisible(false)} />
                 </div>
               )}

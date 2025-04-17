@@ -86,14 +86,18 @@
     font-size: 1.3rem;
   }
   /* Обновленные стили */
-.modal-content {
+.modal-content_profile {
     width: 90%;
     max-width: 650px;
     padding: 30px;
     border-radius: 12px;
+    background-color: white;
+  }
+  .modal-header_profile{
+    position: relative;
   }
   
-  .modal-body {
+  .modal-body_profile {
     padding: 20px 0;
   }
   
@@ -166,7 +170,7 @@
   
   /* Адаптивность */
   @media (max-width: 480px) {
-    .modal-content {
+    .modal-content_profile {
       padding: 20px;
     }
     
@@ -218,11 +222,11 @@
   .schedule-button{
     margin-top: 50px;
   }
-  .modal-header{
+  .modal-header_profile{
     display: flex;
     justify-content: space-between;
   }
-  .close-btn {
+  .close-btn_profile {
     position: absolute;
     top: 15px;
     right: 20px;
@@ -237,7 +241,7 @@
     z-index: 1;
 }
 
-.close-btn {
+.close-btn_profile {
   /* ... существующие стили ... */
   background: rgba(39, 94, 254, 0.1);
   border-radius: 50%;
@@ -248,7 +252,7 @@
   justify-content: center;
 }
 
-.close-btn:hover {
+.close-btn_profile:hover {
   background: rgba(39, 94, 254, 0.2);
   transform: rotate(90deg) scale(1.1);
 }

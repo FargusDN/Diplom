@@ -191,7 +191,6 @@ table {
 }
 /* Portfolio.css (дополнения) */
 .portfolio-container {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -215,6 +214,7 @@ table {
 }
 
 .table-wrapper {
+  width: 100%;
   overflow-x: auto;
   margin: 25px 0;
   border: 1px solid #f0f0f0;

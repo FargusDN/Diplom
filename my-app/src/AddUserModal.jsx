@@ -32,7 +32,7 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay_us" onClick={onClose}>
       <div className="add-user-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-tabs">
           <button
@@ -49,12 +49,13 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }) => {
           </button>
         </div>
 
-        <form className="modal-content" onSubmit={handleSubmit}>
+        <form className="modal-content_addUser" onSubmit={handleSubmit}>
           {activeTab === 'single' ? (
             <div className="single-add-form">
               <div className="form-group">
                 <label>ФИО:</label>
                 <input
+                className="form-field"
                   type="text"
                   required
                   value={formData.name}
@@ -65,6 +66,7 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }) => {
               <div className="form-group">
                 <label>Роль:</label>
                 <select
+                className="form-field"
                   value={formData.role}
                   onChange={(e) => setFormData({...formData, role: e.target.value})}
                 >
@@ -78,6 +80,7 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }) => {
                   <div className="form-group">
                     <label>Тип зачисления:</label>
                     <select
+                    className="form-field"
                       value={formData.enrollmentType}
                       onChange={(e) => setFormData({...formData, enrollmentType: e.target.value})}
                     >
@@ -89,6 +92,7 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }) => {
                   <div className="form-group">
                     <label>Факультет:</label>
                     <input
+                    className="form-field"
                       type="text"
                       required
                       value={formData.faculty}
@@ -99,6 +103,7 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }) => {
                   <div className="form-group">
                     <label>Группа:</label>
                     <input
+                    className="form-field"
                       type="text"
                       required
                       value={formData.group}
@@ -116,6 +121,7 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }) => {
               <div className="form-group">
                 <label>Загрузить файл (.xlsx, .csv):</label>
                 <input
+                className="form-field"
                   type="file"
                   accept=".xlsx,.csv"
                   onChange={(e) => setFormData({...formData, file: e.target.files[0]})}
