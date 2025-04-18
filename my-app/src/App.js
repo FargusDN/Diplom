@@ -12,6 +12,7 @@ import MTC from './MTC'
 import Portfolio from './Portfolio';
 import Schedule from './Shedule';
 import AdminPanel from './AdminPanel';
+import Analytics from './Analytics';
 
 function App() {
   
@@ -48,6 +49,8 @@ function App() {
         <Route path='/MilitaryCenter' element={<MTC/>}/>
         <Route path='/shedule' element={<Schedule/>}/>
         <Route path='/admin' element={<AdminPanel/>}/>
+        <Route path='/analiticksStudent' element={<Analytics user={{ role: 'student' }}/>}/>
+        <Route path='/analiticksTeacher' element={<Analytics user={{ role: 'teacher' }}/>}/>
       </Routes>
     </Router>
   );
