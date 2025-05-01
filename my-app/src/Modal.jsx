@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Portfolio from "./Portfolio";
 import Schedule from "./Shedule";
+import Zayavky from "./Zayavky";
+import UserSettings from "./UserSettings";
 // Modal.js
 const Modal = ({ isOpen, onClose, title, data }) => {
   const scheduleData = {
@@ -63,37 +65,17 @@ const Modal = ({ isOpen, onClose, title, data }) => {
         );
 
         case 'shedule':
-          return (
-            // <>
-            // <div className="details">
-            //         <p className="_time">Время</p>
-            //         <p className="subject">Предмет</p>
-            //         <p className="room">Кабинет</p>
-            //         <p className="type_of_class">Тип занятия</p>
-            //       </div>
-            //   {data.scheduleData.today.map((item, index) => (
-            //     <div key={index} className="schedule-item">
-            //       <span className="time">{item.time}</span>
-                  
-            //       <div className="details">
-            //         <p className="subject">{item.subject}</p>
-            //         <p className="room">{item.room}</p>
-            //         <p className="type_of_class">{item.type_of_class}</p>
-            //       </div>
-            //     </div>
-            //   ))}
-            //   <a href={data.scheduleLink} className="schedule-button">
-            //   Посмотреть полное расписание
-            // </a>
-            // </>
-           
-           
+          return (      
           <Schedule weekRange="14.04.2025-19.04.2025" scheduleData={scheduleData} group={"ЦИС-49"}/>
-            
-           
-            
           );
-  
+        case 'zayavky':
+          return(
+            <Zayavky/>
+          );
+        case 'settings':
+          return(
+            <UserSettings/>
+          );
         default:
           return <p>{data?.description || 'Информация не найдена'}</p>;
     }

@@ -82,6 +82,24 @@ const UserProfile = () => {
         description: 'Здесь отобразятся ваши последние достижения и научные труды:',
         courses: ['Web-разработка', 'Data Science', 'Английский язык']
       }
+    },
+    {
+      id: 'zayavky',
+      title: 'Мои заявки',
+      summary: [ 'Статус последней заявки: Готова' ],
+      content: {
+        type: 'zayavky',
+        description: 'Здесь отобразятся ваши заявки:',
+      }
+    },
+    {
+      id: 'settings',
+      title: 'Настройки',
+      summary: [ 'Статус последней заявки: Готова' ],
+      content: {
+        type: 'settings',
+        description: 'Настройки:',
+      }
     }
     // ... другие карточки
   ];

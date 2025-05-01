@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Analytics.css';
+import MonthSlider from './MonthSlider';
 
 const Analytics = ({ user }) => {
   // Состояния
@@ -10,11 +11,11 @@ const Analytics = ({ user }) => {
   const [selectedGroup, setSelectedGroup] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [lessonDates, setLessonDates] = useState([
-    '2024-04-15',
-    '2024-04-19',
-    '2024-04-21',
-    '2024-04-22',
-    '2024-04-29'
+    '15',
+    '19',
+    '21',
+    '22',
+    '29'
   ]);
   
   // Данные об оценках
@@ -23,8 +24,8 @@ const Analytics = ({ user }) => {
       id: 1,
       student: 'Иванов И.И.', 
       grades: [
-        { date: '2024-04-15', value: 4 },
-        { date: '2024-04-22', value: 5 },
+        { date: '15', value: 4 },
+        { date: '22', value: 5 },
       ],
       attendance: 95
     },
@@ -32,7 +33,7 @@ const Analytics = ({ user }) => {
       id: 2,
       student: 'Петрова А.С.', 
       grades: [
-        { date: '2024-04-15', value: 5 },
+        { date: '15', value: 5 },
       ],
       attendance: 100
     }
@@ -43,8 +44,8 @@ const Analytics = ({ user }) => {
       id: 1,
       lesson: 'Базы данных', 
       grades: [
-        { date: '2024-04-15', value: 4 },
-        { date: '2024-04-22', value: 5 },
+        { date: '15', value: 4 },
+        { date: '22', value: 5 },
       ],
       attendance: 95
     },
@@ -52,7 +53,7 @@ const Analytics = ({ user }) => {
       id: 2,
       lesson: 'WEB - разработка', 
       grades: [
-        { date: '2024-04-15', value: 5 },
+        { date: '15', value: 5 },
       ],
       attendance: 100
     }
@@ -85,7 +86,7 @@ const Analytics = ({ user }) => {
   };
 
   const addNewLessonDate = (date) => {
-    const formattedDate = date.toISOString().split('T')[0];
+    const formattedDate = date.toISOString().split('T')[0].split('-')[2];
     if (!lessonDates.includes(formattedDate)) {
       setLessonDates([...lessonDates, formattedDate]);
     }
@@ -109,7 +110,7 @@ const Analytics = ({ user }) => {
   return (
     <div className="analytics-container">
       <h1>Электронный журнал</h1>
-      
+      <MonthSlider/>
       {user.role === 'teacher' ? (
         <div className="teacher-view">
           <div className="filters">
@@ -133,22 +134,24 @@ const Analytics = ({ user }) => {
               ))}
             </select>
 
+              
             <div className="add-lesson-date">
+            {selectedGroup && selectedSubject ?(
               <DatePicker
                 selected={new Date()}
                 onChange={addNewLessonDate}
-                dateFormat="yyyy-MM-dd"
+                dateFormat="dd"
                 placeholderText="Добавить дату занятия"
-              />
+              />):(<div></div>)}
             </div>
           </div>
 
           {selectedGroup && selectedSubject && (
             <div className="journal-table">
-              <table>
+              <table className="scrollable-table">
                 <thead>
                   <tr>
-                    <th>Студент</th>
+                    <th className="fixed-first">Студент</th>
                     {lessonDates.map(date => (
                       <th key={date}>
                         <div className="date-header">
@@ -162,14 +165,14 @@ const Analytics = ({ user }) => {
                         </div>
                       </th>
                     ))}
-                    <th>Средний балл</th>
-                    <th>Посещаемость</th>
+                    <th className="fixed-penultimate">Средний балл</th>
+                    <th className="fixed-last">Посещаемость</th>
                   </tr>
                 </thead>
                 <tbody>
                   {grades.map(student => (
-                    <tr key={student.id}>
-                      <td>{student.student}</td>
+                    <tr  key={student.id}>
+                      <td className="fixed-first">{student.student}</td>
                       {lessonDates.map(date => {
                         const grade = student.grades.find(g => g.date === date);
                         return (
@@ -195,8 +198,8 @@ const Analytics = ({ user }) => {
                           </td>
                         );
                       })}
-                      <td>{calculateAverage(student.grades)}</td>
-                      <td>{student.attendance}%</td>
+                      <td className="fixed-penultimate">{calculateAverage(student.grades)}</td>
+                      <td className="fixed-last">{student.attendance}%</td>
                     </tr>
                   ))}
                 </tbody>
@@ -231,13 +234,7 @@ const Analytics = ({ user }) => {
                         return (
                             <td key={date}>
                             {grade ? (
-                              <input
-                                type="number"
-                                value={grade.value}
-                                min="2"
-                                max="5"
-                                readOnly // Добавлено, если не нужно редактирование
-                              />
+                              <p>{grade.value}</p>
                             ) : (
                               '-' // Или любой другой плейсхолдер
                             )}

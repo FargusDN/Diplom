@@ -102,7 +102,7 @@
     flex-direction: column;
   }
   .student-profile-container{
-    margin-top: 108px;
+    margin:120px 50px ;
   }
   /* Стили для контейнера */
 .student-profile-container {
@@ -123,6 +123,7 @@
     gap: 25px;
     max-width: 1400px;
     margin: 0 auto;
+    grid-template-rows: 300px;
   }
   
   /* Стили карточек */
@@ -134,6 +135,7 @@
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    max-height: 300px;
   }
   
   .info-card:hover {
