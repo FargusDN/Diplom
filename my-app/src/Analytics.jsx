@@ -7,9 +7,27 @@ import MonthSlider from './MonthSlider';
 const Analytics = ({ user }) => {
   // Состояния
   const [groups] = useState(['ЦИС-49', 'ПИ-31']);
-  const [subjects] = useState(['Базы данных', 'Веб-программирование']);
+  const [subjects] = useState(
+    [
+      {
+        id:1,
+        name: 'Базы данных',
+        type_of_subject: 'Лекция'
+      },
+      {
+        id:2,
+        name: 'Веб-программирование',
+        type_of_subject: 'Практика'
+      },
+      
+    ]
+  );
   const [selectedGroup, setSelectedGroup] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState(
+    {
+      name:'Выберите предмет'
+    }
+  );
   const [lessonDates, setLessonDates] = useState([
     '15',
     '19',
@@ -42,7 +60,8 @@ const Analytics = ({ user }) => {
   const lessons = [
     { 
       id: 1,
-      lesson: 'Базы данных', 
+      lesson: 'Базы данных',
+      type:'Лекция', 
       grades: [
         { date: '15', value: 4 },
         { date: '22', value: 5 },
@@ -52,6 +71,7 @@ const Analytics = ({ user }) => {
     { 
       id: 2,
       lesson: 'WEB - разработка', 
+      type:'Практика', 
       grades: [
         { date: '15', value: 5 },
       ],
@@ -123,15 +143,16 @@ const Analytics = ({ user }) => {
                 <option key={group} value={group}>{group}</option>
               ))}
             </select>
-
+           
             <select
-              value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
+              value={selectedSubject.name}
+              onChange={(e) => setSelectedSubject(subjects.find( subj => subj.id == e.target.value) )}
             >
               <option value="">Выберите предмет</option>
               {subjects.map(subject => (
-                <option key={subject} value={subject}>{subject}</option>
+                <option key={subject.id} value={subject.id}>{subject.name +" ("+subject.type_of_subject+")"}</option>
               ))}
+              {console.log(selectedSubject)}
             </select>
 
               
@@ -146,7 +167,7 @@ const Analytics = ({ user }) => {
             </div>
           </div>
 
-          {selectedGroup && selectedSubject && (
+          {selectedGroup && selectedSubject.name!="Выберите предмет" && (
             <div className="journal-table">
               <table className="scrollable-table">
                 <thead>
@@ -165,8 +186,12 @@ const Analytics = ({ user }) => {
                         </div>
                       </th>
                     ))}
-                    <th className="fixed-penultimate">Средний балл</th>
-                    <th className="fixed-last">Посещаемость</th>
+                    {selectedSubject.type_of_subject == 'Практика' &&(
+                      <th style={{color:'white'}} className="fixed-last">Средний балл</th>
+                    )}
+                    {selectedSubject.type_of_subject == 'Лекция'&&(
+                      <th style={{color:'white'}} className="fixed-last">Посещаемость</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -198,8 +223,12 @@ const Analytics = ({ user }) => {
                           </td>
                         );
                       })}
-                      <td className="fixed-penultimate">{calculateAverage(student.grades)}</td>
-                      <td className="fixed-last">{student.attendance}%</td>
+                      {selectedSubject.type_of_subject == 'Практика' &&(
+                      <th className="fixed-last">{calculateAverage(student.grades)}</th>
+                    )}
+                    {selectedSubject.type_of_subject == 'Лекция' &&(
+                      <th className="fixed-last">{student.attendance}%</th>
+                    )}
                     </tr>
                   ))}
                 </tbody>

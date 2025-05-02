@@ -1,0 +1,108 @@
+
+@media (max-width: 1920px) {
+    .notification-center{
+        width: 400px;
+    } 
+}
+@media (max-width: 1440px) {
+    .notification-center{
+        width: 300px;
+        right: 0;
+    } 
+}
+@media (max-width: 1080px) {
+    .notification-center{
+        width: 200px;
+    } 
+}
+.notification-center {
+    max-width: 500px;
+    min-width: 200px;
+    margin: 20px auto;
+    position: absolute;
+    background-color: white;
+    right: -130px;
+    top: 47px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  .notifications-list {
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+  .notification-items{
+    border-bottom: 1px solid #eee;
+  }
+  
+  .notification-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    /* border: 1px solid red; */
+
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-bottom: 5px;
+    gap: 30px;
+  }
+  
+  .notification-item:hover {
+    background: #f9f9f9;
+  }
+  
+  .notification-badge {
+    width: 12px;
+    height: 12px;
+    /* background: #2196F3; */
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .mes-modal-overlay {
+    position: fixed;
+    top: 500px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    
+  }
+  
+  .notification-modal {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .status-готова { color: #4CAF50; }
+  .status-важное { color: #f44336; }

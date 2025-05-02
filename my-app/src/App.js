@@ -14,6 +14,7 @@ import Schedule from './Shedule';
 import AdminPanel from './AdminPanel';
 import Analytics from './Analytics';
 import Zayavky from './Zayavky';
+import Message from './Message';
 
 function App() {
   
@@ -54,6 +55,7 @@ function App() {
         <Route path='/analiticksTeacher' element={<Analytics user={{ role: 'teacher' }}/>}/>
         <Route path='/zayavky' element={<Zayavky/>}/>
         <Route path='/admissions' element={<AdmissionsPage/>}/>
+        <Route path='/message' element={<Message/>}/>
       </Routes>
     </Router>
   );

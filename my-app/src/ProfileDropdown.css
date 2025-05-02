@@ -2,8 +2,28 @@
 .profile-dropdown {
     position: relative;
     margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
   }
-  
+  .message{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    position: relative;
+  }
+  .newMessage{
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 10px;
+    width: 10px;
+    background-color: red;
+    border-radius: 50%;
+    
+  }
   .profile-icon {
     width: 45px;
     height: 45px;

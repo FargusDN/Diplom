@@ -121,17 +121,13 @@
     left: 0;
     z-index: 2;
   }
-  
-  .fixed-penultimate {
-    position: sticky;
-    right: 125px;
-    z-index: 2;
-  }
+
   
   .fixed-last {
     position: sticky;
     right: 0;
     z-index: 2;
+    color: black;
   }
   .scrollable-table tbody .fixed-first {
     z-index: 1;
