@@ -6,6 +6,14 @@ import MonthSlider from './MonthSlider';
 
 const Analytics = ({ user }) => {
   // Состояния
+  const [hoveredGrade, setHoveredGrade] = useState(null);
+
+  // Генерируем уникальный ключ для каждой ячейки
+  const getGradeKey = (studentId, date) => `${studentId}-${date}`;
+  const [isOpen, setIsOpen] = useState(false)
+  const [newLesson, setNewLesson] = useState(new Date());
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [groups] = useState(['ЦИС-49', 'ПИ-31']);
   const [subjects] = useState(
     [
@@ -23,19 +31,31 @@ const Analytics = ({ user }) => {
     ]
   );
   const [selectedGroup, setSelectedGroup] = useState('');
+  const [selectedSubject2, setSelectedSubject2] = useState('');
   const [selectedSubject, setSelectedSubject] = useState(
     {
       name:'Выберите предмет'
     }
   );
+
   const [lessonDates, setLessonDates] = useState([
-    '15',
-    '19',
-    '21',
-    '22',
-    '29'
+    "1",  "2",  "3",  "4",  "5",  "6",  "7",
+  "8",  "9",  "10", "11", "12", "13", "14",
+  "15", "16", "17", "18", "19", "20", "21",
+  "22", "23", "24", "25", "26", "27", "28",
+  "29", "30", "31"
   ]);
-  
+  const handleAddClick = () => {
+    setIsDatePickerOpen(true);
+    setIsOpen(true)
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    setIsDatePickerOpen(false);
+    // Ваша логика для добавления даты занятия
+    addNewLessonDate(date);
+  };
   // Данные об оценках
   const [grades, setGrades] = useState([
     { 
@@ -146,25 +166,46 @@ const Analytics = ({ user }) => {
            
             <select
               value={selectedSubject.name}
-              onChange={(e) => setSelectedSubject(subjects.find( subj => subj.id == e.target.value) )}
+              onChange={(e) => {setSelectedSubject(subjects.find( subj => subj.name == e.target.value) );console.log(selectedSubject)}}
             >
               <option value="">Выберите предмет</option>
               {subjects.map(subject => (
-                <option key={subject.id} value={subject.id}>{subject.name +" ("+subject.type_of_subject+")"}</option>
+                <option key={subject.id} value={subject.name}>{subject.name +" ("+subject.type_of_subject+")"}</option>
               ))}
-              {console.log(selectedSubject)}
             </select>
 
               
             <div className="add-lesson-date">
-            {selectedGroup && selectedSubject ?(
-              <DatePicker
-                selected={new Date()}
-                onChange={addNewLessonDate}
-                dateFormat="dd"
-                placeholderText="Добавить дату занятия"
-              />):(<div></div>)}
+            {selectedGroup && selectedSubject.name!="Выберите предмет" ?(
+              <button onClick={handleAddClick}>Добавить занятие</button>
+              ):(<div></div>)}
             </div>
+            {isDatePickerOpen && isOpen &&(
+              <div className='addNewLessonModal'>
+                <button className="close-btn_profile" onClick={()=>{setIsOpen(false)}}>&times;</button>
+                <h2 >Добавление занятия</h2>
+                <div>
+                <p>Выберите дату занятия</p>
+                <DatePicker
+              selected={new Date()}
+              onChange={setNewLesson}
+              dateFormat="dd-MM-yyyy"
+              placeholderText="Добавить дату занятия"
+            />
+                </div>
+                
+            <button className='addLessonBtn' onClick={
+              () => {
+                const formattedDate = newLesson.toISOString().split('T')[0].split('-')[2];
+                if (!lessonDates.includes(formattedDate)) {
+                  setLessonDates([...lessonDates, formattedDate]);
+                }
+              }
+            }>Добавить занятие</button>
+              </div>
+              
+            )}
+            
           </div>
 
           {selectedGroup && selectedSubject.name!="Выберите предмет" && (
@@ -177,17 +218,15 @@ const Analytics = ({ user }) => {
                       <th key={date}>
                         <div className="date-header">
                           {date}
-                          <button 
-                            className="edit-date-btn"
-                            onClick={() => console.log('Редактирование даты')}
-                          >
-                            ✎
-                          </button>
                         </div>
                       </th>
                     ))}
                     {selectedSubject.type_of_subject == 'Практика' &&(
-                      <th style={{color:'white'}} className="fixed-last">Средний балл</th>
+                      <th style={{display:'flex'}} className="fixed-last">
+                        <th className='thChild'>Средний балл</th>
+                        <th className='thChild'>Посещаемость</th>
+                      </th>
+                      
                     )}
                     {selectedSubject.type_of_subject == 'Лекция'&&(
                       <th style={{color:'white'}} className="fixed-last">Посещаемость</th>
@@ -203,28 +242,40 @@ const Analytics = ({ user }) => {
                         return (
                           <td key={date}>
                             {grade ? (
-                              <input
-                                type="number"
-                                value={grade.value}
-                                min="2"
-                                max="5"
-                                onChange={(e) => 
-                                  handleGradeChange(student.id, date, e.target.value)
-                                }
-                              />
-                            ) : (
-                              <button
-                                className="add-grade-btn"
-                                onClick={() => addNewGrade(student.id, date)}
-                              >
-                                +
-                              </button>
-                            )}
+  <input
+    type="number"
+    value={grade.value}
+    min="2"
+    max="5"
+    onChange={(e) => handleGradeChange(student.id, date, e.target.value)}
+    className="grade-input"
+  />
+) : (
+  <div 
+    className="grade-placeholder"
+    onMouseEnter={() => setHoveredGrade(getGradeKey(student.id, date))}
+    onMouseLeave={() => setHoveredGrade(null)}
+  >
+    {hoveredGrade === getGradeKey(student.id, date) ? (
+      <button
+        className="add-grade-btn"
+        onClick={() => addNewGrade(student.id, date)}
+      >
+        +
+      </button>
+    ) : (
+      <div className="empty-grade" />
+    )}
+  </div>
+)}
                           </td>
                         );
                       })}
                       {selectedSubject.type_of_subject == 'Практика' &&(
-                      <th className="fixed-last">{calculateAverage(student.grades)}</th>
+                        <th style={{display:'flex'}} className="fixed-last">
+                          <th className='thChild'>{calculateAverage(student.grades)}</th>
+                          <th className='thChild'>{student.attendance}%</th>
+                        </th>
                     )}
                     {selectedSubject.type_of_subject == 'Лекция' &&(
                       <th className="fixed-last">{student.attendance}%</th>

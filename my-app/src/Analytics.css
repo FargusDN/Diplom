@@ -33,21 +33,32 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background: none;
   }
-  
+  tr{
+   background: none; 
+  }
   th, td {
-    padding: 12px;
     border: 1px solid #ddd;
     text-align: center;
-    min-width: 100px;
+    padding: 5px 0;
+    
   }
-  
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
   input[type="number"] {
-    width: 60px;
-    padding: 8px;
+    width: 15px;
+    height: 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
     text-align: center;
+    -webkit-appearance: none; 
+    margin: 0;
+    -moz-appearance: textfield;
   }
   
   .add-grade-btn {
@@ -55,7 +66,6 @@
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 8px 12px;
     cursor: pointer;
     transition: background 0.3s;
   }
@@ -66,7 +76,6 @@
   
   .date-header {
     position: relative;
-    padding: 10px;
   }
   
   .edit-date-btn {
@@ -120,14 +129,21 @@
     position: sticky;
     left: 0;
     z-index: 2;
+    
   }
-
-  
+ 
+  .fixed-last th  {
+    flex-grow: 1;
+    flex-shrink: 2;
+    white-space: wrap;
+    
+  }
   .fixed-last {
     position: sticky;
     right: 0;
     z-index: 2;
     color: black;
+    padding: 0;
   }
   .scrollable-table tbody .fixed-first {
     z-index: 1;
@@ -137,10 +153,81 @@
   .scrollable-table tbody .fixed-penultimate,
   .scrollable-table tbody .fixed-last {
     background-color: white;
-    margin-right:5px ;
     border-left: 1px solid #ddd;
   }
   @media (max-width: 768px) {
     .fixed-penultimate { right: 80px; min-width: 80px; }
     .fixed-last { min-width: 80px; }
+  }
+  .react-datepicker-popper{
+    z-index: 1000;
+  }
+  .add-lesson-date{
+    position: relative;
+  }
+  .addNewLessonModal{
+    background: white;
+    border: 1px solid black;
+    border-radius: 15px;
+    position: absolute;
+    z-index: 2000;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height:200px ;
+    height: 70%;
+    left: 40%;
+    top: 55%;
+  }
+  .react-datepicker__input-container input{
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+  }
+  .addLessonBtn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  .addLessonBtn{
+    padding: 10px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    display: inline-block;
+    border-radius: 100px;
+    transition: all .2s;
+
+    cursor: pointer;
+  }
+  .addLessonHeader{
+    position: relative;
+    width: 100%;
+  }
+
+  .grade-input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .grade-placeholder {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .empty-grade {
+    width: 20px;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    transition: all 0.5s ease;
   }
