@@ -4,7 +4,7 @@ from typing import List
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 
-from database import Base
+from databasePostgres import Base
 
 
 # Модель пользователя

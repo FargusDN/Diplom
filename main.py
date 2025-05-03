@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_db
+from databasePostgres import get_db
 import services
 from Schemas import InstitutiesAddSchema, UserAddSchema, FacultiesAddSchema, StudyGroupAddSchema, UserInfoAddSchema
 

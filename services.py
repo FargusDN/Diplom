@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_db
+from databasePostgres import get_db
 from models.postgresqlModel import User, Institutes, Faculties, StudyGroup, UserInfo
 from Schemas import UserAddSchema, InstitutiesAddSchema, FacultiesAddSchema, StudyGroupAddSchema, UserInfoAddSchema
 import logging
