@@ -45,12 +45,11 @@ const UserProfile = () => {
     },
     {
       id: 'education',
-      title: 'Допобразование',
-      summary: ['Курсов: 5', 'Рекомендуемый: Web-разработка'],
+      title: 'Журнал',
+      summary: ['Курсов: 4', 'Сейчас: 2 семестр 2-го курса'],
       content: {
-        type: 'courses',
-        description: 'Доступные программы дополнительного образования:',
-        courses: ['Web-разработка', 'Data Science', 'Английский язык']
+        type: 'education',
+        description: 'Моиоценки:',
       }
     },
     {

@@ -15,6 +15,7 @@ import AdminPanel from './AdminPanel';
 import Analytics from './Analytics';
 import Zayavky from './Zayavky';
 import Message from './Message';
+import AnaliticsTest from './AnaliticsTest';
 
 function App() {
   
@@ -56,6 +57,7 @@ function App() {
         <Route path='/zayavky' element={<Zayavky/>}/>
         <Route path='/admissions' element={<AdmissionsPage/>}/>
         <Route path='/message' element={<Message/>}/>
+        <Route path='/analitic' element={<AnaliticsTest/>}/>
       </Routes>
     </Router>
   );

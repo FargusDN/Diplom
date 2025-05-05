@@ -131,12 +131,19 @@ input::-webkit-inner-spin-button {
     z-index: 2;
     
   }
- 
+ .fixed-firsttd{
+  background: white;
+ }
+ td p{
+  padding: 0;
+  margin: 0;
+ }
   .fixed-last th  {
     flex-grow: 1;
     flex-shrink: 2;
     white-space: wrap;
-    
+    flex-basis: 100px;
+    height: 37px;
   }
   .fixed-last {
     position: sticky;
@@ -157,7 +164,7 @@ input::-webkit-inner-spin-button {
   }
   @media (max-width: 768px) {
     .fixed-penultimate { right: 80px; min-width: 80px; }
-    .fixed-last { min-width: 80px; }
+    .fixed-last { min-width: 115px; }
   }
   .react-datepicker-popper{
     z-index: 1000;
@@ -231,3 +238,48 @@ input::-webkit-inner-spin-button {
     border-radius: 4px;
     transition: all 0.5s ease;
   }
+  .theadLast{
+    width:115px;
+    height: auto;
+    transition: word-break 1.4s, width 1.4s;
+  }
+  .add-lesson-date button{
+    outline:none;
+  height: 40px;
+  text-align: center;
+  width: 130px;
+  border-radius:40px;
+  background: #fff;
+  border: 2px solid green;
+  color:green;
+  letter-spacing:1px;
+  text-shadow:0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  }
+  .add-lesson-date button:hover{
+    color:white;
+    background: green;
+  }
+  @media (max-width: 768px) {
+    .theadLast{
+      height: auto;
+      width: auto;
+      word-break:break-all;
+      transition: width 1.4s;
+    }
+    .month-slider{
+      gap: 0;
+    }
+    .month-container{
+      gap: 0;
+    }
+    .adjacent-month{
+      min-width: 0;
+      padding: 15px;
+    }
+    .addNewLessonModal{
+      left: 15%;
+    }
+  }
+  

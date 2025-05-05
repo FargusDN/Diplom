@@ -53,3 +53,16 @@
     color: #666;
     margin-top: 5px;
   }
+
+  @media (max-width: 768px) {
+    .month-slider{
+      gap: 0;
+    }
+    .month-container{
+      gap: 0;
+    }
+    .adjacent-month{
+      min-width: 0;
+      padding: 10px;
+    }
+  }

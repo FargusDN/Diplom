@@ -7,6 +7,7 @@ import Portfolio from "./Portfolio";
 import Schedule from "./Shedule";
 import Zayavky from "./Zayavky";
 import UserSettings from "./UserSettings";
+import Analytics from "./Analytics";
 // Modal.js
 const Modal = ({ isOpen, onClose, title, data }) => {
   const scheduleData = {
@@ -52,16 +53,9 @@ const Modal = ({ isOpen, onClose, title, data }) => {
           </>
         );
       
-      case 'courses':
+      case 'education':
         return (
-          <>
-            <p>{data.description}</p>
-            <ul className="courses-list">
-              {data.courses.map((course, i) => (
-                <li key={i}>{course}</li>
-              ))}
-            </ul>
-          </>
+          <Analytics user={{ role: 'student' }}/>
         );
 
         case 'shedule':

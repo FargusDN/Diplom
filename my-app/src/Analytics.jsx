@@ -149,7 +149,6 @@ const Analytics = ({ user }) => {
 
   return (
     <div className="analytics-container">
-      <h1>Электронный журнал</h1>
       <MonthSlider/>
       {user.role === 'teacher' ? (
         <div className="teacher-view">
@@ -173,40 +172,7 @@ const Analytics = ({ user }) => {
                 <option key={subject.id} value={subject.name}>{subject.name +" ("+subject.type_of_subject+")"}</option>
               ))}
             </select>
-
-              
-            <div className="add-lesson-date">
-            {selectedGroup && selectedSubject.name!="Выберите предмет" ?(
-              <button onClick={handleAddClick}>Добавить занятие</button>
-              ):(<div></div>)}
-            </div>
-            {isDatePickerOpen && isOpen &&(
-              <div className='addNewLessonModal'>
-                <button className="close-btn_profile" onClick={()=>{setIsOpen(false)}}>&times;</button>
-                <h2 >Добавление занятия</h2>
-                <div>
-                <p>Выберите дату занятия</p>
-                <DatePicker
-              selected={new Date()}
-              onChange={setNewLesson}
-              dateFormat="dd-MM-yyyy"
-              placeholderText="Добавить дату занятия"
-            />
-                </div>
-                
-            <button className='addLessonBtn' onClick={
-              () => {
-                const formattedDate = newLesson.toISOString().split('T')[0].split('-')[2];
-                if (!lessonDates.includes(formattedDate)) {
-                  setLessonDates([...lessonDates, formattedDate]);
-                }
-              }
-            }>Добавить занятие</button>
-              </div>
-              
-            )}
-            
-          </div>
+          </div> 
 
           {selectedGroup && selectedSubject.name!="Выберите предмет" && (
             <div className="journal-table">
@@ -223,8 +189,8 @@ const Analytics = ({ user }) => {
                     ))}
                     {selectedSubject.type_of_subject == 'Практика' &&(
                       <th style={{display:'flex'}} className="fixed-last">
-                        <th className='thChild'>Средний балл</th>
-                        <th className='thChild'>Посещаемость</th>
+                        <th className='theadLast'>Средний балл</th>
+                        <th className='theadLast'>Посещаемость</th>
                       </th>
                       
                     )}
@@ -293,7 +259,7 @@ const Analytics = ({ user }) => {
               <table>
                 <thead>
                   <tr>
-                    <th>Предмет</th>
+                    <th className="fixed-first">Предмет</th>
                     {lessonDates.map(date => (
                       <th key={date}>
                         <div className="date-header">
@@ -301,14 +267,16 @@ const Analytics = ({ user }) => {
                         </div>
                       </th>
                     ))}
-                    <th>Средний балл</th>
-                    <th>Посещаемость</th>
+                    <th style={{display:'flex'}} className="fixed-last">
+                        <th className='theadLast'>Средний балл</th>
+                        <th className='theadLast'>Посещаемость</th>
+                      </th>
                   </tr>
                 </thead>
                 <tbody>
                   {lessons.map(lesson => (
                     <tr key={lesson.id}>
-                      <td>{lesson.lesson}</td>
+                      <td className="fixed-first fixed-firsttd">{lesson.lesson}</td>
                       {lessonDates.map(date => {
                         const grade = lesson.grades.find(g => g.date === date);
                         return (
@@ -321,8 +289,10 @@ const Analytics = ({ user }) => {
                           </td>
                         );
                       })}
-                      <td>{calculateAverage(lesson.grades)}</td>
-                      <td>{lesson.attendance}%</td>
+                      <th style={{display:'flex'}} className="fixed-last">
+                          <th className='thChild'>{calculateAverage(lesson.grades)}</th>
+                          <th className='thChild'>{lesson.attendance}%</th>
+                        </th>
                     </tr>
                   ))}
                 </tbody>
