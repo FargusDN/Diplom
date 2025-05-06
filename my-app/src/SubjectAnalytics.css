@@ -29,7 +29,7 @@
     background: #f0f0f0;
   }
   .recharts-legend-wrapper{
-    bottom: 0;
+    bottom: 0 !important;
   }
   .timeInterval{
     margin: 20px;

@@ -2,8 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import './SubjectAnalytics.css'; // Создайте этот файл для стилей
 import MonthSlider from './MonthSlider';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import pdfMake from 'pdfmake/build/pdfmake';
+import html2canvas from 'html2canvas'
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+// Пример корректного импорта
+import RobotoMedium from './fonts/Roboto-Medium.ttf';
+
+
+
 
 const SubjectAnalytics = ({ data, role, groups, subjects = [] }) => {
   // Состояния для управления UI
@@ -18,46 +24,105 @@ const SubjectAnalytics = ({ data, role, groups, subjects = [] }) => {
   const filteredGroups = groups.filter(group =>
     group.name.toLowerCase().includes(searchText.toLowerCase())
   );
-  const [isMounted, setIsMounted] = useState(false);
-
-  // Отслеживаем монтирование компонента
-  useEffect(() => {
-    setIsMounted(true);
-    return () => setIsMounted(false);
-  }, []);
 
   const generateReport = async (data, chartRef) => {
-    if (!isMounted || !chartRef.current) {
-      console.error('Элемент не найден или компонент не смонтирован');
+    // Проверка наличия данных
+    if (!data || data.length === 0) {
+      alert('Нет данных для генерации отчета');
       return;
     }
+  
     // Анализ данных
+    const analyzeData = (data) => {
+      const trends = {
+        attendanceTrend: '',
+        scoreTrend: ''
+      };
+  
+      if (data.length > 1) {
+        const first = data[0];
+        const last = data[data.length - 1];
+        
+        trends.attendanceTrend = last.attendance > first.attendance 
+          ? 'положительная' 
+          : last.attendance < first.attendance 
+            ? 'отрицательная' 
+            : 'стабильная';
+  
+        trends.scoreTrend = last.averageScore > first.averageScore 
+          ? 'положительная' 
+          : last.averageScore < first.averageScore 
+            ? 'отрицательная' 
+            : 'стабильная';
+      }
+      
+      return trends;
+    };
+    const canvas = await html2canvas(chartRef.current, {
+      useCORS: true, // Для обхода CORS
+      logging: true,  // Для отладки
+      scale: 2        // Увеличиваем качество
+    });
+
+    // 2. Получаем Data URL изображения
+    const imgData = canvas.toDataURL('image/png');
+    const trends = analyzeData(data);
+    
     const analysis = {
       totalMonths: data.length,
-      avgAttendance: Math.round(data.reduce((sum, item) => sum + item.attendance, 0)) / data.length,
-      avgScore: (data.reduce((sum, item) => sum + item.averageScore, 0)) / data.length,
+      avgAttendance: (data.reduce((sum, item) => sum + item.attendance, 0) / data.length).toFixed(1),
+      avgScore: (data.reduce((sum, item) => sum + item.averageScore, 0) / data.length).toFixed(2),
       bestMonth: data.reduce((best, current) => 
-        (current.averageScore > best.averageScore ? current : best), data[0])
+        (current.averageScore > best.averageScore ? current : best), data[0]),
+      ...trends
     };
-    try {
-      const canvas = await html2canvas(chartRef.current, {
-        useCORS: true, // Для корректного рендера внешних ресурсов
-        logging: true, // Включите логирование для отладки
-      });
-
-      const pdf = new jsPDF('landscape');
-      const imgData = canvas.toDataURL('image/png');
-      const imgWidth = 280;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-      pdf.save('report.pdf');
-    } catch (error) {
-      console.error('Ошибка при генерации PDF:', error);
-    }
+  
+   
+    // pdfMake.vfs = {
+    //   ...pdfFonts.pdfMake.vfs,
+    //   'Roboto-Medium.ttf': RobotoMedium
+    // };
+    pdfMake.fonts = {
+      Roboto: {
+        normal: 'Roboto-Regular.ttf',
+        bold: 'Roboto-Bold.ttf',
+        italics: 'Roboto-Italic.ttf',
+        bolditalics: 'Roboto-BoldItalic.ttf',
+        medium: 'Roboto-Medium.ttf' // Добавляем Medium
+      }};
+    const docDefinition = {
+      content: [
+        { text: 'Аналитический отчет' },
+        // { text: 'Выбранная группа: '+selectedGroup.value},
+        // { text: 'Выбранный предмет: '+selectedSubject.value},
+          { 
+            image: imgData,
+            width: 500,
+            margin: [0, 10, 0, 20]
+          },
+        { text: `Период: ${data[0].month} - ${data[data.length-1].month}` },
+        { text: `Средний балл: ${analysis.avgScore}`, margin: [0, 10] },
+        { text: `Посещаемость: ${analysis.avgAttendance}%` },
+        { text: `Тренд успеваемости: ${analysis.scoreTrend}` },
+        { text: `Тренд посещаемости: ${analysis.attendanceTrend}` }
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10]
+        }
+      },
+      defaultStyle: {
+        font: 'Roboto'
+      }
+    };
+  
+    // Генерация PDF
+    pdfMake.createPdf(docDefinition).download('report.pdf');
   };
   return (
-    <div className="analytics-container">
+    <div className="analytics-container" >
     {role === 'teacher' && (
         <div className="groups-column">
           <div 
@@ -198,7 +263,7 @@ const SubjectAnalytics = ({ data, role, groups, subjects = [] }) => {
       )}
 
       {/* Основной график */}
-      <div className="chart-container">
+      <div className="chart-container" ref={chartRef}>
         <ComposedChart
           width={1200}
           height={400}
@@ -253,9 +318,7 @@ const SubjectAnalytics = ({ data, role, groups, subjects = [] }) => {
         </ComposedChart>
       </div>
       <button 
-        onClick={() => {generateReport(data, chartRef);console.log('Chart ref:', chartRef.current);
-          console.log('Component mounted:', isMounted);
-          console.log('Data:', data)}}
+        onClick={() => {generateReport(data, chartRef);}}
         style={{ margin: '20px', padding: '10px 20px' }}
         disabled={!data?.length}
       >
