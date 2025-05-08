@@ -4,6 +4,7 @@ import './UserProfile.css';
 import Modal from './Modal';
 import Header from './Header';
 import UserLogo from './imgs/userLogo.jpg'
+import { Link } from 'react-router-dom';
 
 
 const UserProfile = () => {
@@ -49,7 +50,7 @@ const UserProfile = () => {
       summary: ['Курсов: 4', 'Сейчас: 2 семестр 2-го курса'],
       content: {
         type: 'education',
-        description: 'Моиоценки:',
+        description: 'Мои оценки:',
       }
     },
     {

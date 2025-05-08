@@ -55,7 +55,11 @@ const Modal = ({ isOpen, onClose, title, data }) => {
       
       case 'education':
         return (
-          <Analytics user={{ role: 'student' }}/>
+          <div>
+                      <Analytics user={{ role: 'student' }}/>
+                      <Link to="/analitic">Подробнее</Link>
+          </div>
+
         );
 
         case 'shedule':

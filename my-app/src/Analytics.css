@@ -139,8 +139,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
  }
   .fixed-last th  {
-    flex-grow: 1;
-    flex-shrink: 2;
     white-space: wrap;
     flex-basis: 100px;
     height: 37px;
@@ -151,6 +149,8 @@ input::-webkit-inner-spin-button {
     z-index: 2;
     color: black;
     padding: 0;
+    justify-content: flex-end;
+    max-width: 200px;
   }
   .scrollable-table tbody .fixed-first {
     z-index: 1;
@@ -242,6 +242,7 @@ input::-webkit-inner-spin-button {
     width:115px;
     height: auto;
     transition: word-break 1.4s, width 1.4s;
+    word-break:break-all;
   }
   .add-lesson-date button{
     outline:none;
@@ -262,11 +263,15 @@ input::-webkit-inner-spin-button {
     background: green;
   }
   @media (max-width: 768px) {
+    .fixed-last{
+      position: static;
+    }
     .theadLast{
       height: auto;
       width: auto;
       word-break:break-all;
       transition: width 1.4s;
+      min-width: 40px;
     }
     .month-slider{
       gap: 0;

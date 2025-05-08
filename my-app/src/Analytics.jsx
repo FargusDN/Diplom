@@ -96,6 +96,44 @@ const Analytics = ({ user }) => {
         { date: '15', value: 5 },
       ],
       attendance: 100
+    },
+    { 
+      id: 3,
+      lesson: 'Базы данных',
+      type:'Лекция', 
+      grades: [
+        { date: '15', value: 4 },
+        { date: '22', value: 5 },
+      ],
+      attendance: 95
+    },
+    { 
+      id: 4,
+      lesson: 'WEB - разработка', 
+      type:'Практика', 
+      grades: [
+        { date: '15', value: 5 },
+      ],
+      attendance: 100
+    },
+    { 
+      id: 5,
+      lesson: 'Базы данных',
+      type:'Лекция', 
+      grades: [
+        { date: '15', value: 4 },
+        { date: '22', value: 5 },
+      ],
+      attendance: 95
+    },
+    { 
+      id: 6,
+      lesson: 'WEB - разработка', 
+      type:'Практика', 
+      grades: [
+        { date: '15', value: 5 },
+      ],
+      attendance: 100
     }
   ];
 

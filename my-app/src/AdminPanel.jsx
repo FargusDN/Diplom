@@ -1,221 +1,340 @@
 import React, { useState, useEffect } from 'react';
-import './AdminPanel.css';
-import RequestsModule from './RequestsModule';
-import AddUserModal from './AddUserModal';
+import './AdminPanel.css'
 
 const AdminPanel = () => {
-  const handleRequestModalClose = () => {
-    setIsRequestModalOpen(false);
-  };
- const [isAddModalOpen, setIsAddModalOpen] = useState(false);
- const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
-  const handleAddUser = (newUser) => {
-    // Логика добавления пользователя
-    console.log('Добавлен пользователь:', newUser);
-  };
+  const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([
-    { id: 1, name: 'Иванов Иван Иванович', group: 'ЦИС-49', role: 'студент' },
-    { id: 2, name: 'Петрова Анна Сергеевна', group: 'ПИ-31', role: 'преподаватель' },
-    { id: 1, name: 'Иванов Иван Иванович', group: 'ЦИС-49', role: 'студент' },
-    { id: 2, name: 'Петрова Анна Сергеевна', group: 'ПИ-31', role: 'преподаватель' },
-    { id: 1, name: 'Иванов Иван Иванович', group: 'ЦИС-49', role: 'студент' },
-    { id: 2, name: 'Петрова Анна Сергеевна', group: 'ПИ-31', role: 'преподаватель' },
-    // ... другие пользователи
+    { id: 1, login: 'admin', email: 'admin@university.edu', role: 'Администратор', regDate: '2023-01-15' },
+    { id: 2, login: 'ivanov', email: 'ivanov@university.edu', role: 'Преподаватель', regDate: '2023-02-20' }
   ]);
-  const [requests, setRequests] = useState([
-    {
-      id: 1,
-      student: 'Иванов Иван Иванович',
-      group: 'ЦИС-49',
-      problem: 'Не работает личный кабинет',
-      date: '2024-04-15',
-      status: 'Отправлена'
-    },
-    {
-        id: 2,
-        student: 'Иванов Иван Иванович',
-        group: 'ЦИС-49',
-        problem: 'Не работает личный кабинет',
-        date: '2024-04-15',
-        status: 'Отправлена'
-    },
-    {
-        id: 3,
-        student: 'Иванов Иван Иванович',
-        group: 'ЦИС-49',
-        problem: 'Не работает личный кабинет',
-        date: '2024-04-15',
-        status: 'Отправлена'
-      }
+  const [editData, setEditData] = useState({});
+  const [editingId, setEditingId] = useState(null);
+  const [newUser, setNewUser] = useState({
+    login: '',
+    password: '',
+    email: '',
+    role: 'Студент'
+  });
+  
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  ]);
-  const handleUpdateRequest = (updatedRequest) => {
-    setRequests(prev => 
-      prev.map(req => req.id === updatedRequest.id ? updatedRequest : req)
-    );
-  };
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [editedUser, setEditedUser] = useState(null);
-  const handleDelete = () => {
-    setUsers(users.filter(user => user.id !== editedUser.id));
-    setSelectedUser(null);
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
   };
 
-  const handleBlock = () => {
-    setEditedUser({ ...editedUser, isBlocked: !editedUser.isBlocked });
-    setUsers(users.map(user => 
-      user.id === editedUser.id ? { ...user, isBlocked: !user.isBlocked } : user
-    ));
-  };
-  // Фильтрация пользователей
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Открытие формы редактирования
-  const handleEdit = (user) => {
-    setSelectedUser(user);
-    setEditedUser({ ...user });
-  };
-
-  // Сохранение изменений
-  const handleSave = () => {
-    setUsers(users.map(user => 
-      user.id === editedUser.id ? editedUser : user
-    ));
-    setSelectedUser(null);
-  };
-
-  // Обработчик изменений в форме
-  const handleChange = (e) => {
-    setEditedUser({
-      ...editedUser,
+  const handleInputChange = (e) => {
+    setNewUser({
+      ...newUser,
       [e.target.name]: e.target.value
     });
   };
 
-  return (
-    <div className="admin-container">
-      <h1>Панель администратора ЯГТУ</h1>
-      {/* Поиск */}
-      <div className="admin-layout">
-        {/* Блок заявок справа сверху */}
-        <div className="requests-column">
-          <RequestsModule requests={requests} onUpdateRequest={handleUpdateRequest} onModalToggle={setIsRequestModalOpen} onClose={handleRequestModalClose}/>
-        </div>
-        <div className="users-column">
-        <h2>Пользователи</h2>
-        <button  className="add-user-btn" onClick={() => setIsAddModalOpen(true)} disabled={isRequestModalOpen}>Добавить пользователя</button>
-        <AddUserModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          onAddUser={handleAddUser}
-        />
-      <div className="search-box">
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newUserWithId = {
+      ...newUser,
+      id: users.length + 1,
+      regDate: new Date().toISOString().split('T')[0]
+    };
+    setUsers([...users, newUserWithId]);
+    setNewUser({ login: '', password: '', email: '', role: 'Студент' });
+  };
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+  const [loading, setLoading] = useState(false);
+
+  // Загрузка данных при монтировании
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/users');
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error('Ошибка загрузки:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const startEditing = (user) => {
+    setEditingId(user.id);
+    setEditData({...user});
+  };
+  const handleEditChange = (e, field) => {
+    setEditData(prev => ({
+      ...prev,
+      [field]: e.target.value
+    }));
+  };
+const saveChanges = async () => {
+    if (!editingId) return;
+
+    try {
+      // Отправка изменений на сервер
+      await fetch(`/api/users/${editingId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editData)
+      });
+
+      // Обновление локального состояния
+      setUsers(users.map(user => 
+        user.id === editingId ? {...user, ...editData} : user
+      ));
       
-        <input
-          type="text"
-          placeholder="Поиск по ФИО"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      setEditingId(null);
+    } catch (error) {
+      console.error('Ошибка обновления:', error);
+    }
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      saveChanges();
+    }
+  };
+  const handleResetPassword = async (userId) => {
+    if (!window.confirm('Сбросить пароль?')) return;
+    
+    try {
+      await fetch(`/api/users/${userId}/reset-password`, { method: 'POST' });
+      alert('Новый пароль отправлен на email');
+    } catch (error) {
+      console.error('Ошибка сброса:', error);
+    }
+  };
+
+  const handleDelete = async (userId) => {
+    if (!window.confirm('Удалить пользователя?')) return;
+
+    try {
+      await fetch(`/api/users/${userId}`, { method: 'DELETE' });
+      setUsers(users.filter(u => u.id !== userId));
+    } catch (error) {
+      console.error('Ошибка удаления:', error);
+    }
+  };
+
+  if (loading) return <div>Загрузка...</div>;
+
+  return (
+    <div className="admin-panel">
+      <h1>Панель администрирования ИС ЯГТУ</h1>
+      
+      <div className="tabs">
+        <button 
+          className={activeTab === 'users' ? 'active' : ''}
+          onClick={() => handleTabClick('users')}
+        >
+          Управление пользователями
+        </button>
+        <button
+          className={activeTab === 'backups' ? 'active' : ''}
+          onClick={() => handleTabClick('backups')}
+        >
+          Резервные копии и мониторинг
+        </button>
+        <button
+          className={activeTab === 'accounts' ? 'active' : ''}
+          onClick={() => handleTabClick('accounts')}
+        >
+          Учетные записи
+        </button>
       </div>
 
-      {/* Список пользователей */}
-      <div className="users-list">
-        
-        {filteredUsers.map(user => (
-          <div 
-            key={user.id} 
-            className="user-card"
-            onClick={() => handleEdit(user)}
-          >
-            <h3>{user.name}</h3>
-            <p>Группа: {user.group}</p>
-            <p>Роль: {user.role}</p>
-          </div>
-        ))}
-      </div>
-      </div>
-      </div>
-      
-      {/* Модальное окно редактирования */}
-      {selectedUser && (
-        <div className="edit-modal">
-          <div className="modal-content_admin">
-            <div className="modal-header_admin">
-              <h2>Редактирование пользователя</h2>
-              <button 
-                className="close-btn"
-                onClick={() => setSelectedUser(null)}
-              >
-                &times;
-              </button>
-            </div>
-            
-            <form>
+      {activeTab === 'users' && (
+        <div className="user-management">
+          <div className="create-user">
+            <h2>Создание нового пользователя</h2>
+            <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>ФИО:</label>
+                <label>Логин:</label>
                 <input
                   type="text"
-                  name="name"
-                  value={editedUser.name}
-                  onChange={handleChange}
+                  name="login"
+                  value={newUser.login}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Пароль:</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={newUser.password}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
 
               <div className="form-group">
-                <label>Группа:</label>
+                <label>Email:</label>
                 <input
-                  type="text"
-                  name="group"
-                  value={editedUser.group}
-                  onChange={handleChange}
+                  type="email"
+                  name="email"
+                  value={newUser.email}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
 
               <div className="form-group">
                 <label>Роль:</label>
-                <select 
-                  name="role" 
-                  value={editedUser.role} 
-                  onChange={handleChange}
+                <select
+                  name="role"
+                  value={newUser.role}
+                  onChange={handleInputChange}
                 >
-                  <option value="студент">Студент</option>
-                  <option value="преподаватель">Преподаватель</option>
+                  <option value="Студент">Студент</option>
+                  <option value="Преподаватель">Преподаватель</option>
+                  <option value="Администратор">Администратор</option>
                 </select>
               </div>
 
-              <div className="modal-buttons">
-                <button 
-                  type="button" 
-                  className="save-btn"
-                  onClick={handleSave}
-                >
-                  Сохранить изменения
-                </button>
-
-                <button
-                  type="button"
-                  className="block-btn"
-                  onClick={handleBlock}
-                >
-                  {editedUser.isBlocked ? 'Разблокировать' : 'Заблокировать'}
-                </button>
-                
-                <button
-                  type="button"
-                  className="delete-btn"
-                  onClick={handleDelete}
-                >
-                  Удалить пользователя
-                </button>
-              </div>
+              <button type="submit" className="create-btn">
+                Создать пользователя
+              </button>
             </form>
           </div>
+
+          <div className="csv-upload">
+            <h3>Или загрузите пользователей из CSV-файла</h3>
+            <div className="file-input2"> 
+                <input 
+                  type="file" 
+                  accept=".csv" 
+                  onChange={handleFileChange} 
+                  placeholder='Выбор файла'
+                />
+              <button className="upload-btn">Загрузить CSV</button>
+            </div>
+            <p className="file-requirements">
+              Файл должен содержать колонки: Логин, Пароль, Email, Роль
+            </p>
+          </div>
+
+     
         </div>
       )}
+      {activeTab === 'backups' &&(
+        <div className="backup-management">
+        <h2>Управление резервными копиями</h2>
+        <div className="backup-buttons">
+          <button className="backup-btn">Создать резервную копию</button>
+          <button className="backup-btn">Восстановить из копии</button>
+          <button className="backup-btn">Загрузить последнюю копию</button>
+        </div>
+    
+        <div className="monitoring">
+          <h3>Мониторинг активности сайта</h3>
+          <div className="monitoring-graph">
+            График посещаемости за последние 30 дней
+          </div>
+        </div>
+      </div>
+      )}
+{activeTab === 'accounts' && (
+  <div className="accounts-management">
+    <h2>Управление учетными записями пользователей</h2>
+
+    <div className="search-bar">
+      <input type="text" placeholder="Поиск пользователей..." />
+      <button>Найти</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Логин</th>
+          <th>Email</th>
+          <th>Роль</th>
+          <th>Дата регистрации</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+      {users.map(user => (
+          <tr key={user.id}>
+            <td>
+              {user.id}
+            </td>
+            <td>
+              {editingId === user.id ? (
+                <input
+                  value={editData.login}
+                  onChange={(e) => handleEditChange(e, 'login')}
+                  onKeyDown={handleKeyPress}
+                />
+              ) : user.login}
+            </td>
+            
+            <td>
+              {editingId === user.id ? (
+                <input
+                  value={editData.email}
+                  onChange={(e) => handleEditChange(e, 'email')}
+                  onKeyDown={handleKeyPress}
+                />
+              ) : user.email}
+            </td>
+
+            <td>
+              {editingId === user.id ? (
+                <select
+                  value={editData.role}
+                  onChange={(e) => handleEditChange(e, 'role')}
+                  onKeyDown={handleKeyPress}
+                >
+                  <option value="Администратор">Администратор</option>
+                  <option value="Преподаватель">Преподаватель</option>
+                </select>
+              ) : user.role}
+            </td>
+
+            <td>
+              {editingId === user.id ? (
+                <input
+                  type="date"
+                  value={editData.regDate}
+                  onChange={(e) => handleEditChange(e, 'registrationDate')}
+                  onKeyDown={handleKeyPress}
+                />
+              ) : user.regDate}
+            </td>
+
+            <td>
+              {editingId === user.id ? (
+                <button className='action-btn save' onClick={saveChanges}>Сохранить</button>
+              ) : (
+                <>
+                  <button className='action-btn edit' onClick={() => startEditing(user)}>Редактировать</button>
+                  <button className='action-btn reset' onClick={() => handleResetPassword(user.id)}>Сбросить пароль</button>
+                  <button className='action-btn delete' onClick={() => handleDelete(user.id)}>Удалить</button>
+                </>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <div className="pagination">
+      <button className="active">1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>...</button>
+      <button>10</button>
+    </div>
+  </div>
+)}
     </div>
   );
 };
