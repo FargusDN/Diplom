@@ -4,9 +4,17 @@ import './AdminPanel.css'
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([
-    { id: 1, login: 'admin', email: 'admin@university.edu', role: 'Администратор', regDate: '2023-01-15' },
-    { id: 2, login: 'ivanov', email: 'ivanov@university.edu', role: 'Преподаватель', regDate: '2023-02-20' }
+    { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15' },
+    { id: 2, login: 'ivanov', email: 'ivanov@university.edu',fio:'Петров Петр Петрович', kyrs:4,napr:'ЭКОНОМ', role: 'Преподаватель', regDate: '2023-02-20' }
   ]);
+  const [recipientType, setRecipientType] = useState('all');
+  const [searchResults, setSearchResults] = useState([
+    { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15' },
+    { id: 2, login: 'ivanov', email: 'ivanov@university.edu',fio:'Петров Петр Петрович', kyrs:4,napr:'ЭКОНОМ', role: 'Преподаватель', regDate: '2023-02-20' }
+  ]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [importance, setImportance] = useState('normal');
+  const [message, setMessage] = useState('');
   const [editData, setEditData] = useState({});
   const [editingId, setEditingId] = useState(null);
   const [newUser, setNewUser] = useState({
@@ -15,9 +23,37 @@ const AdminPanel = () => {
     email: '',
     role: 'Студент'
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRequestId, setSelectedRequestId] = useState(null);
+  const [notification, setNotification] = useState({
+    recipient: 'all',
+    importance: 'normal',
+    message: ''
+  });
+  const [activeRequests, setActiveRequests] = useState([
+    {
+      id: 1,
+      status: 'Создана',
+      userName: 'Иванов Иван Иванович',
+      date: '09-05-2025'
+    },
+    {
+      id: 2,
+      status: 'В работе',
+      userName: 'Иванов Иван Иванович',
+      date: '09-05-2025'
+    }
+  ]);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const [selectedFile, setSelectedFile] = useState(null);
-
+  
+  const updateStatus = (newStatus) => {
+    setActiveRequests(activeRequests.map(req => 
+      req.id === selectedRequestId ? {...req, status: newStatus} : req
+    ));
+    setIsModalOpen(false);
+  };
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -29,7 +65,7 @@ const AdminPanel = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmitNewUser = (e) => {
     e.preventDefault();
     const newUserWithId = {
       ...newUser,
@@ -49,6 +85,50 @@ const AdminPanel = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+  useEffect(() => {
+    if (searchQuery.length > 2) {
+      fetch(`/api/users/search?q=${searchQuery}`)
+        .then(res => res.json())
+        .then(data => setUsers(data));
+    }
+  }, [searchQuery]);
+  useEffect(() => {
+    fetch('/api/requests/active')
+      .then(res => res.json())
+      .then(data => setActiveRequests(data));
+  }, []);
+  
+
+  const handleNotificationSubmit = () => {
+    fetch('/api/notifications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(notification)
+    }).then(() => {
+      setNotification({
+        recipient: 'all',
+        importance: 'normal',
+        message: ''
+      });
+      alert('Уведомление успешно создано!');
+    });
+  };
+  useEffect(() => {
+    if (recipientType === 'specific' && searchQuery.length > 2) {
+      const searchUsers = async () => {
+        try {
+          const response = await fetch(`/api/users?search=${searchQuery}`);
+          const data = await response.json();
+          setSearchResults(data);
+        } catch (error) {
+          console.error('Ошибка поиска:', error);
+        }
+      };
+      
+      const debounceTimer = setTimeout(searchUsers, 300);
+      return () => clearTimeout(debounceTimer);
+    }
+  }, [searchQuery, recipientType]);
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -121,6 +201,50 @@ const saveChanges = async () => {
   };
 
   if (loading) return <div>Загрузка...</div>;
+  
+
+  // Выбор пользователя из результатов поиска
+  const handleUserSelect = (user) => {
+    setSelectedUser(user);
+    setSearchQuery(user.fio); // Показываем имя в поле поиска
+    setSearchResults([]); // Очищаем результаты
+  };
+
+  // Отправка уведомления
+  const handleSubmit = async () => {
+    // Валидация
+    if (recipientType === 'specific' && !selectedUser) {
+      alert('Пожалуйста, выберите пользователя');
+      return;
+    }
+
+    const notificationData = {
+      recipient: recipientType === 'all' ? 'all' : selectedUser.id,
+      importance,
+      message
+    };
+
+    try {
+      const response = await fetch('/api/notifications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(notificationData)
+      });
+
+      if (response.ok) {
+        alert('Уведомление отправлено!');
+        // Сброс формы
+        setRecipientType('all');
+        setSearchQuery('');
+        setSelectedUser(null);
+        setImportance('normal');
+        setMessage('');
+      }
+    } catch (error) {
+      console.error('Ошибка отправки:', error);
+      alert('Не удалось отправить уведомление');
+    }
+  };
 
   return (
     <div className="admin-panel">
@@ -131,7 +255,7 @@ const saveChanges = async () => {
           className={activeTab === 'users' ? 'active' : ''}
           onClick={() => handleTabClick('users')}
         >
-          Управление пользователями
+          Добавление пользователей
         </button>
         <button
           className={activeTab === 'backups' ? 'active' : ''}
@@ -143,7 +267,13 @@ const saveChanges = async () => {
           className={activeTab === 'accounts' ? 'active' : ''}
           onClick={() => handleTabClick('accounts')}
         >
-          Учетные записи
+          Управление учетными записями
+        </button>
+        <button
+          className={activeTab === 'messages' ? 'active' : ''}
+          onClick={() => handleTabClick('messages')}
+        >
+          Управление уведомлениями
         </button>
       </div>
 
@@ -151,7 +281,7 @@ const saveChanges = async () => {
         <div className="user-management">
           <div className="create-user">
             <h2>Создание нового пользователя</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmitNewUser}>
               <div className="form-group">
                 <label>Логин:</label>
                 <input
@@ -255,6 +385,9 @@ const saveChanges = async () => {
           <th>ID</th>
           <th>Логин</th>
           <th>Email</th>
+          <th>ФИО</th>
+          <th>Курс</th>
+          <th>Направление</th>
           <th>Роль</th>
           <th>Дата регистрации</th>
           <th>Действия</th>
@@ -285,7 +418,33 @@ const saveChanges = async () => {
                 />
               ) : user.email}
             </td>
-
+              <td>
+              {editingId === user.id ? (
+                <input
+                  value={editData.fio}
+                  onChange={(e) => handleEditChange(e, 'fio')}
+                  onKeyDown={handleKeyPress}
+                />
+              ) : user.fio}
+            </td>
+            <td>
+              {editingId === user.id ? (
+                <input
+                  value={editData.kyrs}
+                  onChange={(e) => handleEditChange(e, 'kyrs')}
+                  onKeyDown={handleKeyPress}
+                />
+              ) : user.kyrs}
+            </td>
+            <td>
+              {editingId === user.id ? (
+                <input
+                  value={editData.napr}
+                  onChange={(e) => handleEditChange(e, 'napr')}
+                  onKeyDown={handleKeyPress}
+                />
+              ) : user.napr}
+            </td>
             <td>
               {editingId === user.id ? (
                 <select
@@ -295,6 +454,7 @@ const saveChanges = async () => {
                 >
                   <option value="Администратор">Администратор</option>
                   <option value="Преподаватель">Преподаватель</option>
+                  <option value="Студент">Студент</option>
                 </select>
               ) : user.role}
             </td>
@@ -334,6 +494,154 @@ const saveChanges = async () => {
       <button>10</button>
     </div>
   </div>
+)}
+{activeTab === 'messages'&&(
+  <div className="split-layout">
+        {/* Левая часть - Активные заявки */}
+        <div className="requests-panel">
+          <h3>Активные заявки ({activeRequests.length})</h3>
+          <div className="requests-list">
+            {activeRequests.map(request => (
+              <div 
+                key={request.id}
+                className={`request-item`}
+                onClick={() => {
+                  setSelectedRequestId(request.id);
+                  setIsModalOpen(true);
+                }}
+              >
+                <div className="request-header">
+                  <span>#{request.id}</span>
+                  <span className={`status-badge ${request.status}`}>
+                    {request.status.toUpperCase()}
+                  </span>
+                </div>
+                <div className="request-info">
+                  <p>{request.userName}</p>
+                  <small>{new Date(request.date).toLocaleDateString()}</small>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          
+        </div>
+        {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="status-modal">
+            <h2>Изменение статуса заявки # {selectedRequestId}</h2>
+            
+            <div className="status-grid">
+              {['СОЗДАНА', 'В РАБОТЕ', 'РЕШЕНА', 'ЗАКРЫТА'].map(status => (
+                <button
+                  key={status}
+                  className={`status-btn ${status}`}
+                  onClick={() => updateStatus(status)}
+                >
+                  {status}
+                </button>
+              ))}
+            </div>
+
+            <button 
+              className="close-btn_profile"
+              onClick={() => setIsModalOpen(false)}
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
+        {/* Правая часть - Создание уведомления */}
+        <div className="notification-panel">
+  <h3>Создать уведомление</h3>
+  <div className="notification-form">
+    
+    {/* Блок выбора получателя */}
+    <div className="recipient-section">
+      <label>Получатель:</label>
+      
+      <div className="recipient-type-selector">
+        <label className="radio-option">
+          <input
+            type="radio"
+            name="recipientType"
+            value="all"
+            checked={recipientType === 'all'}
+            onChange={() => setRecipientType('all')}
+          />
+          <span className="custom-radio"></span>
+          Все пользователи
+        </label>
+        
+        <label className="radio-option">
+          <input
+            type="radio"
+            name="recipientType"
+            value="specific"
+            checked={recipientType === 'specific'}
+            onChange={() => setRecipientType('specific')}
+          />
+          <span className="custom-radio"></span>
+          Конкретный пользователь
+        </label>
+      </div>
+
+      {/* Поле поиска при выборе конкретного пользователя */}
+      {recipientType === 'specific' && (
+        <div className="user-search">
+          <input
+            type="text"
+            placeholder="Поиск пользователя..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="user-search-input"
+          />
+          
+          {/* Выпадающий список с результатами поиска */}
+          {searchResults.length > 0 && (
+            <div className="search-results">
+              {searchResults.map(user => (
+                <div
+                  key={user.id}
+                  className="user-result"
+                  onClick={() => handleUserSelect(user)}
+                >
+                  {user.fio} ({user.email})
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+
+    {/* Остальные элементы формы */}
+    <div className="form-group">
+      <label>Важность:</label>
+      <select
+        value={importance}
+        onChange={(e) => setImportance(e.target.value)}
+      >
+        <option value="normal">Обычное</option>
+        <option value="important">Важное</option>
+        <option value="critical">Экстренное</option>
+      </select>
+    </div>
+
+    <div className="form-group">
+      <label>Сообщение:</label>
+      <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        rows="4"
+      />
+    </div>
+
+    <button className="submit-button" onClick={handleSubmit}>Отправить</button>
+  </div>
+</div>
+      </div>
 )}
     </div>
   );

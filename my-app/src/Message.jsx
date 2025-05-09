@@ -73,7 +73,7 @@ const Message = () =>{
       {selectedNotification && (
         <div className="mes-modal-overlay" onClick={handleClose}>
           <div className="notification-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={handleClose}>&times;</button>
+            <button className="close-btn_profile" onClick={handleClose}>&times;</button>
             
             <div className="mes-modal-header">
               <h2>{selectedNotification.title}</h2>
