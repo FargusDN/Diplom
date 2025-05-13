@@ -16,6 +16,7 @@ import Analytics from './Analytics';
 import Zayavky from './Zayavky';
 import Message from './Message';
 import AnaliticsTest from './AnaliticsTest';
+import PageBuilder from './PageBuilder';
 
 function App() {
   
@@ -58,6 +59,7 @@ function App() {
         <Route path='/admissions' element={<AdmissionsPage/>}/>
         <Route path='/message' element={<Message/>}/>
         <Route path='/analitic' element={<AnaliticsTest/>}/>
+        <Route path='/konstruktor' element={<PageBuilder/>}/>
       </Routes>
     </Router>
   );
