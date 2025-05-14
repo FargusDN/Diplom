@@ -1,6 +1,7 @@
 .duty-officer {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 2rem;
     padding: 15px;
     background: #f8f9fa;

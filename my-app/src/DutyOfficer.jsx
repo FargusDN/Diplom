@@ -12,6 +12,9 @@ const DutyOfficer = ({ info }) => {
 
   return (
     <div className="duty-officer">
+      <div>
+        <span>Дежурный</span>
+      </div>
       <div className="officer-badge">
         <span className="rank">{info.rank}</span>
         <span className="name">{info.name}</span>

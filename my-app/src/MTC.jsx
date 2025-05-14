@@ -1,44 +1,84 @@
 import React from 'react';
-import './MTC.css';
-import Header from './Header';
-import Footer from './Footer';
+import { useSyncedLocalStorage } from './hooks/useSyncedLocalStorage';
 import NewsSlider from './NewsSlider';
-import MTCSchedule from './MTCSchedule';
-import DutyOfficer from './DutyOfficer';
+import MTCSchedule from './MTCSchedule'
+import DutyOfficer from './DutyOfficer'
 
-const WidgetRenderer = ({ widget, data }) => {
-  if (!widget.settings.visible) return null;
-
+const MTC = () => {
+  const [template] = useSyncedLocalStorage('militaryTemplate', {
+    version: "1.0",
+    widgets: []
+  });
+const dutyOfficer = {
+  rank:'Майор',
+  name:'Кукушкин М.О',
+  phone:'89999999999',
+}
+const sheduleData = [
+  {
+    group:'ЦИС-49',
+    location:'каб 403',
+    discipline:'Высш мат',
+    teacher:'Корягин В.В.'
+  },
+  {
+    group:'ЦИС-49',
+    location:'каб 403',
+    discipline:'Высш мат',
+    teacher:'Корягин В.В.'
+  },
+  {
+    group:'ЦИС-49',
+    location:'каб 403',
+    discipline:'Высш мат',
+    teacher:'Корягин В.В.'
+  },
+  {
+    group:'ЦИС-49',
+    location:'каб 403',
+    discipline:'Высш мат',
+    teacher:'Корягин В.В.'
+  },
+  {
+    group:'ЦИС-49',
+    location:'каб 403',
+    discipline:'Высш мат',
+    teacher:'Корягин В.В.'
+  },
+]
+const newsItem = [
+  {
+  title:'Новые противогазы',
+  description:'Завезены новые противогазы',
+  date:'10.05.2025'
+},
+{
+  title:'Всем по АК',
+  description:'Минобороны предложило ...',
+  date:'12.05.2025'
+},
+{
+  title:'Сдача нормативов',
+  description:'Курсанты сдают нормативы на 5+',
+  date:'11.05.2025'
+},
+]
   return (
-    <section className="mtc-widget">
-      <h2>{widget.settings.title}</h2>
-      {widget.type === 'news' && <NewsSlider items={data} />}
-      {widget.type === 'schedule' && <MTCSchedule data={data} />}
-      {widget.type === 'duty' && <DutyOfficer info={data} />}
-    </section>
-  );
-};
-
-const MTC = ({ template }) => {
-  if (!template || !template.layout) {
-    return <div className="mtc-loading">Загрузка данных...</div>;
-  }
-
-  return (
-    <div className="mtc-container">
-      <Header />
-      
-      <main className="mtc-main-content">
-        {template.layout.map(widget => (
-          <WidgetRenderer
-            key={widget.id}
-            widget={widget}
-            data={template.dataSources[widget.type]}
-          />
-        ))}
-      </main>
-
-      <Footer />
+    <div className="display">
+      {template.widgets.map(widget => (
+        <div key={widget.id} className="widget" >
+          {widget.type === 'news' && (
+            <NewsSlider items={newsItem}/>
+          )}
+          
+          {widget.type === 'schedule' && (
+            <MTCSchedule data={sheduleData}/>
+          )}
+          {widget.type === 'duty' && (
+            <DutyOfficer info={dutyOfficer}/>
+          )}
+        </div>
+      ))}
     </div>
   );
 };

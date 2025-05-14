@@ -1,0 +1,112 @@
+/* MilitarySchedule.css */
+.military-schedule {
+    background: linear-gradient(45deg, #1a2f1a, #2c4b2d);
+    border: 2px solid #5d5d3d;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1000px;
+  }
+  
+  .days-slider {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+  }
+  
+  .days-container {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
+    margin: 0 15px;
+  }
+  
+  .day-item {
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #e0d3a9;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  
+  .day-item:hover {
+    background: rgba(90, 86, 50, 0.4);
+  }
+  
+  .day-item.active {
+    background: #5d5d3d;
+    color: #fff1cc;
+    border-color: #8a7b66;
+    font-weight: bold;
+  }
+  
+  .nav-arrow {
+    background: #5d5d3d;
+    color: #e0d3a9;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-arrow:hover {
+    background: #6d6d4d;
+    transform: scale(1.1);
+  }
+  
+  .schedule-table-container {
+    overflow-x: auto;
+  }
+  
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(0, 0, 0, 0.2);
+    color: #e0d3a9;
+  }
+  
+  .schedule-table th {
+    background: #5d5d3d;
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 0.9em;
+  }
+  
+  .schedule-table td {
+    padding: 10px;
+    border-bottom: 1px solid #5d5d3d;
+  }
+  
+  .schedule-table tr:hover {
+    background: rgba(90, 86, 50, 0.2);
+  }
+  
+  .no-schedule {
+    text-align: center;
+    padding: 20px;
+    color: #8a7b66;
+  }
+  
+  @media (max-width: 768px) {
+    .day-item {
+      padding: 6px 10px;
+      font-size: 0.9em;
+    }
+  
+    .schedule-table th {
+      padding: 8px;
+      font-size: 0.8em;
+    }
+  
+    .schedule-table td {
+      padding: 6px;
+      font-size: 0.85em;
+    }
+  }

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ProfileDropdown from './ProfileDropdown';
 
-const Header = ({ LogoHeader, onLoginClick, user }) => {
+const Header = ({ LogoHeader, onLoginClick, user, isMillitary }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -17,10 +17,10 @@ const Header = ({ LogoHeader, onLoginClick, user }) => {
   }, []);
 
   return (
-    <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="header-logo">
+    <header className={`header ${isScrolled ? 'scrolled' : ''} ${isMillitary ? 'MillitaryHeader' : ''}` } >
+      <div className={`header-logo ${isMillitary ? 'Military' : ''}`}>
       {LogoHeader ? (
-         <img src={LogoHeader} alt="ЯГТУ" />
+         <img src={LogoHeader} className='MilitaryLogo' alt="ЯГТУ" />
         ) : (
           <img src={Logo} alt="ЯГТУ" />
         )}
@@ -29,13 +29,20 @@ const Header = ({ LogoHeader, onLoginClick, user }) => {
 
       {/* Основной контент для десктопов */}
       <div className="desktop-content">
-        <nav className="header-nav">
+        {!isMillitary ?(
+          <nav className="header-nav">
           <Link to="/admissions">Поступающему</Link>
           <Link to="/students">Студенту</Link>
           <Link to="/university">Университет</Link>
           <Link to="/partners">Партнерам</Link>
           <Link to="/contacts">Контакты</Link>
         </nav>
+        ):(
+          <div className='isMillitary'>
+            <span>ВОЕННЫЙ УЧЕБНЫЙ ЦЕНТР ЯГТУ</span>
+          </div>
+        )}
+        
         {user ? (
           <div className="profile-container">
             <ProfileDropdown />

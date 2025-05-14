@@ -1,0 +1,28 @@
+.MilitaryCenter{
+    background: linear-gradient(
+    45deg,
+    #1a2f1a 0%,
+    #3d4a2d 25%,
+    #5d5d3d 50%,
+    #3a2b1a 75%,
+    #2a2a2a 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+.schedules{
+    display: grid;
+  grid-template-columns: 1fr 1fr; /* Две равные колонки */
+  gap: 20px;
+}
+@media (max-width: 1440px) {
+    .schedules{
+        display: flex;
+        flex-wrap: wrap;
+    }
+}

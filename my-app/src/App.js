@@ -17,6 +17,8 @@ import Zayavky from './Zayavky';
 import Message from './Message';
 import AnaliticsTest from './AnaliticsTest';
 import PageBuilder from './PageBuilder';
+import MilitaryCenter from './MilitaryCenter';
+import MilitaryCenterMain from './MilitaryCenterMain';
 
 function App() {
   
@@ -50,7 +52,7 @@ function App() {
         }/>
         <Route path="/profile" element={<UserProfile/>} />
         <Route path="/AdmissionsPage" element={<AdmissionsPage/>} />
-        <Route path='/MilitaryCenter' element={<MTC/>}/>
+        <Route path='/MilitaryCenter' element={<MilitaryCenter/>}/>
         <Route path='/shedule' element={<Schedule/>}/>
         <Route path='/admin' element={<AdminPanel/>}/>
         <Route path='/analiticksStudent' element={<Analytics user={{ role: 'student' }}/>}/>
@@ -60,6 +62,7 @@ function App() {
         <Route path='/message' element={<Message/>}/>
         <Route path='/analitic' element={<AnaliticsTest/>}/>
         <Route path='/konstruktor' element={<PageBuilder/>}/>
+        <Route path='/MilitaryCenterMain' element={<MilitaryCenterMain/>}/>
       </Routes>
     </Router>
   );
