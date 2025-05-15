@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import LogoHeader from './imgs/MTC.png'
@@ -8,8 +8,62 @@ import Image1 from './imgs/Frame-819.webp'
 import Image2 from './imgs/Frame-820.webp'
 import MilitarySchedule from "./MilitarySchedule";
 import MilitaryDutySchedule from "./MilitaryDutySchedule";
+import MilitaryCenterMainDutyOfficer from "./MilitaryCenterDutyOfficer";
+import { useRef } from "react";
 
 const MilitaryCenterMain = ()=>{
+  const topSectionRef = useRef(null);
+  const schedulesSectionRef = useRef(null);
+  const schedulesDutySectionRef = useRef(null);
+  const [activeRef, setActiveRef] = useState('topSectionRef');
+  
+  
+  function scrollToTop(direction){
+    console.log(topSectionRef);
+    topSectionRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    changeActiveRef(direction);
+  };
+
+  function changeActiveRef(direction){
+    switch({activeRef}){
+      case "topSectionRef":
+        setActiveRef("schedulesSectionRef");
+      break;
+      case "schedulesSectionRef":
+        switch(direction){
+          case "up": setActiveRef("topSectionRef"); break;
+          case "down": setActiveRef("schedulesDutySectionRef"); break;
+          default: break;
+        }
+      break;
+      case "schedulesDutySectionRef":
+        setActiveRef("schedulesSectionRef");
+      break;
+      default: break;
+    }
+  }
+
+  function scrollToSchedules(direction){ 
+    console.log(schedulesSectionRef);
+    schedulesSectionRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    changeActiveRef(direction);
+  };
+
+  function scrollToDutySchedules(direction){
+    console.log(schedulesDutySectionRef);
+    schedulesDutySectionRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+    changeActiveRef(direction);
+  };
+
     const mockUser = {
         name: 'Чикалев Илья Максимович',
         photo: '/default-avatar.jpg'
@@ -88,10 +142,26 @@ const MilitaryCenterMain = ()=>{
         <div>
             <Header LogoHeader={LogoHeader} user={mockUser} isMillitary={true}/>
             <main className="MilitaryCenter">
-                <MilitaryNewsSlider items={items}/>
+              <MilitaryCenterMainDutyOfficer/>
+                <div ref={topSectionRef}><MilitaryNewsSlider items={items}/></div>
+                {activeRef == "topSectionRef" &&(
+                <div className="MilitaryNav">
+                    <div className="arrowbtn arrowbtn-up"></div>
+                    <div className="arrowbtn arrowbtn-down" onClick={scrollToSchedules("down")}></div>
+                </div>)}
+                {activeRef == "schedulesSectionRef" &&(
+                <div className="MilitaryNav">
+                    <div className="arrowbtn arrowbtn-up" onClick={scrollToTop("up")}></div>
+                    <div className="arrowbtn arrowbtn-down" onClick={scrollToDutySchedules("down")}></div>
+                </div>)}
+                {activeRef == "schedulesDutySectionRef" &&(
+                <div className="MilitaryNav">
+                    <div className="arrowbtn arrowbtn-up" onClick={scrollToTop("up")}></div>
+                    <div className="arrowbtn arrowbtn-down"></div>
+                </div>)}
                 <div className="schedules">
-                    <MilitarySchedule scheduleData={scheduleData}/>
-                    <MilitaryDutySchedule dutySchedule={dutySchedule}/>
+                    <div ref={schedulesSectionRef}><MilitarySchedule scheduleData={scheduleData}/></div>
+                    <div ref={schedulesDutySectionRef}><MilitaryDutySchedule dutySchedule={dutySchedule}/></div>
                 </div>
                 
             </main>

@@ -1,11 +1,12 @@
 /* MilitarySchedule.css */
 .military-schedule {
+  width: 100%;
     background: linear-gradient(45deg, #1a2f1a, #2c4b2d);
     border: 2px solid #5d5d3d;
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
-    max-width: 1000px;
+    max-width: 1200px;
   }
   
   .days-slider {
@@ -16,6 +17,10 @@
     padding: 10px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 6px;
+  }
+  .schedule-table tbody{
+    overflow-y: auto;
+    max-height: 400px;
   }
   
   .days-container {
@@ -70,7 +75,9 @@
     background: rgba(0, 0, 0, 0.2);
     color: #e0d3a9;
   }
-  
+  .schedule-table tr{
+    background: rgba(90, 86, 50, 0.2);
+  }
   .schedule-table th {
     background: #5d5d3d;
     padding: 12px;

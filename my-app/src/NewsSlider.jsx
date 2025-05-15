@@ -18,37 +18,37 @@ const NewsSlider = ({ items }) => {
   }, [items.length, paused]);
 
   if (items.length === 0) {
-    return <div className="news-slider empty">Новостей нет</div>;
+    return <div className="news-slider2 empty">Новостей нет</div>;
   }
 
   return (
     <div 
-      className="news-slider"
+      className="news-slider2"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="slider-track">
+      <div className="slider-track2">
         {items.map((item, index) => (
           <div 
             key={index}
-            className={`slide ${index === activeIndex ? 'active' : ''}`}
+            className={`slide2 ${index === activeIndex ? 'active' : ''}`}
             aria-hidden={index !== activeIndex}
           >
-            <div className="slide-content">
-              <h3 className="news-title">{item.title}</h3>
-              <p className="news-description">{item.description}</p>
-              <time className="news-date">{item.date}</time>
+            <div className="slide-content2">
+              <h3 className="news-title2">{item.title}</h3>
+              <p className="news-description2">{item.description}</p>
+              <time className="news-date2">{item.date}</time>
             </div>
           </div>
         ))}
       </div>
 
       {items.length > 1 && (
-        <div className="slider-controls">
+        <div className="slider-controls2">
           {items.map((_, index) => (
             <button
               key={index}
-              className={`control-dot ${index === activeIndex ? 'active' : ''}`}
+              className={`control-dot2 ${index === activeIndex ? 'active' : ''}`}
               onClick={() => setActiveIndex(index)}
               aria-label={`Перейти к новости ${index + 1}`}
             />

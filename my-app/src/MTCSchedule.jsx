@@ -7,9 +7,9 @@ const MTCSchedule = ({ data }) => {
   }
 
   return (
-    <div className="schedule-container">
-      <div className="schedule-scroll-wrapper">
-        <table className="schedule-table">
+    <div className="schedule-container2">
+      <div className="schedule-scroll-wrapper2">
+        <table className="schedule-table2">
           <thead>
             <tr>
               <th>Группа</th>
