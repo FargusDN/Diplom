@@ -10,59 +10,19 @@ import MilitarySchedule from "./MilitarySchedule";
 import MilitaryDutySchedule from "./MilitaryDutySchedule";
 import MilitaryCenterMainDutyOfficer from "./MilitaryCenterDutyOfficer";
 import { useRef } from "react";
+import Image3 from "./imgs/userLogo.jpg"
+import MilitaryCenterUserCard from "./MilitaryCenterUserCard";
 
 const MilitaryCenterMain = ()=>{
-  const topSectionRef = useRef(null);
-  const schedulesSectionRef = useRef(null);
-  const schedulesDutySectionRef = useRef(null);
-  const [activeRef, setActiveRef] = useState('topSectionRef');
+
   
   
-  function scrollToTop(direction){
-    console.log(topSectionRef);
-    topSectionRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-    changeActiveRef(direction);
-  };
-
-  function changeActiveRef(direction){
-    switch({activeRef}){
-      case "topSectionRef":
-        setActiveRef("schedulesSectionRef");
-      break;
-      case "schedulesSectionRef":
-        switch(direction){
-          case "up": setActiveRef("topSectionRef"); break;
-          case "down": setActiveRef("schedulesDutySectionRef"); break;
-          default: break;
-        }
-      break;
-      case "schedulesDutySectionRef":
-        setActiveRef("schedulesSectionRef");
-      break;
-      default: break;
-    }
-  }
-
-  function scrollToSchedules(direction){ 
-    console.log(schedulesSectionRef);
-    schedulesSectionRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-    changeActiveRef(direction);
-  };
-
-  function scrollToDutySchedules(direction){
-    console.log(schedulesDutySectionRef);
-    schedulesDutySectionRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-    changeActiveRef(direction);
-  };
+    const user={
+      name:"Чикалев Илья Максимович",
+      rank:"Рядовой",
+      role:"Студент",
+      photo: "./imgs/userLogo.jpg"
+    };
 
     const mockUser = {
         name: 'Чикалев Илья Максимович',
@@ -109,8 +69,8 @@ const MilitaryCenterMain = ()=>{
       ]
       const scheduleData={
         "ПН": [
-          { group: "101", subject: "Тактика", room: "301", teacher: "Иванов А.В." },
-          { group: "102", subject: "Строевая подготовка", room: "Спортзал", teacher: "Петров С.И." }
+          { group: "8:30", subject: "Тактика", room: "301", teacher: "Иванов А.В." },
+          { group: "10:10", subject: "Строевая подготовка", room: "Спортзал", teacher: "Петров С.И." }
         ],
         "ВТ": [
           { group: "101", subject: "Огневая подготовка", room: "Тир", teacher: "Сидоров В.К." }
@@ -143,25 +103,11 @@ const MilitaryCenterMain = ()=>{
             <Header LogoHeader={LogoHeader} user={mockUser} isMillitary={true}/>
             <main className="MilitaryCenter">
               <MilitaryCenterMainDutyOfficer/>
-                <div ref={topSectionRef}><MilitaryNewsSlider items={items}/></div>
-                {activeRef == "topSectionRef" &&(
-                <div className="MilitaryNav">
-                    <div className="arrowbtn arrowbtn-up"></div>
-                    <div className="arrowbtn arrowbtn-down" onClick={scrollToSchedules("down")}></div>
-                </div>)}
-                {activeRef == "schedulesSectionRef" &&(
-                <div className="MilitaryNav">
-                    <div className="arrowbtn arrowbtn-up" onClick={scrollToTop("up")}></div>
-                    <div className="arrowbtn arrowbtn-down" onClick={scrollToDutySchedules("down")}></div>
-                </div>)}
-                {activeRef == "schedulesDutySectionRef" &&(
-                <div className="MilitaryNav">
-                    <div className="arrowbtn arrowbtn-up" onClick={scrollToTop("up")}></div>
-                    <div className="arrowbtn arrowbtn-down"></div>
-                </div>)}
+              <MilitaryCenterUserCard user={user} />
+                <MilitaryNewsSlider items={items}/> 
                 <div className="schedules">
-                    <div ref={schedulesSectionRef}><MilitarySchedule scheduleData={scheduleData}/></div>
-                    <div ref={schedulesDutySectionRef}><MilitaryDutySchedule dutySchedule={dutySchedule}/></div>
+                    <MilitarySchedule scheduleData={scheduleData}/>
+                    <MilitaryDutySchedule dutySchedule={dutySchedule}/>
                 </div>
                 
             </main>

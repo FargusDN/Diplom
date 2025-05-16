@@ -45,7 +45,7 @@ const MilitarySchedule = ({ scheduleData }) => {
         <table className="schedule-table">
           <thead>
             <tr>
-              <th>Группа</th>
+              <th>Время</th>
               <th>Предмет</th>
               <th>Кабинет</th>
               <th>Преподаватель</th>

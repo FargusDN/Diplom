@@ -188,7 +188,7 @@ const Analytics = ({ user }) => {
   return (
     <div className="analytics-container">
       <MonthSlider/>
-      {user.role === 'teacher' ? (
+      {user.role === 'Преподаватель' ? (
         <div className="teacher-view">
           <div className="filters">
             <select
