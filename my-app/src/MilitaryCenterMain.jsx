@@ -10,8 +10,8 @@ import MilitarySchedule from "./MilitarySchedule";
 import MilitaryDutySchedule from "./MilitaryDutySchedule";
 import MilitaryCenterMainDutyOfficer from "./MilitaryCenterDutyOfficer";
 import { useRef } from "react";
-import Image3 from "./imgs/userLogo.jpg"
 import MilitaryCenterUserCard from "./MilitaryCenterUserCard";
+import userLogo from "./imgs/userLogo.jpg"
 
 const MilitaryCenterMain = ()=>{
 
@@ -21,7 +21,7 @@ const MilitaryCenterMain = ()=>{
       name:"Чикалев Илья Максимович",
       rank:"Рядовой",
       role:"Студент",
-      photo: "./imgs/userLogo.jpg"
+      photo: userLogo
     };
 
     const mockUser = {

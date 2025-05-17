@@ -28,7 +28,7 @@ const Header = ({ LogoHeader, onLoginClick, user, isMillitary }) => {
       </div>
 
       {/* Основной контент для десктопов */}
-      <div className="desktop-content">
+      <div className={`desktop-content ${isMillitary ? 'MillitaryHeader' : ''}`}>
         {!isMillitary ?(
           <nav className="header-nav">
           <Link to="/admissions">Поступающему</Link>

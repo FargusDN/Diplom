@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './AdminPanel.css'
+import MilitaryCenter from './MilitaryCenter';
+import MTC from './MTC';
+import PageBuilder from './PageBuilder';
+import MilitaryCenterMaterial from './MilitaryCenterMaterial';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([
-    { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15' },
-    { id: 2, login: 'ivanov', email: 'ivanov@university.edu',fio:'Петров Петр Петрович', kyrs:4,napr:'ЭКОНОМ', role: 'Преподаватель', regDate: '2023-02-20' }
+    { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15', vycRole:'Администратор', },
+    { id: 2, login: 'ivanov', email: 'ivanov@university.edu',fio:'Петров Петр Петрович', kyrs:4,napr:'ЭКОНОМ', role: 'Преподаватель', regDate: '2023-02-20', vycRole:'Преподаватель', }
   ]);
   const [recipientType, setRecipientType] = useState('all');
   const [searchResults, setSearchResults] = useState([
-    { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15' },
-    { id: 2, login: 'ivanov', email: 'ivanov@university.edu',fio:'Петров Петр Петрович', kyrs:4,napr:'ЭКОНОМ', role: 'Преподаватель', regDate: '2023-02-20' }
+    { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15', vycRole:'Администратор', },
+    { id: 2, login: 'ivanov', email: 'ivanov@university.edu',fio:'Петров Петр Петрович', kyrs:4,napr:'ЭКОНОМ', role: 'Преподаватель', regDate: '2023-02-20', vycRole:'Преподаватель', }
   ]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [importance, setImportance] = useState('normal');
@@ -250,7 +254,41 @@ const saveChanges = async () => {
     <div className="admin-panel">
       <h1>Панель администрирования ИС ЯГТУ</h1>
       
-      <div className="tabs">
+      {window.location.href.includes("Militaryadmin") ?(
+        <div className="tabs">
+        <button 
+          className={activeTab === 'users' ? 'active' : ''}
+          onClick={() => handleTabClick('users')}
+        >
+          Добавление пользователей
+        </button>
+        <button
+          className={activeTab === 'konstructor' ? 'active' : ''}
+          onClick={() => handleTabClick('konstructor')}
+        >
+          Конструктор
+        </button>
+        <button
+          className={activeTab === 'accounts' ? 'active' : ''}
+          onClick={() => handleTabClick('accounts')}
+        >
+          Управление учетными записями
+        </button>
+        <button
+          className={activeTab === 'messages' ? 'active' : ''}
+          onClick={() => handleTabClick('messages')}
+        >
+          Управление уведомлениями
+        </button>
+        <button
+          className={activeTab === 'material' ? 'active' : ''}
+          onClick={() => handleTabClick('material')}
+        >
+          Материальный учет
+        </button>
+      </div>
+      ):(
+         <div className="tabs">
         <button 
           className={activeTab === 'users' ? 'active' : ''}
           onClick={() => handleTabClick('users')}
@@ -276,7 +314,15 @@ const saveChanges = async () => {
           Управление уведомлениями
         </button>
       </div>
+      )}
+      
 
+      {activeTab === 'material'&&(
+        <MilitaryCenterMaterial/>
+      )}
+      {activeTab === 'konstructor'&&(
+        <PageBuilder/>
+      )}
       {activeTab === 'users' && (
         <div className="user-management">
           <div className="create-user">
@@ -390,6 +436,9 @@ const saveChanges = async () => {
           <th>Направление</th>
           <th>Роль</th>
           <th>Дата регистрации</th>
+          {!window.location.href.includes("Militaryadmin")&&(
+            <th>ВУЦ</th>
+          )}
           <th>Действия</th>
         </tr>
       </thead>
@@ -469,6 +518,22 @@ const saveChanges = async () => {
                 />
               ) : user.regDate}
             </td>
+            {!window.location.href.includes("Militaryadmin")&&(
+           <td>
+           {editingId === user.id ? (
+             <select
+               value={editData.vycRole}
+               onChange={(e) => handleEditChange(e, 'vycRole')}
+               onKeyDown={handleKeyPress}
+             >
+               <option value="Нет">Нет</option>
+               <option value="Студент">Студент</option>
+               <option value="Преподаватель">Преподаватель</option>
+               <option value="Администратор">Администратор</option>
+             </select>
+           ) : user.vycRole}
+         </td>
+          )}
 
             <td>
               {editingId === user.id ? (

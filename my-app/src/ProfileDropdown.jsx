@@ -38,8 +38,8 @@ const ProfileDropdown = () => {
       )}
       {isOpen && (
         <div className="dropdown-menu">
-         <button className='logout-btn'><Link  to="/profile">Личный кабинет</Link></button>
-          <button className="logout-btn" onClick={() => {/* логика выхода */}}>
+         <button className='logout-btn return'><Link  to="/profile">Вернуться в ЯГТУ</Link></button>
+          <button className="logout-btn out" onClick={() => {/* логика выхода */}}>
             Выйти
           </button>
         </div>

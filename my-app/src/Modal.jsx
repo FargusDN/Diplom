@@ -8,6 +8,8 @@ import Schedule from "./Shedule";
 import Zayavky from "./Zayavky";
 import UserSettings from "./UserSettings";
 import Analytics from "./Analytics";
+import MilitaryCenterUserCard from "./MilitaryCenterUserCard";
+import userLogo from "./imgs/userLogo.jpg";
 // Modal.js
 const Modal = ({ isOpen, onClose, title, data }) => {
   const scheduleData = {
@@ -21,6 +23,12 @@ const Modal = ({ isOpen, onClose, title, data }) => {
     ]
             
 }
+const user={
+  name:"Чикалев Илья Максимович",
+  rank:"Рядовой",
+  role:"Студент",
+  photo: userLogo
+};
   if (!isOpen) return null;
 
   const renderContent = () => {
@@ -33,22 +41,7 @@ const Modal = ({ isOpen, onClose, title, data }) => {
       case 'military':
         return (
           <>
-            <div className="mil_shedule">
-            <h3>Расписание нарядов</h3>
-            <div className="content-block">
-            <div className="schedule-items">
-              {data.scheduleData.today.map((item, index) => (
-                <div key={index} className="schedule-item">
-                  <span className="time">{item.time}</span>
-                  <div className="details">
-                    <p className="subject">{item.subject}</p>
-                    <p className="room">{item.room}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-            </div>
+            <MilitaryCenterUserCard isProfile={true} user={user}/>
             <Link className="schedule-button" to="/MilitaryCenter">Войти в ВУЦ</Link>
           </>
         );

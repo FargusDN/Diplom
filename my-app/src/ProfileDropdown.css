@@ -24,6 +24,10 @@
     border-radius: 50%;
     
   }
+  .logout-btn.return a{
+    text-decoration: none;
+    color: black;
+  }
   .profile-icon {
     width: 45px;
     height: 45px;

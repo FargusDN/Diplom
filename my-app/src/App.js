@@ -52,9 +52,10 @@ function App() {
         }/>
         <Route path="/profile" element={<UserProfile/>} />
         <Route path="/AdmissionsPage" element={<AdmissionsPage/>} />
-        <Route path='/MilitaryCenter' element={<MilitaryCenter/>}/>
+        <Route path='/MilitaryCenter' element={<MilitaryCenterMain/>}/>
         <Route path='/shedule' element={<Schedule/>}/>
         <Route path='/admin' element={<AdminPanel/>}/>
+        <Route path='/Militaryadmin' element={<AdminPanel/>}/>
         <Route path='/analiticksStudent' element={<Analytics user={{ role: 'student' }}/>}/>
         <Route path='/analiticksTeacher' element={<Analytics user={{ role: 'teacher' }}/>}/>
         <Route path='/zayavky' element={<Zayavky/>}/>

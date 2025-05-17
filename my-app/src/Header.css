@@ -614,6 +614,7 @@ header{
 }
 .header.MillitaryHeader{
   background: linear-gradient(45deg, #2c4b2d, #1a2f1a);
+  justify-content: center;
 }
 
 
@@ -684,6 +685,7 @@ header{
   height: 100px;
   padding: 5px;
 }
+
 
 
 /* Декоративные элементы */
