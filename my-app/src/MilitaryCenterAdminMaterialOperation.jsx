@@ -17,7 +17,7 @@ const MilitaryCenterAdminMaterialOperation = ()=>{
                         <th>Инвентарь</th>
                         <th>Тип операции</th>
                         <th>Количество</th>
-                        <th>Дата последней проверки</th>
+                        <th>Дата операции</th>
                         <th>Ответственный</th>
                     </tr>
                 </thead>

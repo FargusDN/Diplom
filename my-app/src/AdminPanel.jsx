@@ -4,8 +4,32 @@ import MilitaryCenter from './MilitaryCenter';
 import MTC from './MTC';
 import PageBuilder from './PageBuilder';
 import MilitaryCenterMaterial from './MilitaryCenterMaterial';
+import MilitaryCenterZayavky from './MilitaryCenterZayavky';
 
 const AdminPanel = () => {
+  const [notificationTemplates, setNotificationTemplates] =useState([
+    {
+      id: 1,
+      name: "Экстренная эвакуация",
+      recipientType: "all",
+      importance: "critical",
+      message: "ВНИМАНИЕ! Незамедлительно покиньте здание по маршрутам эвакуации!"
+    },
+    {
+      id: 2,
+      name: "Персональное задание",
+      recipientType: "specific",
+      recipientUser: {
+        id: 34,
+        fio: "Иванов А.С.",
+        email: "ivanov@example.com"
+      },
+      importance: "important",
+      message: "Алексей, ваш отчет по инвентаризации ожидает проверки. Срок сдачи - до пятницы."
+    }
+  ]); // Ваши шаблоны
+const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [activeTab, setActiveTab] = useState('users');
   const [users, setUsers] = useState([
     { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15', vycRole:'Администратор', },
@@ -257,10 +281,10 @@ const saveChanges = async () => {
       {window.location.href.includes("Militaryadmin") ?(
         <div className="tabs">
         <button 
-          className={activeTab === 'users' ? 'active' : ''}
-          onClick={() => handleTabClick('users')}
+          className={activeTab === 'usersMilitary' ? 'active' : ''}
+          onClick={() => handleTabClick('usersMilitary')}
         >
-          Добавление пользователей
+          Управление заявками
         </button>
         <button
           className={activeTab === 'konstructor' ? 'active' : ''}
@@ -275,8 +299,8 @@ const saveChanges = async () => {
           Управление учетными записями
         </button>
         <button
-          className={activeTab === 'messages' ? 'active' : ''}
-          onClick={() => handleTabClick('messages')}
+          className={activeTab === 'Militarymessages' ? 'active' : ''}
+          onClick={() => handleTabClick('Militarymessages')}
         >
           Управление уведомлениями
         </button>
@@ -299,7 +323,7 @@ const saveChanges = async () => {
           className={activeTab === 'backups' ? 'active' : ''}
           onClick={() => handleTabClick('backups')}
         >
-          Резервные копии и мониторинг
+          Управление данными и мониторинг
         </button>
         <button
           className={activeTab === 'accounts' ? 'active' : ''}
@@ -315,8 +339,200 @@ const saveChanges = async () => {
         </button>
       </div>
       )}
-      
 
+
+
+      {activeTab === 'Militarymessages' && (
+  <>
+    {/* Список шаблонов */}
+    <div className='military-message'>
+      <div className='military-message-active'>
+        <h2>Шаблоны</h2>
+    {notificationTemplates.map(template => (
+      <div 
+        key={template.id}
+        className="template-item"
+        onClick={() => {
+          setSelectedTemplate(template);
+          setIsTemplateModalOpen(true);
+        }}
+      >
+        <div className="template-header">
+          <h4>{template.name}</h4>
+          <span className="template-recipient">
+            {template.recipientType === 'all' 
+              ? "Все пользователи" 
+              : template.recipientUser?.fio || "Конкретный пользователь"}
+          </span>
+        </div>
+        <div className="template-preview">
+          <p>{template.message.substring(0, 50)}...</p>
+        </div>
+      </div>
+    ))}
+    
+    {/* Модальное окно */}
+    {isTemplateModalOpen && selectedTemplate && (
+      <div className="modal-overlay" onClick={() => setIsTemplateModalOpen(false)}>
+        <div className="status-modal" onClick={(e) => e.stopPropagation()}>
+          <h2>{selectedTemplate.name}</h2>
+          
+          <div className="template-details">
+            <div className="recipient-info">
+              <strong>Получатель: </strong>
+              {selectedTemplate.recipientType === 'all' 
+                ? "Все пользователи"
+                : selectedTemplate.recipientUser?.fio || "Не выбран"}
+            </div>
+    
+            <div className="template-message">
+              <label>Шаблон сообщения:</label>
+              <textarea
+                value={selectedTemplate.message}
+                readOnly
+                rows="6"
+              />
+            </div>
+          </div>
+    
+          <div className="template-actions">
+            <button 
+              className="send-btn"
+              onClick={() => {
+                alert('Уведомление отправлено');
+                setIsTemplateModalOpen(false);
+              }}
+            >
+              Отправить уведомление
+            </button>
+            
+            <button
+              className="edit-btn"
+              onClick={() => {
+                setRecipientType(selectedTemplate.recipientType);
+                setImportance(selectedTemplate.importance);
+                setMessage(selectedTemplate.message);
+                if (selectedTemplate.recipientUser) {
+                  setSelectedUser(selectedTemplate.recipientUser);
+                }
+                setIsTemplateModalOpen(false);
+              }}
+            >
+              Редактировать
+            </button>
+          </div>
+    
+          <button 
+            className="close-btn_profile"
+            onClick={() => setIsTemplateModalOpen(false)}
+          >
+            &times;
+          </button>
+        </div>
+      </div>
+    )}
+       </div>
+        {/* Правая часть - Создание уведомления */}
+        <div className="notification-panel">
+  <h3>Создать уведомление</h3>
+  <div className="notification-form">
+    
+    {/* Блок выбора получателя */}
+    <div className="recipient-section">
+      <label>Получатель:</label>
+      
+      <div className="recipient-type-selector">
+        <label className="radio-option">
+          <input
+            type="radio"
+            name="recipientType"
+            value="all"
+            checked={recipientType === 'all'}
+            onChange={() => setRecipientType('all')}
+          />
+          <span className="custom-radio"></span>
+          Все пользователи
+        </label>
+        
+        <label className="radio-option">
+          <input
+            type="radio"
+            name="recipientType"
+            value="specific"
+            checked={recipientType === 'specific'}
+            onChange={() => setRecipientType('specific')}
+          />
+          <span className="custom-radio"></span>
+          Конкретный пользователь
+        </label>
+      </div>
+
+      {/* Поле поиска при выборе конкретного пользователя */}
+      {recipientType === 'specific' && (
+        <div className="user-search">
+          <input
+            type="text"
+            placeholder="Поиск пользователя..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="user-search-input"
+          />
+          
+          {/* Выпадающий список с результатами поиска */}
+          {searchResults.length > 0 && (
+            <div className="search-results">
+              {searchResults.map(user => (
+                <div
+                  key={user.id}
+                  className="user-result"
+                  onClick={() => handleUserSelect(user)}
+                >
+                  {user.fio} ({user.email})
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+
+    {/* Остальные элементы формы */}
+    <div className="form-group">
+      <label>Важность:</label>
+      <select
+        value={importance}
+        onChange={(e) => setImportance(e.target.value)}
+      >
+        <option value="normal">Обычное</option>
+        <option value="important">Важное</option>
+        <option value="critical">Экстренное</option>
+      </select>
+    </div>
+
+    <div className="form-group">
+      <label>Сообщение:</label>
+      <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        rows="4"
+      />
+    </div>
+      <div className='message-buttons'>
+      <button className="submit-button" onClick={handleSubmit}>Отправить</button>
+      <button className="save-btn" >Сохранить шаблон</button>
+      </div>
+   
+  </div>
+</div>
+</div>
+</>
+)}
+
+      {activeTab === 'usersMilitary'&&(
+         <div className="user-management">
+          <MilitaryCenterZayavky/>
+       </div>
+      )}
       {activeTab === 'material'&&(
         <MilitaryCenterMaterial/>
       )}
@@ -401,12 +617,22 @@ const saveChanges = async () => {
       )}
       {activeTab === 'backups' &&(
         <div className="backup-management">
-        <h2>Управление резервными копиями</h2>
+          <div className='dataManage'>
+          <div>
+          <h2>Управление резервными копиями</h2>
         <div className="backup-buttons">
           <button className="backup-btn">Создать резервную копию</button>
           <button className="backup-btn">Восстановить из копии</button>
           <button className="backup-btn">Загрузить последнюю копию</button>
         </div>
+          </div>
+          <div>
+          <h2>Управление резервными копиями</h2>
+        <div className="airflow-buttons">
+          <button className="backup-btn">Вход в Apache Airflow</button>
+        </div>
+          </div>
+          </div>
     
         <div className="monitoring">
           <h3>Мониторинг активности сайта</h3>

@@ -2,9 +2,14 @@ import React,{useState} from "react";
 import MilitaryCenterAdminMaterialOperation from "./MilitaryCenterAdminMaterialOperation";
 import "./MilitaryCenterMaterial.css"
 
+import "react-datepicker/dist/react-datepicker.css";
+import MilitaryCenterMaterialAdd from "./MilitaryCenterMaterialAdd";
+
 
 const MilitaryCenterMaterial =()=>{
+ 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddMaterial, setIsAddMaterial] = useState(false);
    const [userName, setUserName] = useState(null);
     const materials=[
         {
@@ -99,9 +104,63 @@ const MilitaryCenterMaterial =()=>{
         ))}
       </tbody>
             </table>
-        
+            <div className="pagination-container">
+  <nav className="military-pagination">
+    <ul className="pagination-list">
+      <li className="page-item disabled">
+        <button className="page-link prev-next" aria-label="Previous">
+          &laquo;
+        </button>
+      </li>
+      <li className="page-item active">
+        <button className="page-link">1</button>
+      </li>
+      <li className="page-item">
+        <button className="page-link">2</button>
+      </li>
+      <li className="page-item">
+        <button className="page-link">3</button>
+      </li>
+      <li className="page-item">
+        <button className="page-link">4</button>
+      </li>
+      <li className="page-item">
+        <button className="page-link">5</button>
+      </li>
+      <li className="page-item">
+        <button className="page-link">...</button>
+      </li>
+      <li className="page-item">
+        <button className="page-link">12</button>
+      </li>
+      <li className="page-item">
+        <button className="page-link prev-next" aria-label="Next">
+          &raquo;
+        </button>
+      </li>
+    </ul>
+  </nav>
+            </div>
+            <button className="submit-btn" onClick={() => setIsAddMaterial(true)}>Добавить запись</button>
 
-            {isModalOpen && (
+
+{isAddMaterial && (
+        <div className="military-modal-overlay" onClick={() => setIsAddMaterial(false)}>
+          <div className="military-modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close-btn" onClick={() => setIsAddMaterial(false)}>&times;</span>
+            <h2>Добавить новую запись</h2>
+              <MilitaryCenterMaterialAdd/>
+              <button type="submit" className="submit-btn">
+                Добавить
+              </button>
+            
+            </div>
+        </div>
+      )}
+
+           
+           
+           {isModalOpen && (
   <div 
     className="military-modal-overlay" 
     onClick={() => setIsModalOpen(false)} // Исправлено здесь

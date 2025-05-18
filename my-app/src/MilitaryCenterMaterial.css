@@ -4,3 +4,73 @@
 .MilitaryMaterial .search-bar{
     width: 50%;
 }
+.pagination-container {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.military-pagination {
+
+  border: 1px solid #5d5d3d;
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.pagination-list {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.page-item {
+  display: flex;
+  align-items: center;
+}
+
+.page-link {
+  background: none;
+  border: 1px solid transparent;
+  color: black;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 40px;
+  text-align: center;
+}
+
+.page-link:hover:not(.active) {
+  background: rgba(90, 86, 50, 0.4);
+  border-color: #5d5d3d;
+}
+
+.page-item.active .page-link {
+  background: #5d5d3d;
+  color: #fff1cc;
+  font-weight: bold;
+  border-color: #8a7b66;
+}
+
+.prev-next {
+  font-weight: bold;
+  background: rgba(90, 86, 50, 0.2);
+}
+
+.page-item.disabled .page-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .page-link {
+    padding: 0.4rem 0.8rem;
+    min-width: 35px;
+  }
+  
+  .pagination-list {
+    gap: 0.3rem;
+  }
+}
