@@ -5,8 +5,10 @@ import MTC from './MTC';
 import PageBuilder from './PageBuilder';
 import MilitaryCenterMaterial from './MilitaryCenterMaterial';
 import MilitaryCenterZayavky from './MilitaryCenterZayavky';
+import MessageCreate from './MessageCreate';
 
 const AdminPanel = () => {
+  const [recipientType, setRecipientType] = useState('all');
   const [notificationTemplates, setNotificationTemplates] =useState([
     {
       id: 1,
@@ -35,7 +37,7 @@ const [selectedTemplate, setSelectedTemplate] = useState(null);
     { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15', vycRole:'Администратор', },
     { id: 2, login: 'ivanov', email: 'ivanov@university.edu',fio:'Петров Петр Петрович', kyrs:4,napr:'ЭКОНОМ', role: 'Преподаватель', regDate: '2023-02-20', vycRole:'Преподаватель', }
   ]);
-  const [recipientType, setRecipientType] = useState('all');
+ 
   const [searchResults, setSearchResults] = useState([
     { id: 1, login: 'admin', email: 'admin@university.edu', fio:'Иванов Иван Иванович', kyrs:2,napr:'ИЦС', role: 'Администратор', regDate: '2023-01-15', vycRole:'Администратор', },
     { id: 2, login: 'ivanov', email: 'ivanov@university.edu',fio:'Петров Петр Петрович', kyrs:4,napr:'ЭКОНОМ', role: 'Преподаватель', regDate: '2023-02-20', vycRole:'Преподаватель', }
@@ -53,11 +55,7 @@ const [selectedTemplate, setSelectedTemplate] = useState(null);
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequestId, setSelectedRequestId] = useState(null);
-  const [notification, setNotification] = useState({
-    recipient: 'all',
-    importance: 'normal',
-    message: ''
-  });
+ 
   const [activeRequests, setActiveRequests] = useState([
     {
       id: 1,
@@ -127,36 +125,8 @@ const [selectedTemplate, setSelectedTemplate] = useState(null);
   }, []);
   
 
-  const handleNotificationSubmit = () => {
-    fetch('/api/notifications', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(notification)
-    }).then(() => {
-      setNotification({
-        recipient: 'all',
-        importance: 'normal',
-        message: ''
-      });
-      alert('Уведомление успешно создано!');
-    });
-  };
-  useEffect(() => {
-    if (recipientType === 'specific' && searchQuery.length > 2) {
-      const searchUsers = async () => {
-        try {
-          const response = await fetch(`/api/users?search=${searchQuery}`);
-          const data = await response.json();
-          setSearchResults(data);
-        } catch (error) {
-          console.error('Ошибка поиска:', error);
-        }
-      };
-      
-      const debounceTimer = setTimeout(searchUsers, 300);
-      return () => clearTimeout(debounceTimer);
-    }
-  }, [searchQuery, recipientType]);
+  
+  
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -237,8 +207,6 @@ const saveChanges = async () => {
     setSearchQuery(user.fio); // Показываем имя в поле поиска
     setSearchResults([]); // Очищаем результаты
   };
-
-  // Отправка уведомления
   const handleSubmit = async () => {
     // Валидация
     if (recipientType === 'specific' && !selectedUser) {
@@ -273,6 +241,8 @@ const saveChanges = async () => {
       alert('Не удалось отправить уведомление');
     }
   };
+  // Отправка уведомления
+ 
 
   return (
     <div className="admin-panel">
@@ -844,94 +814,7 @@ const saveChanges = async () => {
         </div>
       )}
         {/* Правая часть - Создание уведомления */}
-        <div className="notification-panel">
-  <h3>Создать уведомление</h3>
-  <div className="notification-form">
-    
-    {/* Блок выбора получателя */}
-    <div className="recipient-section">
-      <label>Получатель:</label>
-      
-      <div className="recipient-type-selector">
-        <label className="radio-option">
-          <input
-            type="radio"
-            name="recipientType"
-            value="all"
-            checked={recipientType === 'all'}
-            onChange={() => setRecipientType('all')}
-          />
-          <span className="custom-radio"></span>
-          Все пользователи
-        </label>
-        
-        <label className="radio-option">
-          <input
-            type="radio"
-            name="recipientType"
-            value="specific"
-            checked={recipientType === 'specific'}
-            onChange={() => setRecipientType('specific')}
-          />
-          <span className="custom-radio"></span>
-          Конкретный пользователь
-        </label>
-      </div>
-
-      {/* Поле поиска при выборе конкретного пользователя */}
-      {recipientType === 'specific' && (
-        <div className="user-search">
-          <input
-            type="text"
-            placeholder="Поиск пользователя..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="user-search-input"
-          />
-          
-          {/* Выпадающий список с результатами поиска */}
-          {searchResults.length > 0 && (
-            <div className="search-results">
-              {searchResults.map(user => (
-                <div
-                  key={user.id}
-                  className="user-result"
-                  onClick={() => handleUserSelect(user)}
-                >
-                  {user.fio} ({user.email})
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-
-    {/* Остальные элементы формы */}
-    <div className="form-group">
-      <label>Важность:</label>
-      <select
-        value={importance}
-        onChange={(e) => setImportance(e.target.value)}
-      >
-        <option value="normal">Обычное</option>
-        <option value="important">Важное</option>
-        <option value="critical">Экстренное</option>
-      </select>
-    </div>
-
-    <div className="form-group">
-      <label>Сообщение:</label>
-      <textarea
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        rows="4"
-      />
-    </div>
-
-    <button className="submit-button" onClick={handleSubmit}>Отправить</button>
-  </div>
-</div>
+        <MessageCreate/>
       </div>
 )}
     </div>

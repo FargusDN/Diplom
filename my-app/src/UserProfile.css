@@ -1,4 +1,7 @@
 /* StudentProfile.css */
+body{
+  overflow: hidden  !important;
+}
 .info-card {
     background: white;
     border-radius: 12px;

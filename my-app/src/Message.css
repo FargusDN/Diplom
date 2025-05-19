@@ -106,3 +106,177 @@
   
   .status-готова { color: #4CAF50; }
   .status-важное { color: #f44336; }
+  .notification-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .notification-group {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 15px;
+  }
+  
+  .group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .toggle-group-btn {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .group-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .unread {
+    background-color: #f8f9fa;
+    border-left: 3px solid #6c757d;
+  }
+  
+  .unread-dot {
+    width: 8px;
+    height: 8px;
+    background: #6c757d;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .notification-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .notification-item:hover {
+    background: #f1f1f1;
+  }
+  /* Стили для кнопок фильтров */
+.filter-buttons {
+  display: grid;
+    grid-template-columns: 1fr 1fr;
+  margin-bottom: 20px;
+  gap:10px;
+}
+.notification-center h2{
+  text-align: center;
+}
+.group-items{
+  overflow-y: auto;
+  max-height: 235px;
+}
+.filter-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  background: #f0f2f5;
+  color: #65676b;
+}
+
+.filter-buttons button:hover {
+  background: #e4e6eb;
+  transform: translateY(-1px);
+}
+
+.filter-buttons button.active {
+  background: #1877f2;
+  color: white;
+}
+
+/* Стили для кнопок свернуть/развернуть */
+.toggle-group-btn {
+  padding: 6px 12px;
+  border: 1px solid #ced0d4;
+  border-radius: 6px;
+  background: #f5f6f7;
+  color: #4b4f56;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-group-btn:hover {
+  background: #ebedf0;
+  border-color: #ccd0d5;
+}
+
+.toggle-group-btn:active {
+  transform: scale(0.98);
+}
+
+/* Стили для кнопки закрытия в модалке */
+.close-btn_profile {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #606770;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn_profile:hover {
+  color: #444950;
+}
+
+/* Стили для кнопок действий в модалке */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.action-btn.primary {
+  background: #1877f2;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background: #166fe5;
+}
+
+.action-btn.secondary {
+  background: #e4e6eb;
+  color: #050505;
+}
+
+.action-btn.secondary:hover {
+  background: #d8dade;
+}
+
+/* Стили для непрочитанных меток */
+.unread-badge {
+  background: #1877f2;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.8em;
+  margin-left: 8px;
+}

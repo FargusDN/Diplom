@@ -2,74 +2,262 @@ import React from "react";
 import { useState } from 'react';
 import './Message.css'
 
-const Message = () =>{
+const Message = () =>{ 
+  
+  // Добавляем состояние для активного фильтра
+  const user={
+    role:"teacher",
+  }
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      title: 'Ваша заявка готова',
+      type: 'Обычное',
+      isRead: false,
+      details: {
+        type: 'Заявка на справку',
+        date: '2024-03-20',
+        status: 'Готова к выдаче',
+        location: 'Кабинет 304, 3 этаж',
+        comment: 'Не забудьте паспорт для получения'
+      }
+    },
+    {
+      id: 2,
+      title: 'Новое сообщение',
+      type: 'Важное',
+      isRead: false,
+      details: {
+        type: 'Системное уведомление',
+        date: '2024-03-21',
+        status: 'Важное',
+        message: 'Запланированы технические работы 25 марта с 20:00 до 23:00'
+      }
+    },
+    {
+      id: 3,
+      title: 'Уведомление об отчислении',
+      type: 'Экстренное',
+      isRead: false,
+      details: {
+        type: 'Системное уведомление',
+        date: '2024-03-21',
+        status: 'Важное',
+        message: 'Уведомляем Вас о том, что на основании подпункта 3.2.2 Положения об отчислении обучающихся в ФГБОУ ВО «НИУ «МЭИ» по программам бакалавриата, специалитета и магистратуры Вы подлежите отчислению из ФГБОУ ВО «НИУ «МЭИ»'
+      }
+    },
+    {
+      id: 4,
+      title: 'Новое сообщение',
+      type: 'Важное',
+      isRead: false,
+      details: {
+        type: 'Системное уведомление',
+        date: '2024-03-21',
+        status: 'Важное',
+        message: 'Запланированы технические работы 25 марта с 20:00 до 23:00'
+      }
+    },
+    {
+      id: 5,
+      title: 'Новое сообщение',
+      type: 'Важное',
+      isRead: false,
+      details: {
+        type: 'Системное уведомление',
+        date: '2024-03-21',
+        status: 'Важное',
+        message: 'Запланированы технические работы 25 марта с 20:00 до 23:00'
+      }
+    },
+    {
+      id: 6,
+      title: 'Новое сообщение',
+      type: 'Обычное',
+      isRead: false,
+      details: {
+        type: 'Системное уведомление',
+        date: '2024-03-21',
+        status: 'Важное',
+        message: 'Запланированы технические работы 25 марта с 20:00 до 23:00'
+      }
+    },
+    {
+      id: 7,
+      title: 'Новое сообщение',
+      type: 'Обычное',
+      isRead: false,
+      details: {
+        type: 'Системное уведомление',
+        date: '2024-03-21',
+        status: 'Важное',
+        message: 'Запланированы технические работы 25 марта с 20:00 до 23:00'
+      }
+    },
+    {
+      id: 8,
+      title: 'Новое сообщение',
+      type: 'Экстренное',
+      isRead: false,
+      details: {
+        type: 'Системное уведомление',
+        date: '2024-03-21',
+        status: 'Важное',
+        message: 'Запланированы технические работы 25 марта с 20:00 до 23:00'
+      }
+    },
+    {
+      id: 9,
+      title: 'Новое сообщение',
+      type: 'Экстренное',
+      isRead: false,
+      details: {
+        type: 'Системное уведомление',
+        date: '2024-03-21',
+        status: 'Важное',
+        message: 'Запланированы технические работы 25 марта с 20:00 до 23:00'
+      }
+    },
+  ]);
+  const [activeFilter, setActiveFilter] = useState("all");
+  
+  // Вычисляем счетчики для каждой категории
+  const emergencyCount = notifications.filter(n => n.type === 'Экстренное' && !n.isRead).length;
+  const importantCount = notifications.filter(n => n.type === 'Важное' && !n.isRead).length;
+  const normalCount = notifications.filter(n => n.type === 'Обычное' && !n.isRead).length;
+  const allCount = notifications.filter(n => !n.isRead).length;;
+  const [selectedNotification, setSelectedNotification] = useState(null);
+  const [expandedGroups, setExpandedGroups] = useState({
+    emergency: true,
+    important: false, // По умолчанию развернута важная категория
+    normal: false
+  });
+  const handleGroupToggle = (groupKey) => {
+    setExpandedGroups(prev => {
+      const newState = {
+        emergency: false,
+        important: false,
+        normal: false
+      };
+      newState[groupKey] = !prev[groupKey];
+      return newState;
+    });
+  };
 
-    const notifications = [
-        {
-          id: 1,
-          title: 'Ваша заявка готова',
-          type: 'Обычное',
-          details: {
-            type: 'Заявка на справку',
-            date: '2024-03-20',
-            status: 'Готова к выдаче',
-            location: 'Кабинет 304, 3 этаж',
-            comment: 'Не забудьте паспорт для получения'
-          }
-        },
-        {
-          id: 2,
-          title: 'Новое сообщение',
-          type: 'Важное',
-          details: {
-            type: 'Системное уведомление',
-            date: '2024-03-21',
-            status: 'Важное',
-            message: 'Запланированы технические работы 25 марта с 20:00 до 23:00'
-          }
-        },
-        {
-            id: 3,
-            title: 'Уведомление об отчислении',
-            type: 'Экстренное',
-            details: {
-              type: 'Системное уведомление',
-              date: '2024-03-21',
-              status: 'Важное',
-              message: 'Уведомляем Вас о том, что на основании подпункта 3.2.2 Положения об отчислении обучающихся в ФГБОУ ВО «НИУ «МЭИ» по программам бакалавриата, специалитета и магистратуры Вы подлежите отчислению из ФГБОУ ВО «НИУ «МЭИ»'
-            }
-          }
-      ];
-      const [selectedNotification, setSelectedNotification] = useState(null);
+  // Группировка уведомлений
+  const groupedNotifications = notifications.reduce((acc, notification) => {
+    const typeMap = {
+      'Экстренное': 'emergency',
+      'Важное': 'important',
+      'Обычное': 'normal'
+    };
+    const key = typeMap[notification.type];
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(notification);
+    return acc;
+  }, {});
 
-      const handleClose = () => setSelectedNotification(null);
-    return(
-        <div className="notification-center">
-      <h2>Уведомления ({notifications.length})</h2>
-      
-      <div className="notifications-list">
-        {notifications.map(notification => (
-          <div 
-            key={notification.id}
-            className="notification-item"
-            onClick={() => setSelectedNotification(notification)}
-          >
-            {notification.type == "Важное" &&(
-                <div style={{background:'blue'}} className="notification-badge"></div>
-              )}
-                {notification.type == "Экстренное" &&(
-                <div style={{background:'red'}} className="notification-badge"></div>
-              )}
-              {notification.type == "Обычное" &&(
-                <div style={{background:'gray'}} className="notification-badge"></div>
-              )}
-              <div className="notification-content">
-              <h4>{notification.title}</h4>
+  const handleClose = () => setSelectedNotification(null);
+  const getVisibleGroups = () => {
+    if (activeFilter === 'all') return groupedNotifications;
+    return { [activeFilter]: groupedNotifications[activeFilter] || [] };
+  };
+  const toggleGroup = (group) => {
+    setExpandedGroups(prev => ({
+      ...prev,
+      [group]: !prev[group]
+    }));
+  };
+  const GROUP_ORDER = ['emergency', 'important', 'normal'];
+  const markAsRead = (id) => {
+    setNotifications(prev => 
+      prev.map(n => n.id === id ? {...n, isRead: true} : n)
+    );
+  };
+
+  return (
+    <div className="notification-center">
+      <h2>Уведомления</h2>
+      <div className="filter-buttons">
+      <button 
+    className={activeFilter === 'all' ? 'active' : ''}
+    onClick={() => setActiveFilter('all')}
+  >
+    Все
+    <span className="unread-badge">{allCount}</span>
+  </button>
+  <button 
+    className={activeFilter === 'emergency' ? 'active' : ''}
+    onClick={() => setActiveFilter('emergency')}
+  >
+    Экстренные
+    <span className="unread-badge">{emergencyCount}</span>
+  </button>
+  <button
+    className={activeFilter === 'important' ? 'active' : ''}
+    onClick={() => setActiveFilter('important')}
+  >
+    Важные
+    <span className="unread-badge">{importantCount}</span>
+  </button>
+  <button
+    className={activeFilter === 'normal' ? 'active' : ''}
+    onClick={() => setActiveFilter('normal')}
+  >
+    Обычные
+    <span className="unread-badge">{normalCount}</span>
+  </button>
+</div>
+      <div className="notification-groups">
+      {['emergency', 'important', 'normal'] // Желаемый порядок групп
+  .filter(groupKey => getVisibleGroups().hasOwnProperty(groupKey))
+  .map(groupKey => {
+    const items = getVisibleGroups()[groupKey];
+    const groupNames = {
+      emergency: 'Экстренные',
+      important: 'Важные',
+      normal: 'Обычные'
+    };
+          
+          return items.length > 0 && (
+            <div key={groupKey} className="notification-group">
+            <div className="group-header">
+              <h3>{groupNames[groupKey]} ({items.length})</h3>
+              <button
+                onClick={() => handleGroupToggle(groupKey)}
+                className="toggle-group-btn"
+              >
+                {expandedGroups[groupKey] ? 'Свернуть' : 'Развернуть'}
+              </button>
             </div>
-          </div>
-        ))}
+              
+              {expandedGroups[groupKey] && (
+                <div className="group-items">
+                  {items.map(notification => (
+                    <div
+                      key={notification.id}
+                      className={`notification-item ${!notification.isRead ? 'unread' : ''}`}
+                      onClick={() => {
+                        setSelectedNotification(notification);
+                        markAsRead(notification.id);
+                      }}
+                    >
+                      {!notification.isRead && <div className="unread-dot"></div>}
+                      <div className="notification-content">
+                        <h4>{notification.title}</h4>
+                        <span className="notification-date">
+                          {notification.details.date}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
-
+        <button className="submit-btn">Создать уведомление</button>
       {selectedNotification && (
         <div className="mes-modal-overlay" onClick={handleClose}>
           <div className="notification-modal" onClick={(e) => e.stopPropagation()}>
