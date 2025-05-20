@@ -44,6 +44,16 @@ text-transform: uppercase;
     flex-direction: column;
     gap: 20px;
 }
+.LoginForm_form_fields_field.password{
+  position: relative;
+
+}
+.showPass{
+  position: absolute;
+  right: 10px;
+  top:15%;
+  cursor: pointer;
+}
 .LoginForm_form_fields_field, .LoginForm_form_checkbox{
     display: flex;
     align-items: center;
@@ -120,7 +130,7 @@ font-size: 16px;
     opacity: 0.9;
     border-color: #bbc1e1;
   }
-  .LoginForm_form_fields_field input[type="email"] {
+  .LoginForm_form_fields_field input[type="text"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 100%;
@@ -372,4 +382,156 @@ font-size: 16px;
     justify-content: space-evenly; /* Равномерное распределение */
     height: 400px; /* Фиксированная высота для точности */
 }
+.blocked-timer {
+  color: #dc3545;
+  font-size: 0.9em;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+}
 
+.LoginForm_form_button_submit:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.LoginForm_form_fields_field input:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+/* MFA стили */
+.mfa-container {
+  text-align: center;
+  padding: 20px;
+  background-color: white;
+}
+
+.mfa-container h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.mfa-container p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.code-input {
+  width: 45px;
+  height: 60px;
+  text-align: center;
+  font-size: 24px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+.code-input:focus {
+  border-color: #2196F3;
+  outline: none;
+}
+
+.mfa-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.mfa-link {
+  background: none;
+  border: none;
+  color: #2196F3;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.mfa-link:hover {
+  text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .code-input {
+    width: 35px;
+    height: 50px;
+    font-size: 20px;
+  }
+}
+/* Стили для формы восстановления пароля */
+.password-reset-form {
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: white;
+}
+
+.password-reset-form h2 {
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #666;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.primary-button {
+  background: #2196F3;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.secondary-button {
+  background: #f0f0f0;
+  color: #333;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.password-reset-link {
+  background: none;
+  border: none;
+  color: #2196F3;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+}
+
+.password-reset-link:hover {
+  text-decoration: underline;
+}

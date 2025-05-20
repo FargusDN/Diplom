@@ -1,12 +1,13 @@
 import React from "react";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import './Message.css'
+import MessageCreate from "./MessageCreate";
 
 const Message = () =>{ 
   
   // Добавляем состояние для активного фильтра
   const user={
-    role:"teacher",
+    role:"user",
   }
   const [notifications, setNotifications] = useState([
     {
@@ -120,7 +121,7 @@ const Message = () =>{
     },
   ]);
   const [activeFilter, setActiveFilter] = useState("all");
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // Вычисляем счетчики для каждой категории
   const emergencyCount = notifications.filter(n => n.type === 'Экстренное' && !n.isRead).length;
   const importantCount = notifications.filter(n => n.type === 'Важное' && !n.isRead).length;
@@ -174,6 +175,13 @@ const Message = () =>{
       prev.map(n => n.id === id ? {...n, isRead: true} : n)
     );
   };
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }, [isModalOpen]);
 
   return (
     <div className="notification-center">
@@ -257,7 +265,27 @@ const Message = () =>{
           );
         })}
       </div>
-        <button className="submit-btn">Создать уведомление</button>
+      {user.role==="teacher"&&(
+        <button className="submit-btn" onClick={()=>setIsModalOpen(true)}>Создать уведомление</button>
+      )}
+        
+        {isModalOpen && (
+        <div className="modal-overlay_message">
+          <div className="status-modal_message">
+            <h2>Создание уведомления</h2>
+            
+
+            <button 
+              className="close-btn_profile"
+              onClick={() => setIsModalOpen(false)}
+            >
+              &times;
+            </button>
+            <MessageCreate/>
+          </div>
+        </div>
+      )}
+
       {selectedNotification && (
         <div className="mes-modal-overlay" onClick={handleClose}>
           <div className="notification-modal" onClick={(e) => e.stopPropagation()}>
