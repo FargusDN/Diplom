@@ -52,7 +52,7 @@ function App() {
         }/>
         <Route path="/profile" element={<UserProfile/>} />
         <Route path="/AdmissionsPage" element={<AdmissionsPage/>} />
-        <Route path='/MilitaryCenter' element={<MilitaryCenterMain/>}/>
+        <Route path='/MilitaryCenter' element={<MTC/>}/>
         <Route path='/shedule' element={<Schedule/>}/>
         <Route path='/admin' element={<AdminPanel/>}/>
         <Route path='/Militaryadmin' element={<AdminPanel/>}/>
