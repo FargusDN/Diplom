@@ -6,6 +6,8 @@ import PageBuilder from './PageBuilder';
 import MilitaryCenterMaterial from './MilitaryCenterMaterial';
 import MilitaryCenterZayavky from './MilitaryCenterZayavky';
 import MessageCreate from './MessageCreate';
+import SubjectAnalytics from './SubjectAnalytics';
+import AnaliticsTest from './AnaliticsTest';
 
 const AdminPanel = () => {
   const [recipientType, setRecipientType] = useState('all');
@@ -246,7 +248,8 @@ const saveChanges = async () => {
 
   return (
     <div className="admin-panel">
-      <h1>Панель администрирования ИС ЯГТУ</h1>
+      {window.location.href.includes("Militaryadmin") ?(<h1>Панель администрирования ВУЦ</h1>):(<h1>Панель администрирования ИС ЯГТУ</h1>)}
+      
       
       {window.location.href.includes("Militaryadmin") ?(
         <div className="tabs">
@@ -517,7 +520,7 @@ const saveChanges = async () => {
         <div className="monitoring">
           <h3>Мониторинг активности сайта</h3>
           <div className="monitoring-graph">
-            График посещаемости за последние 30 дней
+          <AnaliticsTest/>
           </div>
         </div>
       </div>
@@ -649,6 +652,7 @@ const saveChanges = async () => {
                   <button className='action-btn edit' onClick={() => startEditing(user)}>Редактировать</button>
                   <button className='action-btn reset' onClick={() => handleResetPassword(user.id)}>Сбросить пароль</button>
                   <button className='action-btn delete' onClick={() => handleDelete(user.id)}>Удалить</button>
+                  {window.location.href.includes("Militaryadmin")&&(<button className='action-btn save'>Назначить дежурным</button>)}
                 </>
               )}
             </td>

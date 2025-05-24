@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import DatePicker from "react-datepicker";
 import { ru } from 'date-fns/locale';
+import "./MilitaryCenterMaterialAdd.css";
 
 
 const MilitaryCenterMaterialAdd = ()=>{
@@ -10,18 +11,29 @@ const MilitaryCenterMaterialAdd = ()=>{
     const [date, setDate] = useState(null);
     const [user, setUser] = useState(null);
     return(
-        <table>
+        <table className="addMaterial">
                 <thead>
                     <tr>
+                        <th>Склад</th>
                         <th>Название</th>
                         <th>Категория</th>
                         <th>Количество</th>
                         <th>Ответственный</th>
-                        <th>Дата последней проверки</th>
+                        <th>Дата</th>
                     </tr>
                 </thead>
                 <tbody>
                 <tr>
+                <td>
+                        <select
+                >
+                  <option value="Склад 1">Склад 1</option>
+                  <option value="Склад 2">Склад 2</option>
+                  <option value="Склад 3">Склад 3</option>
+                </select>
+                        </td>
+                
+                       
                         <td>
                             <input type="text" value={nameValue} onChange={(e)=>setNameValue(e.target.value)}/>
                         </td>
@@ -49,7 +61,7 @@ const MilitaryCenterMaterialAdd = ()=>{
                 </select>
                     </td>
                     <td>
-                        <DatePicker selected={date}
+                        <DatePicker selected={new Date()}
       onChange={(date) => setDate(date)}
       locale={ru}
       dateFormat="dd.MM.yyyy"/>

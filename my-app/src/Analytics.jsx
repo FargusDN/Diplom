@@ -6,8 +6,9 @@ import MonthSlider from './MonthSlider';
 
 const Analytics = ({ user }) => {
   // Состояния
+  const [lastGrades, setLastGrades] = useState([])
   const [hoveredGrade, setHoveredGrade] = useState(null);
-
+  const [isChanged, setIsChange] = useState(false);
   // Генерируем уникальный ключ для каждой ячейки
   const getGradeKey = (studentId, date) => `${studentId}-${date}`;
   const [isOpen, setIsOpen] = useState(false)
@@ -171,6 +172,7 @@ const Analytics = ({ user }) => {
   };
 
   const addNewGrade = (studentId, date) => {
+    setIsChange(true);
     setGrades(prev => prev.map(student => {
       if (student.id === studentId) {
         const hasGrade = student.grades.some(g => g.date === date);
@@ -188,7 +190,7 @@ const Analytics = ({ user }) => {
   return (
     <div className="analytics-container">
       <MonthSlider/>
-      {user.role === 'Преподаватель' ? (
+      {user.role === 'teacher' ? (
         <div className="teacher-view">
           <div className="filters">
             <select
@@ -288,8 +290,15 @@ const Analytics = ({ user }) => {
                   ))}
                 </tbody>
               </table>
+              
             </div>
           )}
+          {isChanged &&(
+                <div>
+                  <button className='action-btn save'  onClick={()=>{setIsChange(false);alert("Оценка успешно сохранена")}}>Сохранить</button>
+                  <button className='action-btn delete' onClick={()=>setIsChange(false)}>Отменить</button>
+                </div>
+              )}
         </div>
       ) : (
         <div className="student-view">
