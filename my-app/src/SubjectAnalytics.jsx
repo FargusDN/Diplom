@@ -195,11 +195,9 @@ const SubjectAnalytics = ({ data, role, groups, subjects = [] }) => {
       {role === 'student' && (
         <div className="groups-column">
           <select className='timeInterval' value={timeInterval} onChange={(e) => {setTimeInterval(e.target.value)}}>
-            <option value="">Выберите временной интервал</option>
             <option value="month">Месяца</option>
             <option value="semestrs">Семестры</option>
           </select>
-          {timeInterval=='month' &&(<MonthSlider/>)}
           <div 
             className="group-selector" 
             onClick={() => {setShowSubjectList(!showSubjectList)}}

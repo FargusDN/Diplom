@@ -14,8 +14,8 @@ const MilitaryCenterMainDutyOfficer = () =>{
             </div>
             <div>
                 <h4>Информация о дежурном</h4>
-                <p>Прапорщик</p>
-                <p>Шматко В. В.</p>
+                <p>Полковник ВКС РФ</p>
+                <p>Татаров М.О.</p>
             </div>
         </div>
     );

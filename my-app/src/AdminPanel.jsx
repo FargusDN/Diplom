@@ -473,7 +473,7 @@ const saveChanges = async () => {
                 </select>
               </div>
 
-              <button type="submit" className="create-btn">
+              <button type="submit" className="create-btn" onClick={()=>alert("Новый пользователь "+newUser.login+" создан")}>
                 Создать пользователя
               </button>
             </form>
@@ -504,9 +504,9 @@ const saveChanges = async () => {
           <div>
           <h2>Управление резервными копиями</h2>
         <div className="backup-buttons">
-          <button className="backup-btn">Создать резервную копию</button>
-          <button className="backup-btn">Восстановить из копии</button>
-          <button className="backup-btn">Загрузить последнюю копию</button>
+          <button className="backup-btn" onClick={()=>alert("Создана резервная копия от "+new Date())}>Создать резервную копию</button>
+          <button className="backup-btn" onClick={()=>alert("Восстановление прошло успешно")}>Восстановить из копии</button>
+          <button className="backup-btn" onClick={()=>alert("Загруженные данные обновлены")}>Загрузить последнюю копию</button>
         </div>
           </div>
           <div>
@@ -697,6 +697,21 @@ const saveChanges = async () => {
                 </div>
               </div>
             ))}
+            <div 
+                className={`request-item`}
+              >
+                <div className="request-header">
+                  <span>#3</span>
+                  <span className={`status-badge`}>
+                    В РАБОТЕ
+                  </span>
+                </div>
+                <div className="request-info">
+                  <p>Маслов Данила Сергеевич</p>
+                  <p>Сброс пароля</p>
+                  <small>{new Date().toLocaleDateString()}</small>
+                </div>
+              </div>
           </div>
           
           

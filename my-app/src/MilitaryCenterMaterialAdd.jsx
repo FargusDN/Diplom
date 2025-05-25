@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import DatePicker from "react-datepicker";
 import { ru } from 'date-fns/locale';
 import "./MilitaryCenterMaterialAdd.css";
+import "./MilitaryCenterMain.css"
 
 
 const MilitaryCenterMaterialAdd = ()=>{

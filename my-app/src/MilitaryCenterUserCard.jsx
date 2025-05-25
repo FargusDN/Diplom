@@ -29,7 +29,7 @@ const MilitaryCenterUserCard = ({isProfile,user})=>{
               {user.role == "Студент" &&(
                   <button className="btn" onClick={openMilitaryModal}>Электронный журнал</button>
               )}
-              {user.role == "Админ" &&(
+              {user.role == "Администратор" &&(
                   <div>
                       <button className="btn" onClick={openMilitaryModal}>Электронный журнал</button>
                       <Link to="/Militaryadmin" className="btn">Администрирование</Link>

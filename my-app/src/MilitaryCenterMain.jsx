@@ -18,9 +18,9 @@ const MilitaryCenterMain = ()=>{
   
   
     const user={
-      name:"Чикалев Илья Максимович",
+      name:"Иванов Иван Иванович",
       rank:"Рядовой",
-      role:"Студент",
+      role:"Администратор",
       photo: userLogo
     };
 

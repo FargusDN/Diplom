@@ -150,7 +150,7 @@ const MilitaryCenterMaterial =()=>{
             <span className="close-btn" onClick={() => setIsAddMaterial(false)}>&times;</span>
             <h2>Добавить новую запись</h2>
               <MilitaryCenterMaterialAdd/>
-              <button type="submit" className="submit-btn">
+              <button type="submit" className="submit-btn" onClick={()=>{alert("Новая запись добавлена");setIsAddMaterial(false); }} >
                 Добавить
               </button>
             
@@ -176,6 +176,7 @@ const MilitaryCenterMaterial =()=>{
         ×
       </button>
       <MilitaryCenterAdminMaterialOperation/>
+      <button className="submit-btn" onClick={()=>{alert("Успешно");setIsModalOpen(false); }}>Провести операцию</button>
     </div>
   </div>
 )}

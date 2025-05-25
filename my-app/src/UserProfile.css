@@ -2,6 +2,11 @@
 body{
   overflow: hidden  !important;
 }
+.student-photo{
+  background-repeat: no-repeat;
+    height: 300px;
+    width: 300px;
+}
 .info-card {
     background: white;
     border-radius: 12px;

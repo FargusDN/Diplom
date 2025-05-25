@@ -12,7 +12,7 @@ const Login = ({ onClose }) => {
     const [timeLeft, setTimeLeft] = useState(600);
     const [isMfaStage, setIsMfaStage] = useState(false);
     const [code, setCode] = useState(Array(6).fill(''));
-    const [userEmail, setUserEmail] = useState('user@example.com');
+    const [userEmail, setUserEmail] = useState('omichika200@gmail.com');
     const inputsRef = useRef([]);
     const [isShow, setIsShow] = useState(false);
 
@@ -100,6 +100,7 @@ const Login = ({ onClose }) => {
 
     const handleMfaSubmit = async () => {
         const fullCode = code.join('');
+        auntificate();
         // Проверка кода на бэкенде
         console.log('MFA Code:', fullCode);
         onClose();
@@ -117,6 +118,10 @@ const Login = ({ onClose }) => {
             setCurrentForm('login');
         }
     };
+    const auntificate = ()=>{
+        if(username == "test" && password=="test123")
+            window.location = "http://localhost:3000/profile"
+    }
 
     return (
         <div className="login_modal-content" onClick={(e) => e.stopPropagation()}>
@@ -243,8 +248,11 @@ const Login = ({ onClose }) => {
                             className='LoginForm_form_button_submit' 
                             type='submit'
                             disabled={isBlocked}
+                            // onClick={()=>alert("Ошибка авторизации")}
+                            onClick={auntificate}
                         >
                             Вход
+                            
                         </button>
                         {isBlocked && (
                             <div className='blocked-timer'>

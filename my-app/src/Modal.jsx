@@ -49,7 +49,7 @@ const user={
       case 'education':
         return (
           <div>
-                      <Analytics user={{ role: 'student' }}/>
+                      <Analytics user={{ role: 'teacher' }}/>
                       <Link to="/analitic">Подробнее</Link>
           </div>
 

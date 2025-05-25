@@ -68,6 +68,7 @@ const MilitaryCenterAdminMaterialOperation = ()=>{
                     </tr>
                 </tbody>
             </table>
+           
     );
 }
 export default MilitaryCenterAdminMaterialOperation;

@@ -29,7 +29,7 @@ const subject = [
 const AnaliticsTest = () => {
   return (
     <SubjectAnalytics
-      role="student"
+      role="teacher"
       data={demoData}
       groups={groups}
       subjects={subject}

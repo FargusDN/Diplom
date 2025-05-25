@@ -43,6 +43,9 @@
 .userMilitaryCard .btn:focus-visible {
 	box-shadow: 0 0 0 3px lightskyblue;
 }
+.btn{
+  text-align: center;
+}
 .userMilitaryCard .btn:hover {
 	box-shadow: 0 1px 1px 0  #cfcfcf, 0 2px 5px 0  #cfcfcf;
 }

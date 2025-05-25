@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../src/Zayavky.css"
 import { useState } from 'react';
 
@@ -77,9 +77,17 @@ const Zayavky = ()=>{
         status: 'Отклонена',
         rejectionReason: 'Неправильное заполнение'
       },
+      {
+        id:3,
+        date: '25.05.2025',
+        title: 'Заявка на смену пароля',
+        type: 'Техническая',
+        department: 'Управление по безопасности',
+        status: 'В работе',
+      }
       // ... остальные заявки
     ]);
-  
+
     const handleCloseModal = () => setSelectedApp(null);
   
     return (
@@ -115,6 +123,7 @@ const Zayavky = ()=>{
           <div className="modal-overlay" onClick={handleCloseModal}>
             <div className="application-modal" onClick={(e) => e.stopPropagation()}>
               <button 
+                id="closebtn"
                 className="close-btn"
                 onClick={handleCloseModal}
               >
@@ -167,6 +176,7 @@ const Zayavky = ()=>{
         <div className="modal-overlay" onClick={() => setShowAddForm(false)}>
           <div className="application-form" onClick={(e) => e.stopPropagation()}>
             <button 
+              
               className="close-btn"
               onClick={() => setShowAddForm(false)}
             >
@@ -220,7 +230,7 @@ const Zayavky = ()=>{
                 </div>
               )}
 
-              <button type="submit" className="submit-button">
+              <button type="submit" className="submit-button" onClick={()=>{alert("Заявка создана");}}>
                 Создать заявку
               </button>
             </form>

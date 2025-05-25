@@ -280,7 +280,7 @@ const MessageCreate=()=>{
       />
     </div>
 
-    <button className="submit-button" onClick={handleSubmit}>Отправить</button>
+    <button className="submit-button" onClick={()=>alert("Уведомление отправлено")}>Отправить</button>
   </div>
 </div>
 )}
