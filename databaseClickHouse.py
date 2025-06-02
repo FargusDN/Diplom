@@ -22,7 +22,4 @@ AsyncSessionLocal = sessionmaker(
 
 async def get_db_ClcikHouse():
     async with AsyncSessionLocal() as dbClick:
-        try:
             yield dbClick
-        finally:
-            await dbClick.close()

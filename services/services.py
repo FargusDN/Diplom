@@ -87,7 +87,7 @@ async def create_studyGroup(data: StudyGroupAddSchema, db: AsyncSession = Depend
     return {"status": "ok", "id": new_studyGroup.group_id}
 
 
-async def get_studyGroup(db,id):
+async def get_studyGroup_by_name(db,group_name):
     query = (
         select(
             StudyGroup.group_id,
@@ -100,7 +100,7 @@ async def get_studyGroup(db,id):
         )
         .join(Faculties, StudyGroup.faculty_id == Faculties.faculty_id, isouter=True)
         .join(Institutes, Faculties.institute_id == Institutes.institute_id, isouter=True)
-        .filter(StudyGroup.group_id == id)
+        .filter(StudyGroup.group_name == group_name)
     )
     result = await db.execute(query)
     studyGroups = result.all()
