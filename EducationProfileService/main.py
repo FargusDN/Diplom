@@ -91,7 +91,19 @@ async def publish_event(event_type: str, event_data: dict):
     except Exception as e:
         print(f"Ошибка отправки события: {e}")
         return False
+async def subscribe_to_notifications():
+    global rabbit_connection, rabbit_channel
+    channel = await rabbit_connection.channel()
+    queue = await channel.declare_queue("notification_service", durable=True)
 
+    async def callback(message: aio_pika.IncomingMessage):
+        async with message.process():
+            data = json.loads(message.body.decode())
+            print(f"Получено событие: {data}")
+            get_notification()
+
+    await queue.consume(callback)
+    print(f"Подписка на очередь 'notification_service' активирована.")
 # Функция для получения подключения к ClickHouse
 def get_clickhouse_conn():
     return Client(
@@ -269,3 +281,29 @@ async def getAttendance(
     if discipline_name is not None:
         filters['discipline_name'] = discipline_name
     return await clickhouseService.getAttendance(db,**filters)
+
+@app.get("/getTempMarks/{login_user}")
+async def get_tempMarks(login_user: str, db: AsyncSession = Depends(get_db_ClcikHouse)):
+    return await clickhouseService.get_tempMarks(login_user, db)
+async def callback(message: aio_pika.IncomingMessage, db: AsyncSession = Depends(get_db)):
+    async with message.process():
+        data = json.loads(message.body.decode())
+        event_type = data.get("event_type")
+
+        if event_type == "notification_created":
+            notification_id = data.get("data", {}).get("id")
+            user_login = data.get("data", {}).get("login_user")
+
+            user = await services.get_user(user_login, db)
+            if user:
+                print(f"Создано новое уведомление для пользователя: {user_login}, ID уведомления: {notification_id}")
+                await send_notification(user.email, notification_id)
+            else:
+                print(f"Пользователь с логином {user_login} не найден.")
+        else:
+            print(f"Неизвестный тип события: {event_type}")
+            # Логируйте или обрабатывайте неизвестные события при необходимости
+
+async def send_notification(email: str, notification_id: int):
+    # Здесь добавьте код для отправки уведомления (например, отправка email)
+    print(f"Уведомление отправлено на {email} с ID уведомления: {notification_id}")

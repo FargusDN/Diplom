@@ -250,3 +250,10 @@ async def get_UserInfo(login_user,db):
         }
         for usinf in userInfo
     ]
+
+
+async def get_user(user_login, db):
+    result = await db.execute(select(User).filter(User.login_user))
+    resultmodel = result.scalars()
+    user = {"id": resultmodel.login_user, "login": resultmodel.login_user}
+    return user

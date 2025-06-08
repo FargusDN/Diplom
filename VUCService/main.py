@@ -47,6 +47,13 @@ def get_users(db: Session = Depends(get_db)):
     except Exception as e:
         print(f"Database error: {str(e)}")
         raise HTTPException(status_code=500, detail="Database error")
+async def get_user(user_login, db):
+    try:
+        users = db.query(User).filter(user_login).all()
+        return user
+    except Exception as e:
+        print(f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Database error")
 
 
 @app.post("/users", response_model=UserResponse)
@@ -333,3 +340,25 @@ def perform_operation(operation: MaterialOperation, db: Session = Depends(get_db
         except Exception as e:
             db.rollback()
             raise HTTPException(status_code=500, detail=f"Ошибка при добавлении материала: {str(e)}")
+async def callback(message: aio_pika.IncomingMessage, db: AsyncSession = Depends(get_db)):
+    async with message.process():
+        data = json.loads(message.body.decode())
+        event_type = data.get("event_type")
+
+        if event_type == "notification_created":
+            notification_id = data.get("data", {}).get("id")
+            user_login = data.get("data", {}).get("login_user")
+
+            user = await get_user(user_login, db)
+            if user:
+                print(f"Создано новое уведомление для пользователя: {user_login}, ID уведомления: {notification_id}")
+                await send_notification(user.email, notification_id)
+            else:
+                print(f"Пользователь с логином {user_login} не найден.")
+        else:
+            print(f"Неизвестный тип события: {event_type}")
+            # Логируйте или обрабатывайте неизвестные события при необходимости
+
+async def send_notification(email: str, notification_id: int):
+    # Здесь добавьте код для отправки уведомления (например, отправка email)
+    print(f"Уведомление отправлено на {email} с ID уведомления: {notification_id}")
