@@ -61,9 +61,9 @@ async def lifespan(app: FastAPI):
                 "x-max-length": 10000
             }
         )
-        logger.info("✅ Подключено к RabbitMQ")
+        logger.info("Подключено к RabbitMQ")
     except Exception as e:
-        logger.error(f"❌ Ошибка подключения к RabbitMQ: {e}")
+        logger.error(f"Ошибка подключения к RabbitMQ: {e}")
         rabbit_connection = None
         rabbit_channel = None
 
@@ -72,7 +72,7 @@ async def lifespan(app: FastAPI):
     # Закрытие соединения при остановке
     if rabbit_connection:
         await rabbit_connection.close()
-        logger.info("🔌 Соединение с RabbitMQ закрыто")
+        logger.info("Соединение с RabbitMQ закрыто")
 
 
 app = FastAPI(lifespan=lifespan)
@@ -149,10 +149,10 @@ async def publish_event(event_type: str, data: dict):
             ),
             routing_key=QUEUE_NAME
         )
-        logger.info(f"📤 Событие '{event_type}' отправлено в RabbitMQ")
+        logger.info(f"Событие '{event_type}' отправлено в RabbitMQ")
         return True
     except Exception as e:
-        logger.error(f"🚨 Ошибка отправки сообщения: {e}")
+        logger.error(f"Ошибка отправки сообщения: {e}")
         return False
 
 
