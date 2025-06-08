@@ -1,0 +1,290 @@
+/* Analytics.css */
+.analytics-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+  }
+  
+  select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 200px;
+  }
+  
+  .journal-table {
+    overflow-x: auto;
+    position: relative;
+  }
+  .fixed-column{
+    position: sticky;
+  z-index: 2;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: none;
+  }
+  tr{
+   background: none; 
+  }
+  th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 5px 0;
+    
+  }
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+  input[type="number"] {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: center;
+    -webkit-appearance: none; 
+    margin: 0;
+    -moz-appearance: textfield;
+  }
+  
+  .add-grade-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .add-grade-btn:hover {
+    background: #45a049;
+  }
+  
+  .date-header {
+    position: relative;
+  }
+  
+  .edit-date-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .student-view {
+    margin: 20px auto;
+  }
+  
+  .stats-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .grade-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .grade-item .date {
+    color: #666;
+  }
+  
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+    }
+    
+    select {
+      width: 100%;
+    }
+    
+    .react-datepicker-wrapper {
+      width: 100%;
+    }
+  }
+
+  .fixed-first {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    
+  }
+ .fixed-firsttd{
+  background: white;
+ }
+ td p{
+  padding: 0;
+  margin: 0;
+ }
+  .fixed-last th  {
+    white-space: wrap;
+    flex-basis: 100px;
+    height: 37px;
+  }
+  .fixed-last {
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    color: black;
+    padding: 0;
+    justify-content: flex-end;
+    max-width: 200px;
+  }
+  .scrollable-table tbody .fixed-first {
+    z-index: 1;
+    background-color: white;
+  }
+  
+  .scrollable-table tbody .fixed-penultimate,
+  .scrollable-table tbody .fixed-last {
+    background-color: white;
+    border-left: 1px solid #ddd;
+  }
+  @media (max-width: 768px) {
+    .fixed-penultimate { right: 80px; min-width: 80px; }
+    .fixed-last { min-width: 115px; }
+  }
+  .react-datepicker-popper{
+    z-index: 1000;
+  }
+  .add-lesson-date{
+    position: relative;
+  }
+  .addNewLessonModal{
+    background: white;
+    border: 1px solid black;
+    border-radius: 15px;
+    position: absolute;
+    z-index: 2000;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height:200px ;
+    height: 70%;
+    left: 40%;
+    top: 55%;
+  }
+  .react-datepicker__input-container input{
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+  }
+  .addLessonBtn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  .addLessonBtn{
+    padding: 10px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    display: inline-block;
+    border-radius: 100px;
+    transition: all .2s;
+
+    cursor: pointer;
+  }
+  .addLessonHeader{
+    position: relative;
+    width: 100%;
+  }
+
+  .grade-input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .grade-placeholder {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .empty-grade {
+    width: 20px;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    transition: all 0.5s ease;
+  }
+  .theadLast{
+    width:115px;
+    height: auto;
+    transition: word-break 1.4s, width 1.4s;
+    word-break:break-all;
+  }
+  .add-lesson-date button{
+    outline:none;
+  height: 40px;
+  text-align: center;
+  width: 130px;
+  border-radius:40px;
+  background: #fff;
+  border: 2px solid green;
+  color:green;
+  letter-spacing:1px;
+  text-shadow:0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  }
+  .add-lesson-date button:hover{
+    color:white;
+    background: green;
+  }
+  @media (max-width: 768px) {
+    .fixed-last{
+      position: static;
+    }
+    .theadLast{
+      height: auto;
+      width: auto;
+      word-break:break-all;
+      transition: width 1.4s;
+      min-width: 40px;
+    }
+    .month-slider{
+      gap: 0;
+    }
+    .month-container{
+      gap: 0;
+    }
+    .adjacent-month{
+      min-width: 0;
+      padding: 15px;
+    }
+    .addNewLessonModal{
+      left: 15%;
+    }
+  }
+  

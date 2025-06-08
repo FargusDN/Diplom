@@ -1,0 +1,88 @@
+.MilitaryCenter{
+    background: linear-gradient(
+    45deg,
+    #1a2f1a 0%,
+    #3d4a2d 25%,
+    #5d5d3d 50%,
+    #3a2b1a 75%,
+    #2a2a2a 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+.schedules{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.MilitaryNav{
+  position: fixed;
+    right: 0;
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    margin: 33px 15px;
+}
+.arrowbtn {
+  width: 100px;
+  height: 100px;
+  background: #111;
+  border: 2px solid #1a2f1a;
+  border-radius: 100px;
+  color: #1d311d;
+  cursor: pointer;
+  line-height: 100px;
+  margin-left: -50px;
+  transition: all 0.25s ease-in-out;
+}
+.arrowbtn:hover {
+  background: white;
+  border-color: white;
+  color: #111;
+}
+.arrowbtn:after {
+  position: absolute;
+  display: inline-block;
+  content: "";
+  width: 25px;
+  height: 25px;
+  top: 50%;
+  left: 50%;
+}
+.arrowbtn-up {
+  top: 20px;
+  position: relative;
+}
+.arrowbtn-up:after {
+  bottom: 28%;
+  left: 48%;
+  margin-left: -12.5px;
+  margin-top: -6.25px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+  transform: rotateZ(45deg);
+}
+.arrowbtn-down {
+  bottom: 20px;
+  position: relative;
+}
+.arrowbtn-down:after {
+  margin-left: -12.5px;
+  margin-top: -18.75px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  transform: rotateZ(45deg);
+}
+@media (max-width: 1440px) {
+    .schedules{
+        display: flex;
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,170 @@
+.applications-container{
+    overflow-x: auto;
+}
+.applications-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .applications-table th,
+  .applications-table td {
+    border: 1px solid #e0e0e0;
+    text-align: left;
+    min-width: 0;
+    padding: 5px;
+  }
+  
+  .applications-table th {
+    font-weight: 600;
+  }
+  
+  .applications-table tr:hover {
+    cursor: pointer;
+  }
+  
+  .status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+  }
+  
+  .status-создана { background: #fff3cd; color: #856404; }
+  .status-в-рассмотрении { background: #cce5ff; color: #004085; }
+  .status-готова { background: #d4edda; color: #155724; }
+  .status-отклонена { background: #f8d7da; color: #721c24; }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .application-modal {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    animation: modalSlide 0.3s ease-out;
+  }
+  
+  @keyframes modalSlide {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+  }
+  
+  .close-btn:hover {
+    color: #333;
+  }
+  
+  .modal-section {
+    margin: 20px 0;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+  }
+  
+  .modal-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  
+  .modal-row span:first-child {
+    font-weight: 500;
+    color: #666;
+  }
+  
+  .modal-row span:last-child {
+    color: #333;
+  }
+
+
+  .add-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background 0.3s;
+  }
+  
+  .add-button:hover {
+    background: #45a049;
+  }
+  
+  .application-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    animation: modalSlide 0.3s ease-out;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .form-group textarea {
+    resize: vertical;
+  }
+  
+  .submit-button {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 15px;
+    transition: background 0.3s;
+  }
+  
+  .submit-button:hover {
+    background: #1976D2;
+  }

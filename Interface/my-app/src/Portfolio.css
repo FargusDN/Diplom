@@ -1,0 +1,405 @@
+
+  .portfolio_body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+  .tabs-container {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    
+  }
+  
+  .tab-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    background: #f0f0f0;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .tab-btn.active {
+    background: #2d3a4b;
+    color: white;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
+  
+  th {
+    background: #2d3a4b;
+    color: white;
+    position: relative;
+  }
+  
+  th:hover {
+    background: #1a2533;
+  }
+  
+  .add-btn {
+    background: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 20px 0;
+  }
+  
+  .details-content {
+    max-width: 600px;
+  }
+  
+  .achievement-image {
+    max-width: 100%;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .portfolio-footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+  }
+  
+  /* Стили для модальных окон */
+  .modal-form input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+  }
+
+
+
+  /* Portfolio.css */
+
+
+.portfolio-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 30px;
+  margin: 20px auto;
+}
+
+.centered-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.tab-btn {
+  padding: 12px 30px;
+  border: 2px solid #2d3a4b;
+  border-radius: 25px;
+  background: transparent;
+  color: #2d3a4b;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.tab-btn.active {
+  background: #2d3a4b;
+  color: white;
+  transform: scale(1.05);
+}
+
+.selected-tab-title {
+  color: #2d3a4b;
+  margin: 20px 0 30px;
+  font-size: 1.8rem;
+}
+
+.table-wrapper {
+  margin: 0 auto;
+  max-width: 1000px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+/* ... остальные стили таблицы */
+
+.add-button-container {
+  margin: 30px 0 20px;
+  text-align: center;
+}
+
+.add-btn {
+  background: #4CAF50;
+  color: white;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .centered-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .tab-btn {
+    width: 45%;
+    margin-bottom: 10px;
+  }
+  
+  .selected-tab-title {
+    font-size: 1.4rem;
+  }
+  
+  table {
+    font-size: 0.9rem;
+  }
+}
+/* Portfolio.css (дополнения) */
+.portfolio-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio_body {
+  flex: 1;
+  max-width: 1200px;
+  padding: 30px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background: white;
+}
+
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px 0;
+  flex-wrap: wrap;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin: 25px 0;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+}
+
+.add-btn {
+  display: block;
+  margin: 25px auto 0;
+  padding: 12px 35px;
+  background: #2d3a4b;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .portfolio_body {
+    padding: 20px;
+    margin: 80px auto;
+    width: 95%;
+  }
+
+  .tabs-container {
+    gap: 8px;
+  }
+
+  .tab-btn {
+    flex: 1 1 45%;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio_body {
+    padding: 15px;
+  }
+
+  .tab-btn {
+    flex: 1 1 100%;
+  }
+
+  table {
+    font-size: 0.8rem;
+  }
+}
+.tab-btn{
+  min-width: 190px;
+}
+.achievement-form {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 25px;
+}
+
+.form-title {
+  color: #2d3a4b;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+}
+
+.required-star {
+  color: #e74c3c;
+  margin-left: 3px;
+}
+
+.form-grid {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.form-row label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #4a5568;
+}
+
+.form-input {
+  padding: 12px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+}
+
+.file-upload .file-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-input {
+  position: absolute;
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+}
+
+.file-name {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  color: #718096;
+}
+
+.browse-btn {
+  background: #edf2f7;
+  color: #2d3a4b;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.browse-btn:hover {
+  background: #e2e8f0;
+}
+
+.submit-btn {
+  background: #4299e1;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: #3182ce;
+}
+
+@media (max-width: 480px) {
+  .achievement-form {
+    padding: 15px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .file-input-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .browse-btn {
+    width: 100%;
+  }
+}

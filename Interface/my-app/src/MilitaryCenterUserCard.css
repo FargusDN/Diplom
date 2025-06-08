@@ -1,0 +1,242 @@
+.userMilitaryCard{
+    position: fixed;
+    right: 0;
+    margin: 33px 15px;
+    background-color: white;
+    max-width: 300px;
+    width: 15%;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid gray;
+    background: linear-gradient(45deg, #1a2f1a, #2c4b2d);
+    color: white;
+}
+.userMilitaryCard h4{
+    background: #5d5d3d;
+    text-align: center;
+}
+.userMilitaryCard .btn{
+    display: inline-block;	
+	box-sizing: border-box;
+	padding: 0 24px;
+	margin: 0 15px 15px 0;
+	outline: none;
+	border: none;    
+	border-radius: 3px;
+	height: 37px;
+	line-height: 37px;
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: normal;
+	text-decoration: none;
+	color: white;
+	background-color: inherit;
+	cursor: pointer;
+	user-select: none;
+	appearance: none;
+	touch-action: manipulation;  
+	transition: box-shadow .18s ease-out,background .18s ease-out,color .18s ease-out;
+    border: 1px solid gray;
+    border-radius: 10px;
+    width: 100%;
+}
+.userMilitaryCard .btn:focus-visible {
+	box-shadow: 0 0 0 3px lightskyblue;
+}
+.btn{
+  text-align: center;
+}
+.userMilitaryCard .btn:hover {
+	box-shadow: 0 1px 1px 0  #cfcfcf, 0 2px 5px 0  #cfcfcf;
+}
+.userMilitaryCard .btn:active {
+	background-color: #efefef !important;
+}
+/* Контейнер кнопок */
+.military-buttons-container {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+  }
+  
+  /* Базовый стиль кнопок */
+  .military-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    
+  }
+  .userMilitaryCard.profile{
+    position:static;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .userMilitaryCard .userPhoto{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Стиль конкретно для кнопки журнала */
+  .military-journal-btn {
+    background: #2c4b2d;
+    color: #e0d3a9;
+  }
+  
+  /* Стиль для кнопки администрирования */
+  .military-admin-btn {
+    background: #5d5d3d;
+    color: #fff1cc;
+  }
+  
+  /* Оверлей модального окна */
+  .military-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Контент модального окна */
+  .military-modal-content {
+    z-index: 10000000;
+    background: #1a2f1a;
+    border: 2px solid #5d5d3d;
+    border-radius: 8px;
+    width: 1200px;
+    height: 1200px;
+    padding: 20px;
+    position: relative;
+  }
+  
+  /* Кнопка закрытия */
+  .military-modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #5d5d3d;
+    color: #fff1cc;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1001;
+  }
+  
+  /* Iframe журнала */
+  .military-journal-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  /* Ховер-эффекты */
+  .military-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+  
+  .military-modal-close-btn:hover {
+    background: #6d6d4d;
+  }
+  .userMilitaryCard {
+    position: fixed;
+    right: 0;
+    margin: 33px 15px;
+    background-color: white;
+    max-width: 300px;
+    width: 15%;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #5d5d3d;
+    background: linear-gradient(45deg, #1a2f1a, #2c4b2d);
+    color: #e0d3a9;
+    z-index: 1000;
+}
+
+.userMilitaryCard h4 {
+    background: #5d5d3d;
+    text-align: center;
+    padding: 8px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+
+
+.userMilitaryCard .btn:hover {
+    background: #6d6d4d;
+    transform: translateY(-2px);
+}
+
+/* Модальное окно */
+.military-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.military-modal-content {
+    background: #1a2f1a;
+    color: black;
+    background-color: white;
+    border: 2px solid #5d5d3d;
+    border-radius: 8px;
+    height: 70%;
+    padding: 40px 20px 20px;
+    position: relative;
+    overflow: auto;
+}
+
+.military-modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #5d5d3d;
+    color: #fff1cc;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .userMilitaryCard {
+        width: 80%;
+        max-width: none;
+        margin: 15px;
+        right: 50%;
+        transform: translateX(50%);
+    }
+    
+    .military-modal-content {
+        width: 95vw;
+        height: 85vh;
+        padding: 30px 10px 10px;
+    }
+}

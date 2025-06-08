@@ -1,0 +1,320 @@
+
+@media (max-width: 1920px) {
+    .notification-center{
+        width: 400px;
+    } 
+}
+@media (max-width: 1440px) {
+    .notification-center{
+        width: 300px;
+        right: 0;
+    } 
+}
+@media (max-width: 1080px) {
+    .notification-center{
+        width: 200px;
+    } 
+}
+.notification-center {
+    max-width: 500px;
+    min-width: 200px;
+    margin: 20px auto;
+    position: absolute;
+    background-color: white;
+    right: -130px;
+    top: 47px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  .notifications-list {
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+  .notification-items{
+    border-bottom: 1px solid #eee;
+  }
+  
+  .notification-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    /* border: 1px solid red; */
+
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-bottom: 5px;
+    gap: 30px;
+  }
+  
+  .notification-item:hover {
+    background: #f9f9f9;
+  }
+  
+  .notification-badge {
+    width: 12px;
+    height: 12px;
+    /* background: #2196F3; */
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+  
+  .mes-modal-overlay {
+    position: fixed;
+    top: 500px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    
+  }
+  
+  .notification-modal {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .status-готова { color: #4CAF50; }
+  .status-важное { color: #f44336; }
+  .notification-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .notification-group {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 15px;
+  }
+  
+  .group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .toggle-group-btn {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .group-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .unread {
+    background-color: #f8f9fa;
+    border-left: 3px solid #6c757d;
+  }
+  
+  .unread-dot {
+    width: 8px;
+    height: 8px;
+    background: #6c757d;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .notification-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .notification-item:hover {
+    background: #f1f1f1;
+  }
+  /* Стили для кнопок фильтров */
+.filter-buttons {
+  display: grid;
+    grid-template-columns: 1fr 1fr;
+  margin-bottom: 20px;
+  gap:10px;
+}
+/* Стили для блюра фона */
+
+.notification-center h2{
+  text-align: center;
+}
+.group-items{
+  overflow-y: auto;
+  max-height: 235px;
+}
+.modal-overlay_message{
+  position: absolute;
+  background-color: white;
+  top: 50px;
+  left: -800px;
+}
+.filter-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  background: #f0f2f5;
+  color: #65676b;
+}
+
+.filter-buttons button:hover {
+  background: #e4e6eb;
+  transform: translateY(-1px);
+}
+
+.filter-buttons button.active {
+  background: #1877f2;
+  color: white;
+}
+
+/* Стили для кнопок свернуть/развернуть */
+.toggle-group-btn {
+  padding: 6px 12px;
+  border: 1px solid #ced0d4;
+  border-radius: 6px;
+  background: #f5f6f7;
+  color: #4b4f56;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-group-btn:hover {
+  background: #ebedf0;
+  border-color: #ccd0d5;
+}
+
+.toggle-group-btn:active {
+  transform: scale(0.98);
+}
+
+/* Стили для кнопки закрытия в модалке */
+.close-btn_profile {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #606770;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn_profile:hover {
+  color: #444950;
+}
+
+/* Стили для кнопок действий в модалке */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.action-btn.primary {
+  background: #1877f2;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background: #166fe5;
+}
+
+.action-btn.secondary {
+  background: #e4e6eb;
+  color: #050505;
+}
+
+.action-btn.secondary:hover {
+  background: #d8dade;
+}
+
+/* Стили для непрочитанных меток */
+.unread-badge {
+  background: #1877f2;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.8em;
+  margin-left: 8px;
+}
+.modal-overlay_message {
+  position: fixed;
+  height: 1000px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-modal_message {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Отключение прокрутки основного контента */
+body.modal-open {
+  overflow: hidden;
+  
+}

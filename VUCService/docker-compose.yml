@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/eduApi
     ports:
-      - "8007:8007"
+      - "8007:8000"
     environment:
       - DATABASE_URL=postgres:BDVUC@localhost/postgres
     depends_on:

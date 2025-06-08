@@ -1,0 +1,81 @@
+
+  
+  .military-application-card {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #5d5d3d;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .military-application-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .military-application-details {
+    display: grid;
+    gap: 20px;
+    color: black;
+  }
+  .military-student-photo{
+    display: flex;
+    gap: 50px;
+  }
+  .military-student-photo img {
+    width: 200px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid #5d5d3d;
+  }
+  
+  .military-file-link {
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 5px;
+    border-bottom: 1px dashed #5d5d3d;
+  }
+  
+  .military-file-link:hover {
+    color: #fff1cc;
+  }
+  
+  .military-status-control {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .military-status-select {
+    background: #2c4b2d;
+    color: #e0d3a9;
+    border: 1px solid #5d5d3d;
+    padding: 8px;
+    border-radius: 4px;
+  }
+  
+  .military-reason-input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #5d5d3d;
+    color: black;
+    padding: 8px;
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .military-save-btn {
+    background: #5d5d3d;
+    color: #fff1cc;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .military-save-btn:hover {
+    background: #6d6d4d;
+  }
