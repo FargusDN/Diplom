@@ -1,22 +1,14 @@
-from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-
-app = FastAPI()
-
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 import subprocess
-import datetime
 import os
-
-
-from routers import users
+from datetime import datetime
+from typing import Dict, List, Any
 from database import engine, Base, get_db
-
-from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -35,7 +27,6 @@ app.add_middleware(
     expose_headers=["*"]
 )
 
-app.include_router(users.router, prefix="/api")
 
 
 @app.get("/users", response_model=list[UserResponse])
@@ -312,24 +303,24 @@ def perform_operation(operation: MaterialOperation, db: Session = Depends(get_db
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Ошибка при выполнении операции: {str(e)}")
 
-    @app.post("/api/materials/add")
-    def add_new_material(material: NewMaterialRequest, db: Session = Depends(get_db)):
-        try:
-            # SQL-запрос для добавления нового материала в базу данных
-            query = text("""
-                INSERT INTO public.materials (name, category, count, defendant, last_check, sklad)
-                VALUES (:name, :category, :count, :defendant, :last_check, :sklad)
-            """)
-            db.execute(query, {
-                "name": material.name,
-                "category": material.category,
-                "count": material.quantity,
-                "defendant": material.defendant,
-                "last_check": material.last_check,
-                "sklad": material.sklad
-            })
-            db.commit()
-            return {"status": "success", "message": "Материал успешно добавлен"}
-        except Exception as e:
-            db.rollback()
-            raise HTTPException(status_code=500, detail=f"Ошибка при добавлении материала: {str(e)}")
+@app.post("/api/materials/add")
+def add_new_material(material: NewMaterialRequest, db: Session = Depends(get_db)):
+    try:
+        # SQL-запрос для добавления нового материала в базу данных
+        query = text("""
+            INSERT INTO public.materials (name, category, count, defendant, last_check, sklad)
+            VALUES (:name, :category, :count, :defendant, :last_check, :sklad)
+        """)
+        db.execute(query, {
+            "name": material.name,
+            "category": material.category,
+            "count": material.quantity,
+            "defendant": material.defendant,
+            "last_check": material.last_check,
+            "sklad": material.sklad
+        })
+        db.commit()
+        return {"status": "success", "message": "Материал успешно добавлен"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Ошибка при добавлении материала: {str(e)}")
