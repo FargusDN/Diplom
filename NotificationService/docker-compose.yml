@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    environment:
+      # Используем существующую БД в сети university-net
+      DATABASE_URL: postgresql://admin:admin_user_1234@db_ystu:5432/ios_ystu_db
+      SMTP_PASSWORD: slgxjyrszhoyfqmd
+    ports:
+      - "8006:8000"
+    networks:
+      - university-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - university-net
+
+networks:
+  university-net:
+    external: true
+    name: university-net
