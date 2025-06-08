@@ -1,0 +1,9 @@
+docker run --name db_ystu -p 5432:5432 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin_user_1234 -e POSTGRES_DB=ios_ystu_db -d postgres
+
+
+docker run --name container_click -e CLICKHOUSE_LISTEN_HOST='0.0.0.0' -p 18123:8123 -p 19000:9000 -e CLICKHOUSE_USER=admin  -e CLICKHOUSE_PASSWORD=admin_user_1234 -e CLICKHOUSE_DB=ios_click_db -d  clickhouse
+
+
+docker network create --driver bridge  --subnet 10.10.0.0/24  --gateway 10.10.0.1  university-net
+
+docker-compose up --build -d
