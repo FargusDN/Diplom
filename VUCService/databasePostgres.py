@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 import asyncpg
 
 # URL для подключения к PostgreSQL
-DATABASE_URL = "postgresql+asyncpg://postgres:mypassword@localhost/postgres"
+DATABASE_URL = "postgresql+asyncpg://postgres:DBVUC@localhost/postgres"
 
 
 # Создаём движок SQLAlchemy

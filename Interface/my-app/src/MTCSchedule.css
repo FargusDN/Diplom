@@ -1,0 +1,25 @@
+.schedule-container2 {
+    overflow-x: auto;
+  }
+  
+  .schedule-table2 {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  
+  .schedule-table2 th {
+    background: #3498db;
+    color: white;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .schedule-table2 td {
+    padding: 12px;
+    border-bottom: 1px solid #ecf0f1;
+  }
+  
+  .schedule-table2 tr:hover {
+    background-color: #f8f9fa;
+  }

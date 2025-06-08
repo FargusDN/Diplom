@@ -1,0 +1,36 @@
+.group-selector {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .group-popover {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 250px;
+  }
+  
+  .group-list {
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .group-item {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .group-item:hover {
+    background: #f0f0f0;
+  }
+  .recharts-legend-wrapper{
+    bottom: 0 !important;
+  }
+  .timeInterval{
+    margin: 20px;
+  }

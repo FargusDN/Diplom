@@ -1,0 +1,43 @@
+.admissions-page {
+    .hero {
+      background: linear-gradient(to right, #004BFF, #0066FF);
+      padding: 4rem 0;
+      color: white;
+    }
+  
+    .grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-5px);
+      }
+  
+      &__title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+  
+      &__footer {
+        color: #666;
+        font-size: 0.9rem;
+      }
+  
+      &.contrast {
+        background: #f8f9fa;
+      }
+  
+      &.invert {
+        background: #333;
+        color: white;
+      }
+    }
+  }
