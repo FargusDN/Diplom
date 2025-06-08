@@ -1,0 +1,203 @@
+version: '3.8'
+
+networks:
+  diplon-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  clickhouse_data:
+  airflow_db:
+  airflow_logs:
+
+services:
+  # База данных PostgreSQL
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./Cкрипты_PostgreSQL_и_ClickHouse:/docker-entrypoint-initdb.d
+    networks:
+      - diplon-net
+    ports:
+      - "5432:5432"
+
+  # ClickHouse
+  clickhouse:
+    image: yandex/clickhouse-server:21.8
+    container_name: clickhouse
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+      - ./Cкрипты_PostgreSQL_и_ClickHouse/clickhouse:/docker-entrypoint-initdb.d
+    networks:
+      - diplon-net
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - ./configs/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    networks:
+      - diplon-net
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  # API Gateway
+  apigateway:
+    build:
+      context: ./ApiGateway
+      dockerfile: Dockerfile
+    container_name: apigateway
+    ports:
+      - "8000:8000"
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - POSTGRES_HOST=postgres
+      - CLICKHOUSE_HOST=clickhouse
+    networks:
+      - diplon-net
+    depends_on:
+      - postgres
+      - clickhouse
+      - rabbitmq
+
+  # Authorization Service
+  authorization:
+    build:
+      context: ./AuthorizationService
+      dockerfile: Dockerfile
+    container_name: authorization
+    ports:
+      - "8001:8000"
+    networks:
+      - diplon-net
+    depends_on:
+      - postgres
+
+  # Administration Service
+  administration:
+    build:
+      context: ./AdministrationService
+      dockerfile: Dockerfile
+    container_name: administration
+    volumes:
+      - ./AdministrationService/backups:/app/backups
+    ports:
+      - "8002:8000"
+    networks:
+      - diplon-net
+    depends_on:
+      - postgres
+
+  # Analytic Service
+  analytic:
+    build:
+      context: ./AnaliticService
+      dockerfile: Dockerfile
+    container_name: analytic
+    ports:
+      - "8003:8000"
+    networks:
+      - diplon-net
+    depends_on:
+      - clickhouse
+      - rabbitmq
+
+  # Education Profile Service
+  educationprofile:
+    build:
+      context: ./EducationProfileService
+      dockerfile: Dockerfile
+    container_name: educationprofile
+    ports:
+      - "8004:8000"
+    networks:
+      - diplon-net
+    depends_on:
+      - postgres
+      - clickhouse
+      - rabbitmq
+
+  # Information Panel Constructor
+  constructor:
+    build:
+      context: ./InformationPanelConstructorService
+      dockerfile: Dockerfile
+    container_name: constructor
+    ports:
+      - "8005:8000"
+    networks:
+      - diplon-net
+    depends_on:
+      - postgres
+
+  # Notification Service
+  notification:
+    build:
+      context: ./NotificationService
+      dockerfile: Dockerfile
+    container_name: notification
+    ports:
+      - "8006:8000"
+    networks:
+      - diplon-net
+    depends_on:
+      - rabbitmq
+
+  # Apache Airflow
+  airflow:
+    image: apache/airflow:2.2.0
+    container_name: airflow
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW__CORE__FERNET_KEY=46BKJoQYlPPOexqJOxYYZgd2uVkVBWZ6lO5Jq1QyS1M=
+      - AIRFLOW__WEBSERVER__SECRET_KEY=46BKJoQYlPPOexqJOxYYZgd2uVkVBWZ6lO5Jq1QyS1M=
+    volumes:
+      - airflow_db:/opt/airflow
+      - airflow_logs:/opt/airflow/logs
+      - ./Apache_Airflow/dags:/opt/airflow/dags
+    networks:
+      - diplon-net
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
+  # Frontend Interface
+  frontend-interface:
+    build:
+      context: ./Interface
+      dockerfile: Dockerfile
+    container_name: frontend-interface
+    ports:
+      - "3000:3000"
+    networks:
+      - diplon-net
+    depends_on:
+      - apigateway
+
+  vucService:
+    build:
+      context: ./VUCService
+      dockerfile: Dockerfile
+    container_name: vucService
+    ports:
+      - "3001:3000"
+    networks:
+      - diplon-net
+    depends_on:
+      - apigateway
