@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/eduApi
+    ports:
+      - "8007:8007"
+    environment:
+      - DATABASE_URL=postgres:BDVUC@localhost/postgres
+    depends_on:
+      - db
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8007 --reload
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+      POSTGRES_DB: postgres
+volumes:
+  postgres_data:
