@@ -1,170 +1,237 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios'; // Импортируем Axios
 import './Login.css';
-import eyeImg from "./imgs/menu_eye.png"
+import eyeImg from "./imgs/menu_eye.png";
+
+
+const API_BASE_URL = 'http://localhost:8000';
 
 const Login = ({ onClose }) => {
     const [currentForm, setCurrentForm] = useState('login');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [resetLogin, setResetLogin] = useState('');
-    const [countOfTry, setCountOfTry] = useState(0);
-    const [isBlocked, setIsBlocked] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(600);
+    const [error, setError] = useState(null); 
+    const [isLoading, setIsLoading] = useState(false); 
+
     const [isMfaStage, setIsMfaStage] = useState(false);
     const [code, setCode] = useState(Array(6).fill(''));
-    const [userEmail, setUserEmail] = useState('omichika200@gmail.com');
-    const inputsRef = useRef([]);
+    const [userEmail, setUserEmail] = useState('');
+    const inputsRef = useRef([]); 
+    const [mfaSessionToken, setMfaSessionToken] = useState(null); 
+
     const [isShow, setIsShow] = useState(false);
 
-    // Эффекты для таймера блокировки
-    useEffect(() => {
-        const blockTime = localStorage.getItem('loginBlockTime');
-        if (blockTime) {
-            const remaining = Math.floor((blockTime - Date.now()) / 1000);
-            if (remaining > 0) {
-                setIsBlocked(true);
-                setTimeLeft(remaining);
-            }
-        }
-    }, []);
 
-    useEffect(() => {
-        let timer;
-        if (isBlocked && timeLeft > 0) {
-            timer = setInterval(() => {
-                setTimeLeft((prev) => {
-                    if (prev <= 1) {
-                        clearInterval(timer);
-                        setIsBlocked(false);
-                        localStorage.removeItem('loginBlockTime');
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
-        }
-        return () => clearInterval(timer);
-    }, [isBlocked, timeLeft]);
 
-    // Логика MFA
     useEffect(() => {
         if (isMfaStage && inputsRef.current[0]) {
             inputsRef.current[0].focus();
         }
     }, [isMfaStage]);
 
+
     const handleCodeChange = (index, value) => {
         const newCode = [...code];
+
         newCode[index] = value.slice(-1);
         setCode(newCode);
 
+
         if (value && index < 5) {
-            inputsRef.current[index + 1].focus();
+            inputsRef.current[index + 1]?.focus(); 
         }
 
         if (newCode.every(c => c !== '') && index === 5) {
-            handleMfaSubmit();
+            handleMfaSubmit(newCode.join(''));
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isBlocked) return;
+        setError(null); 
+        setIsLoading(true); 
 
-        // Заглушка проверки логина
-        const loginSuccess = username === 'test' && password === 'test123';
-        
-        if (!loginSuccess) {
-            setCountOfTry(prev => {
-                const newCount = prev + 1;
-                if (newCount >= 5) {
-                    setIsBlocked(true);
-                    localStorage.setItem('loginBlockTime', Date.now() + 600000);
-                    setTimeLeft(600);
-                }
-                return newCount;
+        try {
+ 
+            const response = await axios.post(`${API_BASE_URL}/auth`, {
+                username: username,
+                password: password,
             });
+
+
+            const data = response.data;
+
+            if (data.requires_mfa) {
+
+                setIsMfaStage(true);
+                setCurrentForm("mfa");
+                setUserEmail(data.email_for_mfa || userEmail);
+                setMfaSessionToken(data.mfa_session_token);
+            } else {
+
+                localStorage.setItem('authToken', data.access_token); 
+
+                window.location.href = "/profile"; 
+                onClose(); 
+            }
+
+        } catch (err) {
+
+            if (err.response) {
+
+                setError(err.response.data.detail || "Ошибка авторизации");
+
+                if (err.response.status === 429) {
+
+                   setError(`Слишком много попыток. Повторите через ${err.response.data.retry_after} секунд.`);
+                }
+
+            } else if (err.request) {
+                setError("Не удалось подключиться к серверу авторизации.");
+            } else {
+                setError("Произошла непредвиденная ошибка.");
+                console.error("Axios error:", err.message);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleMfaSubmit = async (fullCode) => {
+         if (!fullCode) {
+             fullCode = code.join('');
+         }
+
+        if (fullCode.length !== 6) {
+            setError("Введите полный код.");
             return;
         }
 
-        // Если логин успешен и есть MFA
-        const userHasMfa = true; // Заглушка - должен приходить с бэка
-        if (userHasMfa) {
-            setIsMfaStage(true);
-            setCurrentForm("mfa")
-            // Здесь вызов API для отправки кода на почту
-        } else {
+        setError(null);
+        setIsLoading(true);
+
+        try {
+            const response = await axios.post(`${API_BASE_URL}/auth/mfa`, {
+                code: fullCode,
+                mfa_session_token: mfaSessionToken
+            });
+
+            const data = response.data;
+            localStorage.setItem('authToken', data.access_token);
+
+            window.location.href = "/profile";
             onClose();
+
+        } catch (err) {
+            if (err.response) {
+                setError(err.response.data.detail || "Ошибка подтверждения кода.");
+            } else if (err.request) {
+                 setError("Не удалось подключиться к серверу авторизации для подтверждения кода.");
+            } else {
+                 setError("Произошла непредвиденная ошибка при подтверждении кода.");
+                 console.error("Axios error:", err.message);
+            }
+            
+            setCode(Array(6).fill(''));
+            inputsRef.current[0]?.focus(); 
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleMfaSubmit = async () => {
-        const fullCode = code.join('');
-        auntificate();
-        // Проверка кода на бэкенде
-        console.log('MFA Code:', fullCode);
-        onClose();
-    };
 
-    const formatTime = (seconds) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
-    };
-    const handlePasswordReset = (e) => {
+    const handlePasswordReset = async (e) => {
         e.preventDefault();
-        if (resetLogin.trim()) {
-            alert(`Новый пароль отправлен на почту, привязанную к аккаунту ${resetLogin}`);
+        if (!resetLogin.trim()) {
+            setError("Введите логин для восстановления пароля.");
+            return;
+        }
+
+        setError(null);
+        setIsLoading(true);
+
+        try {
+            
+            const response = await axios.post(`${API_BASE_URL}/auth/reset-password-request`, {
+                login: resetLogin,
+            });
+
+            
+            alert(`Если аккаунт с логином "${resetLogin}" существует, инструкции по сбросу пароля отправлены на привязанную почту.`);
             setCurrentForm('login');
+
+        } catch (err) {
+            if (err.response) {
+
+
+                setError(err.response.data.detail || "Произошла ошибка при запросе восстановления пароля.");
+                
+                alert(`Если аккаунт с логином "${resetLogin}" существует, инструкции по сбросу пароля отправлены на привязанную почту.`);
+                setCurrentForm('login');
+            } else if (err.request) {
+                 setError("Не удалось подключиться к серверу для запроса восстановления пароля.");
+            } else {
+                 setError("Произошла непредвиденная ошибка при запросе восстановления пароля.");
+                 console.error("Axios error:", err.message);
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
-    const auntificate = ()=>{
-        if(username == "test" && password=="test123")
-            window.location = "http://localhost:3000/profile"
-    }
+
+
 
     return (
         <div className="login_modal-content" onClick={(e) => e.stopPropagation()}>
-            <button 
-                className="close-button" 
+            <button
+                className="close-button"
                 onClick={onClose}
                 aria-label="Закрыть"
             >
                 &times;
             </button>
 
+            
+            {error && <div className="error-message">{error}</div>}
+            {isLoading && <div className="loading-indicator">Загрузка...</div>}
+
 
             {currentForm === 'passwordReset' ? (
                 <form className="password-reset-form" onSubmit={handlePasswordReset}>
                     <h2>Восстановление пароля</h2>
                     <div className="form-group">
-                        <label>Введите логин:</label>
+                        <label>Введите логин:</label> 
                         <input
                             type="text"
                             value={resetLogin}
                             onChange={(e) => setResetLogin(e.target.value)}
-                            placeholder="Ваш логин"
+                            placeholder="Логин"
                             required
+                            disabled={isLoading}
                         />
                     </div>
                     <div className="form-buttons">
                         <button
                             type="button"
                             className="secondary-button"
-                            onClick={() => setCurrentForm('login')}
+                            onClick={() => {setCurrentForm('login'); setError(null);}}
+                            disabled={isLoading}
                         >
                             Назад
                         </button>
-                        <button type="submit" className="primary-button">
+                        <button type="submit" className="primary-button" disabled={isLoading}>
                             Отправить
                         </button>
                     </div>
                 </form>
-            ): currentForm === 'mfa'? (
+
+            ) : currentForm === 'mfa' ? (
+
                 <div className="mfa-container">
                     <h2>Подтвердите вход</h2>
-                    <p>Код отправлен на {userEmail}</p>
-                    
+                    <p>Код отправлен на {userEmail || 'вашу почту'}</p> 
+
                     <div className="code-inputs">
                         {code.map((digit, index) => (
                             <input
@@ -175,90 +242,107 @@ const Login = ({ onClose }) => {
                                 onChange={(e) => handleCodeChange(index, e.target.value)}
                                 ref={(el) => (inputsRef.current[index] = el)}
                                 className="code-input"
+                                disabled={isLoading}
                             />
                         ))}
                     </div>
 
-                    <button 
+                    <button
                         className='LoginForm_form_button_submit'
-                        onClick={handleMfaSubmit}
-                        disabled={!code.every(c => c !== '')}
+                         onClick={() => handleMfaSubmit(code.join(''))}
+                        disabled={!code.every(c => c !== '') || isLoading} 
                     >
                         Подтвердить
                     </button>
 
                     <div className="mfa-footer">
-                        <button 
-                            type="button" 
-                            className='mfa-link'
-                            onClick={() => {setIsMfaStage(false); setCurrentForm("login")}}
-                        >
-                            ← Вернуться
-                        </button>
-                        <button 
-                            type="button"
-                            className='mfa-link'
-                            onClick={() => alert("Код отправлен")}
-                        >
-                            Отправить код повторно
-                        </button>
+                         <button
+                             type="button"
+                             className='mfa-link'
+                             onClick={() => {setIsMfaStage(false); setCurrentForm("login"); setCode(Array(6).fill('')); setError(null);}} // Сбросить состояние MFA при возврате
+                             disabled={isLoading}
+                         >
+                             ← Вернуться
+                         </button>
+                         <button
+                             type="button"
+                             className='mfa-link'
+                             
+                             onClick={async () => {
+                                if (!mfaSessionToken) return; 
+                                setError(null);
+                                setIsLoading(true);
+                                try {
+                                     
+                                     await axios.post(`${API_BASE_URL}/auth/resend-mfa-code`, {
+                                         mfa_session_token: mfaSessionToken
+                                     });
+                                     alert("Код отправлен повторно.");
+                                } catch (err) {
+                                     setError("Не удалось отправить код повторно.");
+                                     console.error("Resend MFA error:", err);
+                                } finally {
+                                     setIsLoading(false);
+                                }
+                             }}
+                             disabled={!mfaSessionToken || isLoading}
+                         >
+                             Отправить код повторно
+                         </button>
                     </div>
                 </div>
+
             ) : (
                 <form className='LoginForm_form' onSubmit={handleSubmit}>
                     <div className='LoginForm_form_Name'><p>Авторизация</p></div>
                     <div className='LoginForm_form_fields'>
                         <div className='LoginForm_form_fields_field'>
-                            <input 
+                            <input
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 type='text'
                                 placeholder='Логин'
-                                disabled={isBlocked}
+                                required
+                                disabled={isLoading}
                             />
                         </div>
                         <div className='LoginForm_form_fields_field password'>
-                            <input 
+                            <input
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                type={`${isShow? "text": "password"}`}
+                                type={`${isShow ? "text" : "password"}`}
                                 placeholder='Пароль'
-                                disabled={isBlocked}
+                                required
+                                disabled={isLoading}
                             />
-                            <div className='showPass' onClick={()=>setIsShow(!isShow)}>
-                                <img src={eyeImg}/>
+                            <div className='showPass' onClick={() => setIsShow(!isShow)}>
+                                <img src={eyeImg} alt="Toggle password visibility" />
                             </div>
                         </div>
                     </div>
                     <div className='LoginForm_form_checkbox'>
-                        <input id='RememberMe' type='checkbox'/>
+                        <input id='RememberMe' type='checkbox' disabled={isLoading} />
                         <label htmlFor='RememberMe'>Запомнить меня</label>
                     </div>
                     <div className='LoginForm_form_href'>
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             className="password-reset-link"
-                            onClick={() => setCurrentForm('passwordReset')}
+                            onClick={() => {setCurrentForm('passwordReset'); setError(null);}}
+                            disabled={isLoading}
                         >
                             Получить пароль
                         </button>
                     </div>
                     <div className='LoginForm_form_button'>
-                        <button 
-                            className='LoginForm_form_button_submit' 
+                        <button
+                            className='LoginForm_form_button_submit'
                             type='submit'
-                            disabled={isBlocked}
-                            // onClick={()=>alert("Ошибка авторизации")}
-                            onClick={auntificate}
+                            disabled={isLoading} 
+                            
                         >
                             Вход
-                            
                         </button>
-                        {isBlocked && (
-                            <div className='blocked-timer'>
-                                Повторите через: {formatTime(timeLeft)}
-                            </div>
-                        )}
                     </div>
                 </form>
             )}
@@ -267,4 +351,3 @@ const Login = ({ onClose }) => {
 };
 
 export default Login;
-
