@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=postgresql://admin:admin_user_1234@db_ystu:5432/ios_ystu_db
+      - BACKUP_DIR=/backups  
+      - DB_HOST=10.10.0.2
+      - DB_PORT=5432  
+      - DB_NAME=ios_ystu_db
+      - DB_USER=admin
+      - DB_PASSWORD=admin_user_1234
+    volumes:
+      - type: bind
+        source: ./backend/backups  
+        target: /backups
+    networks:
+      - university-net
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - university-net
+
+
+networks:
+  university-net:
+    external: true
+    name: university-net
