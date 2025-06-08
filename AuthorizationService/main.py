@@ -1,5 +1,11 @@
 from fastapi.middleware.cors import CORSMiddleware
 
+app = FastAPI(
+    title="authorization Microservice",
+    description="API for user authorization",
+    version="1.0.0",
+)
+
 origins = [
     "http://localhost:3000",
 ]
