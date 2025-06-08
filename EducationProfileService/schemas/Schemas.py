@@ -1,4 +1,5 @@
 from datetime import date
+from typing import List
 
 from pydantic import BaseModel
 from sqlalchemy import Date
@@ -41,3 +42,13 @@ class UserInfoAddSchema(BaseModel):
     qualification: str
     add_info: str
     photo_user: str
+
+
+class Mark(BaseModel):
+    mark: int
+class TempMarksAdd(BaseModel):
+    last_name: str
+    first_name: str
+    middle_name: str
+    discipline: str
+    List[Mark]: int
