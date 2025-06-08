@@ -38,50 +38,154 @@ app.add_middleware(
 app.include_router(users.router, prefix="/api")
 
 
-@app.get("/test-db")
-def test_db(db: Session = Depends(get_db)):
+@app.get("/users", response_model=list[UserResponse])
+def get_users(db: Session = Depends(get_db)):
     try:
-        result = db.execute(text("SELECT 1"))
-        return {"status": "OK", "result": result.scalar()}
+        users = db.query(User).all()
+        print(f"Found {len(users)} users")
+        return users
     except Exception as e:
-        return {"error": str(e)}
+        print(f"Database error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Database error")
 
 
+@app.post("/users", response_model=UserResponse)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    if db.query(User).filter(User.login_user == user.login_user).first():
+        raise HTTPException(status_code=400, detail="Логин уже существует")
 
-@app.get("/api/backup/list")
-async def list_backups():
+    db_user = User(**user.dict())
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+@app.put("/users/{login_user}", response_model=UserResponse)
+def update_user(login_user: str, user: UserCreate, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.login_user == login_user).first()
+    if not db_user:
+        raise HTTPException(404, "User не найден")
+
+    update_data = user.dict(exclude_unset=True)
+
+    # Если пароль не передан, используем текущий
+    if "password_user" not in update_data or not update_data["password_user"]:
+        update_data["password_user"] = db_user.password_user
+
+    for key, value in update_data.items():
+        setattr(db_user, key, value)
+
+    db_user.change_dttm = datetime.utcnow()
+
     try:
-        files = os.listdir(BACKUP_DIR)
-        backups = [f for f in files if f.endswith('.sql')]
-        backups.sort(reverse=True)  # Сортировка по дате (свежие сверху)
-        return {"backups": backups}
+        db.commit()
+        db.refresh(db_user)
+        return db_user
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        db.rollback()
+        print(f"[ERROR] {str(e)}")
+        raise HTTPException(400, detail=str(e))
 
 
-@app.post("/api/backup/create")
-def create_backup():
+@app.delete("/users/{login}", response_model=UserResponse)
+def delete_user(login: str, db: Session = Depends(get_db)):
     try:
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        backup_name = f"backup_{timestamp}.sql"
-        backup_path = os.path.join(BACKUP_DIR, backup_name)
+        # Находим пользователя
+        user = db.query(User).filter(User.login_user == login).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User не найден")
 
-        # Используем переменные окружения для подключения
-        db_host = os.getenv('DB_HOST', '10.10.0.2')
-        db_name = os.getenv('DB_NAME', 'DBVUC')
-        db_user = os.getenv('DB_USER', 'postgresql')
-        db_pass = os.getenv('DB_PASSWORD', '1')
-        db_port = os.getenv('DB_PORT', '5432')
+        # Удаляем пользователя
+        db.delete(user)
+        db.commit()
+        db.expire_all()  # Сбросить кэш сессии
 
-        # Формируем команду создания
-        command = (
-            f'PGPASSWORD="{db_pass}" pg_dump -h {db_host} -U {db_user} -d {db_name}  -p {db_port} '  
-            f'-f "{backup_path}"'
+        return user
+    except Exception as e:
+        db.rollback()
+        print(f"[ERROR] {str(e)}")  # Логируем ошибку
+        raise HTTPException(status_code=500, detail=f"Ошибка при удалении: {str(e)}")
+
+
+@app.get("/users/template")
+async def get_users_template():
+    try:
+        # Создаем CSV в памяти
+        buffer = io.StringIO()
+        writer = csv.writer(buffer, delimiter=';')
+        # Заголовки столбцов
+        headers = ["login_user", "password_user"]
+        writer.writerow(headers)
+        content = buffer.getvalue()
+
+        return Response(
+            content=content,
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=users_template.csv"}
         )
-        print(f"Executing backup command: {command}")  # Для отладки
-        subprocess.run(command, shell=True, check=True)
-        return {"status": "success", "file": backup_name}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Ошибка генерации шаблона: {str(e)}")
+
+
+@app.post("/users/bulk")
+async def bulk_create_users(file: UploadFile = File(...), db: Session = Depends(get_db)):
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(400, "Only CSV files are allowed")
+
+    try:
+        contents = await file.read()
+        decoded = contents.decode('utf-8-sig')
+    except UnicodeDecodeError:
+        raise HTTPException(400, "Invalid file encoding. Use UTF-8.")
+
+    reader = csv.DictReader(decoded.splitlines(), delimiter=';')
+    normalized_fieldnames = [name.strip().lower().replace(' ', '_') for name in reader.fieldnames]
+    reader.fieldnames = normalized_fieldnames
+
+    users = []
+    for row in reader:
+        # Безопасная обработка None и пустых значений
+        processed_row = {}
+        for key, value in row.items():
+            if value is None or not isinstance(value, str):
+                processed_row[key] = ""  # Заменяем None на пустую строку
+            else:
+                processed_row[key] = value.strip()  # Обрезаем пробелы
+
+        login = processed_row.get("login_user")
+        password = processed_row.get("password_user")
+
+        if not login or not password:
+            continue
+
+        users.append(User(
+            login_user=login,
+            password_user=password,
+            role_user='simple_user',
+            signal_ind='active',
+            privilege_mil_center_ystu=False
+        ))
+
+    if not users:
+        raise HTTPException(400, "No valid users found in the file")
+
+    try:
+        db.bulk_save_objects(users)
+        db.commit()
+        return {"message": f"Successfully added {len(users)} users"}
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Bulk insert error: {str(e)}")
+        raise HTTPException(500, f"Bulk insert failed: {str(e)}")
+
+
+@app.get("/users/{login_user}", response_model=UserResponse)
+def get_user(login_user: str, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.login_user == login_user).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User не найден")
+    return db_user
+
 
 
