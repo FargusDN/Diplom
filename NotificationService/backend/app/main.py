@@ -132,7 +132,7 @@ def send_email(to_email: str, subject: str, body: str) -> bool:
 async def publish_event(event_type: str, data: dict):
     """Публикация события в RabbitMQ"""
     if not rabbit_channel:
-        logger.warning("⚠️ Соединение с RabbitMQ не установлено, событие не отправлено")
+        logger.warning("Соединение с RabbitMQ не установлено, событие не отправлено")
         return False
 
     try:
