@@ -4,7 +4,7 @@ from app.repositories.user_repository import UserRepository
 from app.core.config import settings
 
 
-class UserService:
+class AuthService:
     def __init__(self, user_repository: UserRepository):
         self.repo = user_repository
 
