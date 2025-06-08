@@ -2,7 +2,7 @@
 FROM python:3.9-slim
 
 
-WORKDIR /authApi
+WORKDIR /konstructorInformationPanel
 
 
 COPY requirements.txt .

@@ -1,9 +1,3 @@
-from pydantic import BaseSettings
-from datetime import timedelta
+import os
 
-class Settings(BaseSettings):
-    SECRET_KEY: str = "728c774459b57bbb833f4fee54f244dc"
-    ACCESS_TOKEN_EXPIRE: timedelta = timedelta(minutes=30)
-    DATABASE_URL: str = "postgresql://user:password@db:5432/auth_db"
-
-settings = Settings()
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://test:test@db_host/dashboard_db")
