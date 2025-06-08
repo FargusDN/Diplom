@@ -1,3 +1,4 @@
+from asyncio.log import logger
 from typing import Optional
 
 from fastapi import FastAPI, Depends, Query
@@ -5,20 +6,51 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from databaseClickHouse import get_db_ClcikHouse
 from services import service
 import configparser
+import aio_pika
+import uvicorn
+from aio_pika.abc import AbstractIncomingMessage
+import json
+import logging
 app = FastAPI()
 
 from clickhouse_driver import Client
 
 config = configparser.ConfigParser()
 config.read("configs/clickhouseConfig.ini")
+rbconfig = configparser.ConfigParser()
+rbconfig.read("configs/rabbitmqConfig.ini")
+class Settings:
+    RABBITMQ_HOST = rbconfig.host
+    RABBITMQ_PORT = rbconfig.port
+    RABBITMQ_USER = rbconfig.user
+    RABBITMQ_PASSWORD = rbconfig.password
+    RABBITMQ_VHOST = rbconfig.vhost
+
+class CLSettings:
+    CLICKHOUSE_HOST = config.get('host')
+    CLICKHOUSE_PORT = config.get('port')
+    CLICKHOUSE_USER = config.get('user')
+    CLICKHOUSE_PASSWORD = config.get('password')
+    CLICKHOUSE_DATABASE = config.get('database')
+    CLICKHOUSE_SETTINGS = config.get('settings')
 def get_clickhouse_conn():
+    clsettings = CLSettings()
     return Client(
-        host=config.get('host'),
-        port=config.get('port'),
-        user=config.get('user'),
-        password=config.get('password'),
-        database=config.get('database'),
-        settings=config.get('settings')
+        host=clsettings.CLICKHOUSE_HOST,
+        port=clsettings.CLICKHOUSE_PORT,
+        user=clsettings.CLICKHOUSE_USER,
+        password=clsettings.CLICKHOUSE_PASSWORD,
+        database=clsettings.CLICKHOUSE_DATABASE,
+        settings=clsettings.CLICKHOUSE_SETTINGS,
+    )
+async def get_rabbit_conn():
+    settings = Settings()
+    connection = await aio_pika.connect_robust(
+        host=settings.RABBITMQ_HOST,
+        port=settings.RABBITMQ_PORT,
+        login=settings.RABBITMQ_USER,
+        password=settings.RABBITMQ_PASSWORD,
+        virtualhost=settings.RABBITMQ_VHOST,
     )
 
 

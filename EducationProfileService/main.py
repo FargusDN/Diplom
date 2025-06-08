@@ -8,7 +8,7 @@ from databasePostgres import get_db
 from databaseClickHouse import get_db_ClcikHouse
 from services import services, clickhouseService
 from schemas.Schemas import InstitutiesAddSchema, UserAddSchema, FacultiesAddSchema, StudyGroupAddSchema, \
-    UserInfoAddSchema
+    UserInfoAddSchema, TempMarksAdd
 import configparser
 
 app = FastAPI()
@@ -166,9 +166,23 @@ async def create_userInfo(
     background_tasks.add_task(
         publish_event,
         "user_info_created",
-        {"id": user_info.id, "user_id": user_info.user_id}
+        {"id": user_info.id, "user_id": user_info.login_user}
     )
     return user_info
+
+@app.post("/addTempMarks")
+async def addTempMarks(
+        data: TempMarksAdd,
+        db: AsyncSession = Depends(get_db),
+        background_tasks: BackgroundTasks
+):
+    grade = await clickhouseService.get_tempMarks(data, db)
+    background_tasks.add_task(
+        publish_event,
+        "mark_created",
+        {"id": grade.id, "user_id": grade.login_user,"discipline":grade.discipline}
+    )
+    return grade
 
 @app.get("/users/")
 async def get_users(db: AsyncSession = Depends(get_db)):
@@ -233,3 +247,25 @@ async def get_scheduleTest(
     if group_name is not None:
         filters['group_name'] = group_name
     return await clickhouseService.get_scheduleTest(db, **filters)
+
+@app.get("/getAttendance")
+async def getAttendance(
+        db: AsyncSession = Depends(get_db_ClcikHouse),
+        stodent_fio: Optional[str] = Query(None),
+        group_name: Optional[str] = Query(None),
+        discipline_name: Optional[str] = Query(None),
+        periodStart: Optional[str] = Query(None),
+        periodEnd:  Optional[str] = Query(None)
+                           ):
+    filters = {}
+    if stodent_fio is not None:
+        filters['stodent_fio'] = stodent_fio
+    if group_name is not None:
+        filters['group_name'] = group_name
+    if periodStart is not None:
+        filters['periodStart'] = periodStart
+    if periodEnd is not None:
+        filters['periodEnd'] = periodEnd
+    if discipline_name is not None:
+        filters['discipline_name'] = discipline_name
+    return await clickhouseService.getAttendance(db,**filters)

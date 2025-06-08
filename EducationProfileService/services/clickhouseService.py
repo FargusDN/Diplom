@@ -201,4 +201,30 @@ async def get_schedule(db: AsyncSession = Depends(get_db_ClcikHouse)):
         for row in schedules
     ]
 
+async def getAttendance(db: AsyncSession = Depends(get_db_ClcikHouse),**filters):
+
+    select_fields = ["attendence_bool",
+                     "group_name",
+                     "discipline_name",
+                     "student_fio"
+                     ]
+    query, params = await build_filtered_query(
+        table="attendance_students",
+        fields=select_fields,
+        filters=filters
+    )
+
+    result = await db.execute(query,params)
+    attendance = result.fetchall()
+
+    return [
+        {
+            "attendence_bool": row[0],
+            "group_name": row[1],
+            "discipline_name": row[2],
+            "student_fio": row[3]
+        }
+        for row in attendance
+    ]
+
 
