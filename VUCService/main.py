@@ -114,5 +114,222 @@ def get_user(login_user: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User не найден")
     return db_user
 
+@app.get("/api/duty-officer/", response_model=VucUsersSchema)
+def get_duty_officer(db: Session = Depends(get_db)):
+    try:
+        query = text("""
+            SELECT
+                vuc_user_id as id,
+                first_name,
+                last_name,
+                middle_name,
+                birth_dt,
+                position_in_vuc_id
+            FROM
+                public.vuc_users
+            WHERE
+                signal_ind = 'active'
+            LIMIT 1;
+        """)
+        result = db.execute(query).fetchone()
+        if not result:
+            raise HTTPException(status_code=404, detail="Дежурный не найден")
+        # Преобразование результата в объект схемы Pydantic
+        duty_officer = {
+            "vuc_user_id": result.id,
+            "first_name": result.first_name,
+            "last_name": result.last_name,
+            "middle_name": result.middle_name,
+            "birth_dt": result.birth_dt,
+            "position_in_vuc_id": result.position_in_vuc_id,
+        }
+        return duty_officer
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при получении данных: {str(e)}")
 
 
+@app.get("/api/duty-schedule", response_model=Dict[str, List[Dict[str, Any]]])
+def get_duty_schedule(db: Session = Depends(get_db)):
+    try:
+        # SQL-запрос для получения данных о нарядах
+        query = text("""
+            SELECT
+                period_name AS period,
+                time_interval AS time,
+                responsible,
+                position,
+                location,
+                task
+            FROM
+                public.duty_schedule
+            ORDER BY
+                period_name, time_interval
+        """)
+        results = db.execute(query).fetchall()
+        # Сборка данных в формате, необходимом для фронтенда
+        duty_schedule = {"Утро": [], "День": [], "Вечер": [], "Ночь": []}
+
+        for row in results:
+            duty_schedule[row.period].append({
+                "time": row.time,
+                "responsible": row.responsible,
+                "position": row.position,
+                "location": row.location,
+                "task": row.task
+            })
+
+        return duty_schedule
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при получении данных: {str(e)}")
+
+
+@app.get("/api/applications", response_model=List[Application])
+def get_applications(db: Session = Depends(get_db)):
+    try:
+        query = text("""
+            SELECT 
+                id, 
+                full_name AS "fullName", 
+                course, 
+                group_name AS "group", 
+                department, 
+                photo, 
+                status, 
+                rejection_reason AS "rejectionReason"
+            FROM 
+                public.applications
+        """)
+        results = db.execute(query).fetchall()
+        applications = []
+        for row in results:
+            attachments_query = text("SELECT name, url FROM public.attachments WHERE application_id = :id")
+            attachments = db.execute(attachments_query, {"id": row.id}).fetchall()
+            application = {
+                "id": row.id,
+                "fullName": row.fullName,
+                "course": row.course,
+                "group": row.group,
+                "department": row.department,
+                "photo": row.photo,
+                "status": row.status,
+                "rejectionReason": row.rejectionReason,
+                "attachments": [{"name": att.name, "url": att.url} for att in attachments]
+            }
+            applications.append(application)
+        return applications
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при получении заявок: {str(e)}")
+
+@app.post("/api/applications/update-status")
+def update_application_status(request: UpdateStatusRequest, db: Session = Depends(get_db)):
+    try:
+        query = text("""
+            UPDATE public.applications
+            SET 
+                status = :status,
+                rejection_reason = :rejectionReason
+            WHERE id = :id
+        """)
+        db.execute(query, {
+            "id": request.id,
+            "status": request.status,
+            "rejectionReason": request.rejectionReason
+        })
+        db.commit()
+        return {"status": "success", "message": f"Статус заявки {request.id} обновлен"}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Ошибка при обновлении статуса заявки: {str(e)}")
+
+
+
+@app.get("/api/materials", response_model=List[Material])
+def get_materials(db: Session = Depends(get_db)):
+    try:
+        query = text("""
+            SELECT 
+                id, 
+                name, 
+                category, 
+                count, 
+                defendant, 
+                TO_CHAR(last_check, 'DD-MM-YYYY') AS last_check
+            FROM 
+                public.materials
+        """)
+        results = db.execute(query).fetchall()
+
+        materials = [
+            {
+                "id": row.id,
+                "name": row.name,
+                "category": row.category,
+                "count": row.count,
+                "defendant": row.defendant,
+                "last_check": row.last_check
+            }
+            for row in results
+        ]
+        return materials
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при получении материалов: {str(e)}")
+
+
+@app.post("/api/materials/operation")
+def perform_operation(operation: MaterialOperation, db: Session = Depends(get_db)):
+    try:
+        # Проверка существования материала
+        query = text("SELECT count FROM public.materials WHERE id = :id")
+        material = db.execute(query, {"id": operation.id}).fetchone()
+
+        if not material:
+            raise HTTPException(status_code=404, detail="Материал не найден")
+
+        current_count = material.count
+
+        # Логика выполнения операции
+        if operation.operation_type == "списание":
+            if operation.quantity > current_count:
+                raise HTTPException(status_code=400, detail="Недостаточно материалов для списания")
+            new_count = current_count - operation.quantity
+        elif operation.operation_type == "возврат":
+            new_count = current_count + operation.quantity
+        else:
+            raise HTTPException(status_code=400, detail="Недопустимый тип операции")
+
+        # Обновление данных в базе
+        update_query = text("""
+            UPDATE public.materials
+            SET count = :new_count
+            WHERE id = :id
+        """)
+        db.execute(update_query, {"new_count": new_count, "id": operation.id})
+        db.commit()
+
+        return {"status": "success", "message": f"Операция '{operation.operation_type}' выполнена успешно",
+                "new_count": new_count}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Ошибка при выполнении операции: {str(e)}")
+
+    @app.post("/api/materials/add")
+    def add_new_material(material: NewMaterialRequest, db: Session = Depends(get_db)):
+        try:
+            # SQL-запрос для добавления нового материала в базу данных
+            query = text("""
+                INSERT INTO public.materials (name, category, count, defendant, last_check, sklad)
+                VALUES (:name, :category, :count, :defendant, :last_check, :sklad)
+            """)
+            db.execute(query, {
+                "name": material.name,
+                "category": material.category,
+                "count": material.quantity,
+                "defendant": material.defendant,
+                "last_check": material.last_check,
+                "sklad": material.sklad
+            })
+            db.commit()
+            return {"status": "success", "message": "Материал успешно добавлен"}
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=f"Ошибка при добавлении материала: {str(e)}")
