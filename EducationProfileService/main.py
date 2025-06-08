@@ -7,22 +7,24 @@ from databaseClickHouse import get_db_ClcikHouse
 from services import services, clickhouseService
 from schemas.Schemas import InstitutiesAddSchema, UserAddSchema, FacultiesAddSchema, StudyGroupAddSchema, \
     UserInfoAddSchema
+import configparser
 
 app = FastAPI()
 
 from clickhouse_driver import Client
 
+config = configparser.ConfigParser()
+config.read("configs/clickhouseConfig.ini")
 
 def get_clickhouse_conn():
     return Client(
-        host='localhost',
-        port=18123,
-        user='admin',
-        password='admin_user_1234',
-        database='ios_click_db',
-        settings={'use_numpy': False}
+        host=config.get('host'),
+        port=config.get('port'),
+        user=config.get('user'),
+        password=config.get('password'),
+        database=config.get('database'),
+        settings=config.get('settings')
     )
-
 
 # Использование:
 

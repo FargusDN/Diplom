@@ -63,3 +63,17 @@ class UserInfo(Base):
     qualification: Mapped[str] = mapped_column(nullable=False, server_default="Не определено")
     add_info: Mapped[str]
     photo_user: Mapped[str]
+
+class AchievementsCategories(Base):
+    __tablename__  = "achievements_categories"
+    __table_args__ = {'schema': 'partitions'}
+    achievement_category_id: Mapped[int] = mapped_column(primary_key=True)
+    achievement_category_name: Mapped[String] = mapped_column(nullable=False)
+
+class AchievementsUser(Base):
+    __tablename__ = "achievements_user"
+    __table_args__ = {'schema': 'partitions'}
+    achievement_id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped["User"] = relationship()
+    kourse: Mapped[int]
+    semestr: Mapped[int]
